@@ -1,0 +1,17 @@
+body {
+    margin: 0;
+}
+
+.cell {
+    background-color: gold;
+}
+
+#grid {
+    background-color: #111111;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: stretch;
+    align-items: stretch;
+    height: 100%;
+}
