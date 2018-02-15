@@ -5,6 +5,6 @@ export class ImageModule extends Module {
         this.imageSource = imageSource;
     }
     view() {
-        return m("img", { src: this.imageSource, style: { "grid-area": this.area, "align-self": "center"}});
+        return m("img", { src: this.imageSource, style: { "grid-area": this.area, "align-self": "center", "justify-self": "center", height: "100%"}});
     }
 }
