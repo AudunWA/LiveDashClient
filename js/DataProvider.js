@@ -31,7 +31,7 @@ export class DataProvider {
         };
 
         this.ws.onclose = function(message) {
-            $("#connection_label").html("Not connected");
+            console.log("WebSocket disconnected");
         };
     }
 
