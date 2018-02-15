@@ -76,7 +76,7 @@ body {
 
 
 .cell {
-    background-color: #282828;
+    background-color: #232222;
     min-width: 0;
     min-height: 0;
     display: flex;
@@ -85,8 +85,8 @@ body {
 }
 
 .speedometer {
-    /*width: 200px;*/
-    /*height: 100px;*/
+    /* width: 200px; */
+    /* height: 100px; */
     width: 100%;
     max-width: 50%;
     max-height: 10%;
@@ -97,6 +97,7 @@ body {
     align-items: flex-end;
     justify-content: center;
     overflow: hidden;
+    justify-self: center;
 }
 
 .pin {
@@ -106,4 +107,39 @@ body {
     height: 100%;
     background: black;
     transform-origin: bottom center;
+    transition: all 0.1s linear;
+}
+
+.linear-gauge {
+    /*width: 100%;*/
+    /*max-width: 90%;*/
+    /*max-height: 90%;*/
+    /*margin: 0 auto 0 auto;*/
+    /*background: #9e978e;*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*!* justify-content: center; *!*/
+    /*overflow: hidden;*/
+    /* width: 200px; */
+    /* height: 100px; */
+    width: 100%;
+    /* max-width: 50%; */
+    max-height: 10%;
+    margin: 0 auto 0 auto;
+    /* border-radius: 200px 200px 0 0; */
+    background: #9e978e;
+    display: flex;
+    align-items: flex-end;
+    /* justify-content: center; */
+    overflow: hidden;
+    justify-self: center;
+}
+
+.gauge-percentage {
+    width: 10%;
+    /* max-width: 90%; */
+    max-height: 90%;
+    height: 100%;
+    background: black;
+    transition: all 0.1s linear;
 }
