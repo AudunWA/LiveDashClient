@@ -4,6 +4,7 @@ import {Speedometer} from "./modules/Speedometer.js";
 import {ImageModule} from "./modules/ImageModule.js";
 import {YouTubeModule} from "./modules/YouTubeModule.js";
 import {LinearGauge} from "./modules/LinearGauge.js";
+import {ChartModule} from "./modules/ChartModule.js";
 
 let dataProvider = new DataProvider();
 
@@ -15,8 +16,10 @@ let speed3 = new Speedometer("w3");
 let speed4 = new Speedometer("w4");
 let linear = new LinearGauge("w5");
 let linear2 = new LinearGauge("w7");
+let chart = new ChartModule("w6", "chart");
+let chart2 = new ChartModule("w8", "chart2");
 
-let modules = [ linear, linear2, logo, video, speed1, speed2, speed3, speed4];
+let modules = [ chart, chart2, linear, linear2, logo, video, speed1, speed2, speed3, speed4];
 
 class Container {
     view() {
@@ -33,3 +36,5 @@ dataProvider.subscribeToChannel(50, (data) => speed2.onData(data));
 dataProvider.subscribeToChannel(50, (data) => speed3.onData(data));
 dataProvider.subscribeToChannel(50, (data) => linear.onData(data));
 dataProvider.subscribeToChannel(1, (data) => linear2.onData(data));
+dataProvider.subscribeToChannel(1, (data) => chart.onData(data));
+dataProvider.subscribeToChannel(2, (data) => chart2.onData(data));
