@@ -1,19 +1,13 @@
 export class Module {
-    constructor(id, area) {
-        this.id = id;
+    constructor(area) {
         this.area = area;
-        this.element = null;
     }
 
-    render(node) {
+    view(node) {
 
     }
 
     onData(value) {
-
-    }
-
-    update() {
 
     }
 }
