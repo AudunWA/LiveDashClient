@@ -36,12 +36,18 @@ export class DataProvider {
     }
 
     onData(canId, data) {
+        if(!this.dataChannelListeners.has(canId)) {
+            return;
+        }
+
         this.dataChannelListeners.get(canId).forEach((callback) => callback(data));
         this.messagesReceived++;
         let secondsSinceStart = (new Date().getTime() - this.startTime.getTime()) / 1000;
         if(secondsSinceStart % 5) {
             document.title = "MPS: " + this.messagesReceived / secondsSinceStart;
         }
+        // TODO: Should be decoupled from this class
+        m.redraw();
     }
 
     subscribeToChannel(canId, callback) {

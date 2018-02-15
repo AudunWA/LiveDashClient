@@ -26,6 +26,5 @@ export class Speedometer extends Module {
 
     onData(value) {
         this.rotation = this.calculateRotation(value);
-        m.redraw();
     }
 }
