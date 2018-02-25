@@ -9,8 +9,32 @@ export class ChartModule extends Module {
 
         this.id = id;
         this.timeSeries = new TimeSeries();
-        this.chart = new SmoothieChart({responsive: true, enableDpiScaling: false, limitFPS: 60, tooltip:true});
-        this.chart.addTimeSeries(this.timeSeries, { strokeStyle: '#fdd025', fillStyle: '#56491b', lineWidth: 2 });
+        this.chart = new SmoothieChart(
+            {
+                responsive: true,
+                enableDpiScaling: false,
+                limitFPS: 60,
+                tooltip:true,
+                grid: {
+                    fillStyle: '#30333a',
+                    strokeStyle: '#777777',
+                    lineWidth: 1,
+                    sharpLines: false,
+                    millisPerLine: 0,
+                    verticalSections: 3,
+                    borderVisible: false
+                },
+                minValue: 0,
+                maxValue: 120
+            }
+            );
+        this.chart.addTimeSeries(this.timeSeries,
+            {
+                strokeStyle: '#2299f7',
+                fillStyle: 'rgba(0,0,0,0)',
+                lineWidth: 2
+            }
+            );
     }
 
     oncreate() {
@@ -18,8 +42,8 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m("div.cell", {style: {"grid-area": this.area}},
-            m("canvas", { id: this.id, style: { height: "100%", width: "100%"}}
+        return m("div.cell.fc", {style: {"grid-area": this.area}},
+            m("canvas.chart", { id: this.id}
             ));
     }
 
