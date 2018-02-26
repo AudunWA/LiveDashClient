@@ -1,0 +1,43 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="drag.css">
+    <script type="text/javascript" src="./js/drag.js"></script>
+    <style></style>
+    <title>MPS: 27.15363684815843</title>
+</head>
+<body>
+<div id="grid">
+    <div id="d1" draggable="true" class="cell" style="grid-area: 1 / 1;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="linear-gauge">
+            <div class="gauge-percentage" style="width: 72.5%;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        </div>
+    </div>
+    <div id="d2" draggable="true" class="cell" style="grid-area: 1 / 2;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="linear-gauge">
+            <div class="gauge-percentage" style="width: 52.5%;"></div>
+        </div>
+    </div>
+    <div id="d3" draggable="true" class="cell" style="grid-area: 1 / 3;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="linear-gauge">
+            <div class="gauge-percentage" style="width: 42.5%;"></div>
+        </div>
+    </div>
+    <div id="d4" draggable="true" class="cell" style="grid-area: 2 / 1;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="linear-gauge">
+            <div class="gauge-percentage" style="width: 82.5%;"></div>
+        </div>
+    </div>
+    <div id="d5" draggable="true" class="cell" style="grid-area: 2 / 2;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div class="linear-gauge">
+            <div class="gauge-percentage" style="width: 22.5%;"></div>
+        </div>
+    </div>
+    <div id="d6" draggable="true" class="cell" style="grid-area: 3 / 3;" ondragstart="drag(event)" ondrop="drop(event)" ondragover="allowDrop(event)">
+    </div>
+
+</div>
+<div class="smoothie-chart-tooltip" style="position: absolute; display: none; top: 370px; left: 603px;">16:04:57<br><span style="color:#2299f7">33.00</span></div>
+<div class="smoothie-chart-tooltip" style="position: absolute; display: none; top: 416px; left: 1006px;">16:03:55<br><span style="color:#2299f7">26.00</span></div>
+</body>
+</html>

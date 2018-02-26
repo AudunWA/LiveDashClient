@@ -26,7 +26,7 @@ body {
     #grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 7.5% 20% repeat(6, 1fr);
+        grid-template-rows: repeat(6, 1fr);
         grid-template-areas:
                 ". header header ."
                 "w1 video video w3"
@@ -44,21 +44,21 @@ body {
 }
 
 /*@media only screen and (min-width: 600px) {*/
-    /*#grid {*/
-        /*display: grid;*/
-        /*grid-template-columns: repeat(3, 1fr);*/
-        /*grid-template-rows: 5% 20% 3fr 1fr;*/
-        /*grid-template-areas:*/
-                /*"asd header das"*/
-                /*"w1 w2 w3"*/
-                /*"video video video"*/
-                /*"w4 w8 w9";*/
-        /*justify-items: center;*/
-        /*align-items: stretch;*/
-        /*!*grid-column-gap: 10%;*!*/
-        /*grid-gap: 3vmin;*/
-        /*height: 100%;*/
-    /*}*/
+/*#grid {*/
+/*display: grid;*/
+/*grid-template-columns: repeat(3, 1fr);*/
+/*grid-template-rows: 5% 20% 3fr 1fr;*/
+/*grid-template-areas:*/
+/*"asd header das"*/
+/*"w1 w2 w3"*/
+/*"video video video"*/
+/*"w4 w8 w9";*/
+/*justify-items: center;*/
+/*align-items: stretch;*/
+/*!*grid-column-gap: 10%;*!*/
+/*grid-gap: 3vmin;*/
+/*height: 100%;*/
+/*}*/
 /*}*/
 
 
@@ -76,13 +76,12 @@ body {
 
 
 .cell {
-    /*background-color: #232222;*/
+    background-color: #232222;
     min-width: 0;
     min-height: 0;
     display: flex;
     align-items: center;
     padding: 1vh 1vw 1vh 1vw;
-    border: solid #43484e;
 }
 
 .flex-column {
@@ -178,10 +177,4 @@ div.smoothie-chart-tooltip {
 .chart {
     height: 100%;
     width: 100%;
-}
-
-.drag-bar {
-    width: 100%;
-    height: 10px;
-    background-color: white;
 }

@@ -4,13 +4,13 @@ const MIN_SPEED = 0;
 const MAX_SPEED = 120;
 
 export class Speedometer extends Module {
-    constructor(area) {
-        super( area);
+    constructor(id, area) {
+        super(id, area);
         this.rotation = 0;
     }
 
     view() {
-        return m("div.cell", { style: { "grid-area": this.area } },
+        return m("div.cell[draggable]", { id: this.id, style: { "grid-area": this.area } },
             m("div.speedometer",
                 m("div.pin", {style: {transform: `rotate(${this.rotation}deg)`}})
             )

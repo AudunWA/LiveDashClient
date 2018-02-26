@@ -4,13 +4,13 @@ const MIN_SPEED = 0;
 const MAX_SPEED = 120;
 
 export class LinearGauge extends Module {
-    constructor(area) {
-        super( area);
+    constructor(id, area) {
+        super(id, area);
         this.percentage = 0;
     }
 
     view() {
-        return m("div.cell", { style: { "grid-area": this.area } },
+        return m("div.cell", { id: this.id, style: { "grid-area": this.area } },
             m("div.linear-gauge",
                 m("div.gauge-percentage", {style: {width: `${this.percentage}%`}})
             )

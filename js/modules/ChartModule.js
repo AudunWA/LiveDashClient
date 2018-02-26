@@ -4,10 +4,9 @@ const MIN_SPEED = 0;
 const MAX_SPEED = 120;
 
 export class ChartModule extends Module {
-    constructor(area, id) {
-        super(area);
+    constructor(id, area) {
+        super(id, area);
 
-        this.id = id;
         this.timeSeries = new TimeSeries();
         this.chart = new SmoothieChart(
             {
@@ -43,6 +42,7 @@ export class ChartModule extends Module {
 
     view() {
         return m("div.cell.fc", {style: {"grid-area": this.area}},
+            m(".module-title", "Sensor"),
             m("canvas.chart", { id: this.id}
             ));
     }

@@ -1,5 +1,6 @@
 export class Module {
-    constructor(area) {
+    constructor(id, area) {
+        this.id = id;
         this.area = area;
     }
 
