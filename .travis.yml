@@ -1,5 +1,7 @@
 # Dummy code to trigger build
 language: node_js
+node_js:
+  - "node"
 install:
   - npm -v
 deploy:
