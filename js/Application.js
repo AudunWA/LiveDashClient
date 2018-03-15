@@ -8,6 +8,7 @@ import {LinearGauge} from "./modules/LinearGauge.js";
 import {ChartModule} from "./modules/ChartModule.js";
 import {LinearGaugeSet, Gauge} from "./modules/LinearGaugeSet.js";
 import {EmptyModule} from "./modules/EmptyModule.js";
+import {TextModule} from "./modules/TextModule.js";
 
 /**
  * The main singleton class of the application.
@@ -21,7 +22,7 @@ class Application {
     }
     initModules() {
         let logo = new ImageModule(this.idGen++, "header", "res/revolve_logo1.png");
-        let video = new YouTubeModule(this.idGen++, "video", "https://www.youtube-nocookie.com/embed/WzFatqWqfmk?autoplay=1");
+        let video = new YouTubeModule(this.idGen++, "video", "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=1");
         let speed1 = new Speedometer(this.idGen++, "w1");
         let speed2 = new Speedometer(this.idGen++, "w2");
         let speed3 = new Speedometer(this.idGen++, "w3");
@@ -31,8 +32,9 @@ class Application {
         let linear3 = new LinearGaugeSet(this.idGen++, "ww", [ new Gauge(0, 120, 1), new Gauge(0, 120, 50)]);
         let chart = new ChartModule(this.idGen++, "w6");
         let chart2 = new ChartModule(this.idGen++, "w8");
+        let text = new TextModule(this.idGen++, "w10");
 
-        this.modules = [  chart, chart2, linear, linear2, logo, video, speed1, speed2, speed3, speed4, new EmptyModule(this.idGen++, "1/1")];
+        this.modules = [ text, chart, chart2, linear, linear2, logo, video, speed1, speed2, speed3, speed4, new EmptyModule(this.idGen++, "1/1")];
 
         class Container {
             constructor(modules) {
@@ -55,6 +57,7 @@ class Application {
         linear3.subscribe(this.dataProvider);
         this.dataProvider.subscribeToChannel(1, (data) => chart.onData(data));
         this.dataProvider.subscribeToChannel(2, (data) => chart2.onData(data));
+        this.dataProvider.subscribeToChannel(32, (data) => text.onData(data));
     }
 
     /**

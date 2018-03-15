@@ -36,11 +36,17 @@ export class DataProvider {
     }
 
     onData(canId, data) {
+        // Delay
+        if(canId === 31) {
+            this.delay = parseInt(data);
+        }
+
         if(!this.dataChannelListeners.has(canId)) {
             return;
         }
 
-        this.dataChannelListeners.get(canId).forEach((callback) => callback(data));
+        setTimeout(() => this.dataChannelListeners.get(canId).forEach((callback) => callback(data)), this.delay);
+
         this.messagesReceived++;
         let secondsSinceStart = (new Date().getTime() - this.startTime.getTime()) / 1000;
         if(secondsSinceStart % 5) {
