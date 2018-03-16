@@ -2,6 +2,11 @@ body {
     background-color: #30333a;
 }
 
+html,body {
+    height: 100%;
+    overflow: hidden; /* TODO: This is a hack, and breaks scrolling */
+}
+
 #grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -9,10 +14,12 @@ body {
     grid-template-areas:
             "header header"
             "video video"
+            "video video"
             "w1 w2"
             "w3 w4"
             "w5 w6"
-            "w7 w8";
+            "w7 w8"
+            "w9 w10";
     justify-items: stretch;
     align-items: stretch;
     /*grid-gap: 3vmin;*/
@@ -44,25 +51,6 @@ body {
     }
 }
 
-/*@media only screen and (min-width: 600px) {*/
-    /*#grid {*/
-        /*display: grid;*/
-        /*grid-template-columns: repeat(3, 1fr);*/
-        /*grid-template-rows: 5% 20% 3fr 1fr;*/
-        /*grid-template-areas:*/
-                /*"asd header das"*/
-                /*"w1 w2 w3"*/
-                /*"video video video"*/
-                /*"w4 w8 w9";*/
-        /*justify-items: center;*/
-        /*align-items: stretch;*/
-        /*!*grid-column-gap: 10%;*!*/
-        /*grid-gap: 3vmin;*/
-        /*height: 100%;*/
-    /*}*/
-/*}*/
-
-
 .w1 {
     grid-area: w1;
 }
@@ -81,15 +69,16 @@ body {
     min-width: 0;
     min-height: 0;
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     padding: 1vh 1vw 1vh 1vw;
     border: solid #43484e;
+    flex-grow: 1;
 }
 
-.flex-column {
+.cell.flex-column {
     flex-direction: column;
-    margin: 10px;
 }
+
 .fc {
     flex-direction: column;
 }
@@ -108,6 +97,7 @@ body {
     justify-content: center;
     overflow: hidden;
     justify-self: center;
+    align-self: center;
 }
 
 .pin {
@@ -121,29 +111,18 @@ body {
 }
 
 .linear-gauge {
-    /*width: 100%;*/
-    /*max-width: 90%;*/
-    /*max-height: 90%;*/
-    /*margin: 0 auto 0 auto;*/
-    /*background: #9e978e;*/
-    /*display: flex;*/
-    /*align-items: center;*/
-    /*!* justify-content: center; *!*/
-    /*overflow: hidden;*/
-    /* width: 200px; */
-    /* height: 100px; */
-    width: 100%;
-    /* max-width: 50%; */
-    max-height: 10%;
-    margin: 0 auto 0 auto;
-    /* border-radius: 200px 200px 0 0; */
-    background: #484f57;
     display: flex;
-    align-items: flex-end;
-    /* justify-content: center; */
-    overflow: hidden;
-    justify-self: center;
-    padding: 10px;
+    background: #484f57;
+    flex-grow: 1;
+}
+
+
+.linear-gauge:only-child {
+    margin-top: 0 !important;
+}
+
+.linear-gauge:last-child {
+    margin-top: 10px;
 }
 
 .module-title {
@@ -152,12 +131,9 @@ body {
 }
 
 .gauge-percentage {
-    width: 10%;
-    /* max-width: 90%; */
-    max-height: 90%;
-    height: 100%;
     background: linear-gradient(to right, #317fc1 , #2594eb);
     transition: all 0.1s linear;
+    margin: 5px;
 }
 
 div.smoothie-chart-tooltip {

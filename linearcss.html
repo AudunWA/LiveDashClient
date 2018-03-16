@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    html,body {
+        height: 100%;
+        margin: 0;
+    }
+    #grid {
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: 7.5% 20% repeat(5, 1fr);
+        grid-template-areas:
+                ". header header ."
+                "w1 video video w3"
+                "w2 video video w4"
+                ". video video ."
+                "w5 w6 w7 w8"
+                ". . . ."
+                "w9 w10 w11 w12";
+    }
+    .cell {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding: 1vh 1vw 1vh 1vw;
+        border: solid #43484e;
+    }
+
+    .bar {
+        background: red;
+    }
+
+    .gauge {
+        display: flex;
+        background: black;
+        flex-grow: 1;
+    }
+
+    .w1 {
+        grid-area: w1;
+    }
+
+    .w2 {
+        grid-area: w2;
+    }
+</style>
+<div id="grid">
+    <div class="cell w1">
+        <div class="gauge">
+            <div class="bar"></div>
+        </div>
+    </div>
+    <div class="cell w2">
+        <div class="gauge">
+            <div class="bar"></div>
+        </div>
+        <div class="gauge">
+            <div class="bar" style="background: blue"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /**
+     * Returns a number whose value is limited to the given range.
+     *
+     * Example: limit the output of this computation to between 0 and 255
+     * (x * 255).clamp(0, 255)
+     *
+     * @param {Number} min The lower boundary of the output range
+     * @param {Number} max The upper boundary of the output range
+     * @returns A number in the range [min, max]
+     * @type Number
+     */
+    Number.prototype.clamp = function(min, max) {
+        return Math.min(Math.max(this, min), max);
+    };
+
+    Math.lerp = function (value1, value2, amount) {
+        amount = amount < 0 ? 0 : amount;
+        amount = amount > 1 ? 1 : amount;
+        return value1 + (value2 - value1) * amount;
+    };
+
+    var prev = 0;
+    var i = Math.random()*180 - 90;
+
+    setInterval(() => {
+
+        onData(VELOCITY, prev);
+        prev = Math.lerp(prev, i, 0.1);
+    }, 1000/30);
+
+    setInterval(() => {
+
+        //onData(VELOCITY, i);
+        i = Math.lerp(Math.random()*100, i, 0.5);
+        //document.querySelectorAll(".pin").forEach(e =>  {
+        //   if(!e.i) e.i = Math.random() * 1000
+//    var newRot = Math.sin(e.i*0.009) * 90
+//  newRot = newRot.clamp(-90, 90)
+//    e.style.transform = " rotate(" + newRot + "deg)";
+        // e.i++})
+    }, 1000/10);
+    const VELOCITY = 0;
+    function onData(dataType, value) {
+        if(dataType == VELOCITY) {
+            document.querySelectorAll(".bar").forEach(e => {
+                e.style.width = value + "%";
+            } );
+        }
+    }
+</script>
+</body>
+</html>
