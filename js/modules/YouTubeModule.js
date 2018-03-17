@@ -6,22 +6,14 @@ export class YouTubeModule extends Module {
     }
 
     view() {
-        return m("div.cell.fc", {
-            id: this.id,
-            style: {
-                "grid-area": this.area,
-                "align-self": "stretch",
-                "justify-self": "stretch"
-            }
-        }, m("iframe[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
+        return m("iframe[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
                 src: this.videoSource,
                 style: {
+                    "grid-area": this.area,
                     "align-self": "stretch",
                     "justify-self": "stretch"
                 }
             }
-        ),
-            m("div.drag-bar[draggable]")
         );
     }
 }
