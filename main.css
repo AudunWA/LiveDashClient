@@ -139,7 +139,7 @@ html,body {
 .gauge-percentage {
     background: linear-gradient(to right, #317fc1 , #2594eb);
     transition: all 0.1s linear;
-    margin: 5px;
+    /*margin: 5px;*/
 }
 
 div.smoothie-chart-tooltip {
