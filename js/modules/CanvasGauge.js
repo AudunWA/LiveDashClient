@@ -14,9 +14,15 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m("div.cell", { id: this.id, style: { "grid-area": this.area } },
-            m("canvas.canvas-gauge", { id: this.getId()})
+        return m("div.cell", {id: this.id, style: {"grid-area": this.area}},
+            m("canvas.canvas-gauge", {id: this.getId()})
         );
+    }
+
+    oncreate() {
+        this.canvas = document.getElementById(this.getId());
+        this.context = this.canvas.getContext("2d");
+        this.animate();
     }
 
     getId() {
@@ -29,46 +35,45 @@ export class CanvasGauge extends Module {
         this.animate();
     }
 
+    resize() {
+        this.canvas.width = this.canvas.offsetWidth;
+        this.canvas.height = this.canvas.clientHeight;
+    }
+
     animate() {
+        this.resize();
+
         this.percentage = Math.lerp(this.percentage, this.goalPercentage, 0.1);
 
-        const canvas = document.getElementById(this.getId());
-        const context = canvas.getContext("2d");
-
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.clientHeight;
-        console.log(canvas.width);
-        console.log(canvas.height);
-
-        let centerX = canvas.width / 2;
-        let centerY = 4* canvas.height / 5;
-        let factor = Math.min(canvas.offsetHeight, canvas.offsetWidth);
+        let centerX = this.canvas.width / 2;
+        let centerY = 4 * this.canvas.height / 5;
+        let factor = Math.min(this.canvas.offsetHeight, this.canvas.offsetWidth);
         let radius = factor * 0.6;
 
-        context.beginPath();
-        context.lineCap = "round";
-        context.arc(centerX, centerY, radius, -Math.PI+this.arcSize, 0-this.arcSize, false);
-        context.arc(centerX, centerY, radius * (1 - this.thickness), 0-this.arcSize,-Math.PI+this.arcSize, true);
-        context.closePath();
-        context.fillStyle = "#484f57";
-        context.fill();
+        this.context.beginPath();
+        this.context.lineCap = "round";
+        this.context.arc(centerX, centerY, radius, -Math.PI + this.arcSize, 0 - this.arcSize, false);
+        this.context.arc(centerX, centerY, radius * (1 - this.thickness), 0 - this.arcSize, -Math.PI + this.arcSize, true);
+        this.context.closePath();
+        this.context.fillStyle = "#484f57";
+        this.context.fill();
 
-        context.beginPath();
-        context.lineCap = "round";
+        this.context.beginPath();
+        this.context.lineCap = "round";
 
-        let endAngle = (Math.PI-this.arcSize*2)*this.percentage-(Math.PI-this.arcSize);
+        let endAngle = (Math.PI - this.arcSize * 2) * this.percentage - (Math.PI - this.arcSize);
 
-        context.arc(centerX, centerY, radius, -Math.PI+this.arcSize, endAngle, false);
-        context.arc(centerX, centerY, (radius) * (1 - this.thickness), endAngle,-Math.PI+this.arcSize, true);
-        context.closePath();
-        context.fillStyle = "#2594eb";
-        context.fill();
+        this.context.arc(centerX, centerY, radius, -Math.PI + this.arcSize, endAngle, false);
+        this.context.arc(centerX, centerY, (radius) * (1 - this.thickness), endAngle, -Math.PI + this.arcSize, true);
+        this.context.closePath();
+        this.context.fillStyle = "#2594eb";
+        this.context.fill();
 
-        context.font = factor * 0.1 + "px Arial";
-        context.fillStyle = "#f7f6f4";
-        context.fillText(this.value + " km/h",centerX - factor*0.15, centerY* 0.85);
+        this.context.font = factor * 0.1 + "px Arial";
+        this.context.fillStyle = "#f7f6f4";
+        this.context.fillText(this.value + " km/h", centerX - factor * 0.15, centerY * 0.85);
 
-        if(Math.abs(this.percentage - this.goalPercentage) > 0.001) {
+        if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
             requestAnimationFrame(() => this.animate());
         }
     }
