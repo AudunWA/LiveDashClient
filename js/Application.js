@@ -23,7 +23,7 @@ class Application {
     }
     initModules() {
         let logo = new ImageModule(this.idGen++, "header", "res/revolve_logo1.png");
-        let video = new YouTubeModule(this.idGen++, "video", "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=1");
+        let video = new YouTubeModule(this.idGen++, "video", "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0");
         let speed1 = new Speedometer(this.idGen++, "w1");
         let speed2 = new Speedometer(this.idGen++, "w2");
         let speed3 = new Speedometer(this.idGen++, "w3");
