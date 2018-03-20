@@ -35,7 +35,7 @@ class Application {
         let chart2 = new ChartModule(this.idGen++, "w8");
         let text = new TextModule(this.idGen++, "w10");
 
-        this.modules = [ text, chart, chart2, linear, linear2, logo, video, speed1, speed2, speed3, speed4, new EmptyModule(this.idGen++, "1/1")];
+        this.modules = [ chart, chart2, linear, linear2, logo, video, speed1, speed2, speed3, speed4, new EmptyModule(this.idGen++, "1/1")];
 
         class Container {
             constructor(modules) {
