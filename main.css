@@ -38,7 +38,7 @@ html,body {
                 ". header header ."
                 "w1 video video w3"
                 "w2 video video w4"
-                ". video video ."
+                ". video video w4"
                 "w5 w6 w7 w8"
                 ". . . ."
                 "w9 w10 w11 w12";
@@ -71,7 +71,7 @@ html,body {
     display: flex;
     /*align-items: center;*/
     padding: 1vh 1vw 1vh 1vw;
-    border: solid #43484e;
+    /* border: solid #43484e; */
     flex-grow: 1;
 }
 
@@ -128,6 +128,12 @@ html,body {
 .module-title {
     font-family: 'Open Sans', serif;
     color: white;
+}
+
+.canvas-gauge {
+    width: 100%;
+    height: 100%;
+    /*border: solid 1px blue;*/
 }
 
 .gauge-percentage {
