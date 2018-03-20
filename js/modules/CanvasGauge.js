@@ -11,6 +11,8 @@ export class CanvasGauge extends Module {
         this.goalPercentage = 0;
         this.arcSize = arcSize;
         this.thickness = thickness;
+        this.canvas = null;
+        this.context = null;
     }
 
     view() {
@@ -20,8 +22,9 @@ export class CanvasGauge extends Module {
     }
 
     oncreate() {
-        this.canvas = document.getElementById(this.getId());
-        this.context = this.canvas.getContext("2d");
+        // We have to use this.__proto__ to access the class instance, as this === vnode.state in lifecycle methods
+        this.__proto__.canvas = document.getElementById(this.getId());
+        this.__proto__.context = this.canvas.getContext("2d");
         this.animate();
     }
 
