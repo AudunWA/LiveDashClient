@@ -13,6 +13,9 @@ export class CanvasGauge extends Module {
         this.thickness = thickness;
         this.canvas = null;
         this.context = null;
+        this.backgroundStyle = "#484f57";
+        this.fillStyle = "#2594eb";
+        this.textStyle = "#f7f6f4";
     }
 
     view() {
@@ -52,28 +55,26 @@ export class CanvasGauge extends Module {
         let centerY = 4 * this.canvas.height / 5;
         let factor = Math.min(this.canvas.offsetHeight, this.canvas.offsetWidth);
         let radius = factor * 0.6;
+        let endAngle = (Math.PI - this.arcSize * 2) * this.percentage - (Math.PI - this.arcSize);
 
         this.context.beginPath();
-        this.context.lineCap = "round";
         this.context.arc(centerX, centerY, radius, -Math.PI + this.arcSize, 0 - this.arcSize, false);
         this.context.arc(centerX, centerY, radius * (1 - this.thickness), 0 - this.arcSize, -Math.PI + this.arcSize, true);
         this.context.closePath();
-        this.context.fillStyle = "#484f57";
+        this.context.fillStyle = this.backgroundStyle;
         this.context.fill();
 
         this.context.beginPath();
-        this.context.lineCap = "round";
 
-        let endAngle = (Math.PI - this.arcSize * 2) * this.percentage - (Math.PI - this.arcSize);
 
         this.context.arc(centerX, centerY, radius, -Math.PI + this.arcSize, endAngle, false);
         this.context.arc(centerX, centerY, (radius) * (1 - this.thickness), endAngle, -Math.PI + this.arcSize, true);
         this.context.closePath();
-        this.context.fillStyle = "#2594eb";
+        this.context.fillStyle = this.fillStyle;
         this.context.fill();
 
         this.context.font = factor * 0.1 + "px Arial";
-        this.context.fillStyle = "#f7f6f4";
+        this.context.fillStyle = this.textStyle;
         this.context.fillText(this.value + " km/h", centerX - factor * 0.15, centerY * 0.85);
 
         if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
