@@ -10,6 +10,7 @@ import {LinearGaugeSet, Gauge} from "./modules/LinearGaugeSet.js";
 import {EmptyModule} from "./modules/EmptyModule.js";
 import {TextModule} from "./modules/TextModule.js";
 import {CanvasGauge} from "./modules/CanvasGauge.js";
+import {CircleCanvasGauge} from "./modules/CircleCanvasGauge.js";
 
 /**
  * The main singleton class of the application.
@@ -26,7 +27,7 @@ class Application {
         let video = new YouTubeModule(this.idGen++, "video", "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0");
         let speed1 = new Speedometer(this.idGen++, "w1");
         let speed2 = new Speedometer(this.idGen++, "w2");
-        let speed3 = new Speedometer(this.idGen++, "w3");
+        let speed3 = new CircleCanvasGauge(this.idGen++, "w3", 0.2);
         let speed4 = new CanvasGauge(this.idGen++, "w4", 0.2, 0.4);
         let linear = new LinearGauge(this.idGen++, "w5");
         let linear2 = new LinearGaugeSet(this.idGen++, "w7", [ new Gauge(0, 120, 1), new Gauge(0, 120, 50)]);
