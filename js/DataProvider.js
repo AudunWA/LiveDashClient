@@ -1,13 +1,12 @@
 export class DataProvider {
     constructor() {
         this.dataChannelListeners = new Map();
-        this.configureWebSocket();
         //this.simulateData();
         this.messagesReceived = 0;
     }
 
-    configureWebSocket() {
-        this.ws = new WebSocket("ws://localhost:8080");
+    connectWebSocket(uri) {
+        this.ws = new WebSocket(uri);
         this.ws.binaryType = "arraybuffer";
 
         this.ws.onerror = (error) => {

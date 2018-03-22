@@ -1,7 +1,11 @@
 # Dummy code to trigger build
 language: node_js
 node_js:
-- node
+  - node
+
+# Overwrite default config with deploy config
+before_deploy:
+  - mv -f js/config/config.s3.js js/config/config.js
 
 deploy:
   provider: s3

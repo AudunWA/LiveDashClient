@@ -11,6 +11,7 @@ import {EmptyModule} from "./modules/EmptyModule.js";
 import {TextModule} from "./modules/TextModule.js";
 import {CanvasGauge} from "./modules/CanvasGauge.js";
 import {CircleCanvasGauge} from "./modules/CircleCanvasGauge.js";
+import {Config} from "./config/config.js";
 
 /**
  * The main singleton class of the application.
@@ -21,7 +22,9 @@ class Application {
         this.idGen = 0;
         this.modules = [];
         this.dataProvider = new DataProvider();
+        this.dataProvider.connectWebSocket(Config.webSocketUri);
     }
+
     initModules() {
         let logo = new ImageModule(this.idGen++, "header", "res/revolve_logo1.png");
         let video = new YouTubeModule(this.idGen++, "video", "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0");
