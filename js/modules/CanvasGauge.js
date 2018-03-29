@@ -19,7 +19,7 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m("div.cell.draggable", {id: this.id, style: this.style},
+        return m(".cell.draggable", {id: this.id, style: this.style},
             m("canvas.canvas-gauge", {id: this.getId()})
         );
     }

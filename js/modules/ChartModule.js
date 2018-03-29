@@ -45,7 +45,7 @@ export class ChartModule extends Module {
         let time = currentdate.getHours() + ":"
             + currentdate.getMinutes() + ":"
             + currentdate.getSeconds();
-        return m("div.cell.fc", {style: this.style},
+        return m(".cell.fc", {style: this.style},
             m("canvas.chart", { id: this.id}
             ));
     }

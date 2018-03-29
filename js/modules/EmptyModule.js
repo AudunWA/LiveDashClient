@@ -5,6 +5,6 @@ export class EmptyModule extends Module {
         super(id, area);
     }
     view() {
-        return m("div.empty", {id: this.id, style: this.style});
+        return m(".empty", {id: this.id, style: this.style});
     }
 }
