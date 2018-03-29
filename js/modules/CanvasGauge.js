@@ -19,7 +19,7 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m("div.cell", {id: this.id, style: {"grid-area": this.area}},
+        return m("div.cell.draggable", {id: this.id, style: this.style},
             m("canvas.canvas-gauge", {id: this.getId()})
         );
     }
@@ -42,12 +42,18 @@ export class CanvasGauge extends Module {
     }
 
     resize() {
+        if(this.canvas.width === this.canvas.offsetWidth && this.canvas.height === this.canvas.clientHeight) {
+            // No resize needed
+            return;
+        }
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.clientHeight;
     }
 
     animate() {
         this.resize();
+
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.percentage = Math.lerp(this.percentage, this.goalPercentage, 0.1);
 
@@ -65,8 +71,6 @@ export class CanvasGauge extends Module {
         this.context.fill();
 
         this.context.beginPath();
-
-
         this.context.arc(centerX, centerY, radius, -Math.PI + this.arcSize, endAngle, false);
         this.context.arc(centerX, centerY, (radius) * (1 - this.thickness), endAngle, -Math.PI + this.arcSize, true);
         this.context.closePath();

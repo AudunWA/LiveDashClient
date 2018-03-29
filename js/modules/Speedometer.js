@@ -10,7 +10,7 @@ export class Speedometer extends Module {
     }
 
     view() {
-        return m("div.cell[draggable]", { id: this.id, style: { "grid-area": this.area } },
+        return m("div.cell[draggable]", { id: this.id, style: this.style },
             m("div.speedometer",
                 m("div.pin", {style: {transform: `rotate(${this.rotation}deg)`}})
             )

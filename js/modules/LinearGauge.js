@@ -10,7 +10,7 @@ export class LinearGauge extends Module {
     }
 
     view() {
-        return m("div.cell", { id: this.id, style: { "grid-area": this.area } },
+        return m("div.cell", { id: this.id, style: this.style },
             m("div.linear-gauge",
                 m("div.gauge-percentage", {style: {width: `${this.percentage}%`}})
             )
