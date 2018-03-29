@@ -32,16 +32,16 @@ html,body {
 @media only screen and (min-width: 600px) {
     #grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 7.5% 20% repeat(6, 1fr);
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: 7.5% repeat(6, 1fr);
         grid-template-areas:
-                ". header header ."
-                "w1 video video w3"
-                "w2 video video w4"
-                ". video video w4"
-                "w5 w6 w7 w8"
-                ". . . ."
-                "w9 w10 w11 w12";
+                ". . header header . ."
+                "w1 video video video video w3"
+                "w2 video video video video w4"
+                ". video video video video w4"
+                "w5 w6 w7 w8 . ."
+                ". . . . . ."
+                "w9 w10 w11 w12 . .";
         justify-items: stretch;
         align-items: stretch;
         /*grid-gap: 3vmin;*/
