@@ -5,33 +5,35 @@ import {EmptyModule} from "./modules/EmptyModule.js";
 import {YouTubeModule} from "./modules/YouTubeModule.js";
 import Application from "./Application.js";
 import {ImageModule} from "./modules/ImageModule.js";
+import {ChartModule} from "./modules/ChartModule.js";
+import {LinearGauge} from "./modules/LinearGauge.js";
 
 const defaultLayout = {
     modules: [
         {
             type: "CanvasGauge",
-            gridArea: "w4",
-            channel: 1,
+            gridArea: "5 / 3 / 6 / 4",
+            channel: 1
         },
         {
             type: "CanvasGauge",
-            gridArea: "w5",
-            channel: 1,
+            gridArea: "6 / 3 / 6 / 3",
+            channel: 1
         },
         {
             type: "CanvasGauge",
-            gridArea: "w6",
-            channel: 1,
+            gridArea: "4 / 6 / 4 / 6",
+            channel: 1
         },
         {
             type: "CanvasGauge",
-            gridArea: "w7",
-            channel: 1,
+            gridArea: "2 / 1 / 3 / 2",
+            channel: 1
         },
         {
             type: "CircleCanvasGauge",
-            gridArea: "w8",
-            channel: 1,
+            gridArea: "5 / 2 / 7 / 3",
+            channel: 1
         },
         {
             type: "YouTubeModule",
@@ -42,6 +44,21 @@ const defaultLayout = {
             type: "ImageModule",
             gridArea: "header",
             src: "res/revolve_logo1.png"
+        },
+        {
+            type: "ChartModule",
+            gridArea: "3 / 1 / 5 / 2",
+            channel: 2
+        },
+        {
+            type: "ChartModule",
+            gridArea: "5 / 4 / 7 / 7",
+            channel: 1
+        },
+        {
+            type: "LinearGauge",
+            gridArea: "5 / 4 / 5 / 4",
+            channel: 1
         }
     ]
 };
@@ -63,6 +80,13 @@ export class Layout {
         layout.modules.forEach((module) => {
             modules.push(this.createModule(module));
         });
+
+        if(Config.editMode) {
+            modules.forEach((module) => {
+                module.style["border"] = "dashed";
+                module.style["background"] = "#232222";
+            })
+        }
         return [...modules, ...this.initEmptyCells()];
     }
 
@@ -80,6 +104,12 @@ export class Layout {
                 break;
             case "ImageModule":
                 module = new ImageModule(this.idGen++, moduleConfig.gridArea, moduleConfig.src);
+                break;
+            case "ChartModule":
+                module = new ChartModule(this.idGen++, moduleConfig.gridArea);
+                break;
+            case "LinearGauge":
+                module = new LinearGauge(this.idGen++, moduleConfig.gridArea);
                 break;
         }
         module.channel = moduleConfig.channel;
