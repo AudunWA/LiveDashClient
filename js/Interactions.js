@@ -1,5 +1,7 @@
 import Application from "./Application.js";
 
+let currentEdges = null;
+
 interact('.cell')
     .draggable({
         inertia: true,
@@ -43,10 +45,9 @@ interact('.cell')
     const target = event.target;
     let x = parseFloat(target.dataX || 0) + event.dx;
     let y = parseFloat(target.dataY || 0) + event.dy;
+    currentEdges = event.edges;
 
     // update the element's style
-    // target.style.width = event.rect.width + 'px';
-    // target.style.height = event.rect.height + 'px';
     target.style.transformOrigin = calculateTransformOrigin(event.edges);
     module.style.transformOrigin = calculateTransformOrigin(event.edges);
     target.style.transform =
@@ -60,21 +61,99 @@ interact('.cell')
     let element = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
     const module = Application.getModuleById(event.target.id);
 
-    module.area = calculateGridArea(event.target.style.gridArea, element.style.gridArea);
+    module.area = calculateGridArea(event.target.style.gridArea, element.style.gridArea, currentEdges);
     module.style["transform"] = "";
     Application.layout.saveLayout();
 });
 
-function calculateGridArea(oldArea, newArea) {
+function calculateGridArea(oldArea, newArea, edges) {
+    const onlyVertical = ((edges.top || edges.bottom) && !(edges.left || edges.right));
+    const onlyHorizontal = ((edges.left || edges.right) && !(edges.top || edges.bottom));
     let oldAreaSplit = oldArea.split(" / ");
     let newAreaSplit = newArea.split(" / ");
-    if (oldAreaSplit[0] > newAreaSplit[0] || oldAreaSplit[1] > newAreaSplit[1]) {
-        let temp = oldAreaSplit;
-        oldAreaSplit = newAreaSplit;
-        newAreaSplit = temp;
+
+    let start = {
+        row: parseInt(oldAreaSplit[0]),
+        column: parseInt(oldAreaSplit[1]),
+        endRow: parseInt(oldAreaSplit[2]),
+        endColumn: parseInt(oldAreaSplit[3])
+    };
+    let target = {
+        row: parseInt(newAreaSplit[0]),
+        column: parseInt(newAreaSplit[1]),
+    };
+    let result = {
+        startRow: start.row,
+        endRow: start.endRow,
+        startColumn: start.column,
+        endColumn: start.endColumn
+    };
+
+    if(!onlyVertical) {
+        if (start.endColumn >= target.column + 1 && start.column <= target.column) {
+            if (edges.right) {
+                // Make smaller (from right edge)
+                result.startColumn = start.column;
+                result.endColumn = target.column + 1;
+            }
+            else {
+                // Make smaller (from left edge)
+                result.startColumn = target.column;
+                result.endColumn = start.endColumn;
+            }
+        }
+        else {
+            if (edges.right) {
+                // Make bigger (from right edge)
+                result.startColumn = start.column;
+                result.endColumn = target.column + 1;
+            }
+            else {
+                // Make bigger (from left edge)
+                result.startColumn = target.column;
+                result.endColumn = start.endColumn;
+
+                // Special case if it's a single cell
+                if (start.column === start.endColumn) {
+                    result.endColumn++;
+                }
+            }
+        }
     }
-    return oldAreaSplit[0] + " / " + oldAreaSplit[1]
-        + " / " + (parseInt(newAreaSplit[2]) + 1) + " / " + (parseInt(newAreaSplit[3]) + 1);
+
+    if(!onlyHorizontal) {
+        if (start.endRow >= target.row + 1 && start.row <= target.row) {
+            if (edges.bottom) {
+                // Make smaller (from right edge)
+                result.startRow = start.row;
+                result.endRow = target.row + 1;
+            }
+            else {
+                // Make smaller (from left edge)
+                result.startRow = target.row;
+                result.endRow = start.endRow;
+            }
+        }
+        else {
+            if (edges.bottom) {
+                // Make bigger (from right edge)
+                result.startRow = start.row;
+                result.endRow = target.row + 1;
+            }
+            else {
+                // Make bigger (from left edge)
+                result.startRow = target.row;
+                result.endRow = start.endRow;
+
+                // Special case if it's a single cell
+                if (start.row === start.endRow) {
+                    result.endRow++;
+                }
+            }
+        }
+    }
+
+    return `${result.startRow} / ${result.startColumn} / ${result.endRow} / ${result.endColumn}`;
 }
 
 function calculateTransformOrigin(edges) {
