@@ -1,7 +1,15 @@
 export class Module {
     constructor(id, area) {
         this.id = id;
-        this.area = area;
+        this.style = { "grid-area": area };
+    }
+
+    get area() {
+        return this.style["grid-area"];
+    }
+
+    set area(newArea) {
+        this.style["grid-area"] = newArea;
     }
 
     view(node) {

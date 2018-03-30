@@ -6,7 +6,7 @@ export class TextModule extends Module {
         this.text = "";
     }
     view() {
-        return m("div.cell", {id: this.id, style: {"grid-area": this.area}}, this.text);
+        return m(".cell", {id: this.id, style: this.style}, this.text);
     }
 
     onData(value) {

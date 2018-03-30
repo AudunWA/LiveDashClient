@@ -7,41 +7,19 @@ html,body {
     overflow: hidden; /* TODO: This is a hack, and breaks scrolling */
 }
 
-#grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 5% 20% repeat(3, 1fr);
-    grid-template-areas:
-            "header header"
-            "video video"
-            "video video"
-            "w1 w2"
-            "w3 w4"
-            "w5 w6"
-            "w7 w8"
-            "w9 w10";
-    justify-items: stretch;
-    align-items: stretch;
-    /*grid-gap: 3vmin;*/
-    height: 100%;
-
-    grid-auto-rows: 1fr;
-    grid-auto-columns: 1fr;
-}
-
 @media only screen and (min-width: 600px) {
     #grid {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: 7.5% repeat(6, 1fr);
-        grid-template-areas:
-                ". . header header . ."
-                "w1 video video video video w3"
-                "w2 video video video video w4"
-                ". video video video video w4"
-                "w5 w6 w7 w8 . ."
-                ". . . . . ."
-                "w9 w10 w11 w12 . .";
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        /*grid-template-areas:*/
+                /*". header header ."*/
+                /*"w1 video video w3"*/
+                /*"w2 video video w4"*/
+                /*". video video w4"*/
+                /*"w5 w6 w7 w8"*/
+                /*". . . ."*/
+                /*"w9 w10 w11 w12";*/
         justify-items: stretch;
         align-items: stretch;
         /*grid-gap: 3vmin;*/
@@ -65,11 +43,13 @@ html,body {
 
 
 .cell {
+    /*background-color: #232222;*/
     min-width: 0;
     min-height: 0;
     display: flex;
     /*align-items: center;*/
-    margin: 1vh 1vw 1vh 1vw;
+    padding: 1vh 1vw 1vh 1vw;
+    /* border: solid #43484e; */
     flex-grow: 1;
     z-index: 1;
 }

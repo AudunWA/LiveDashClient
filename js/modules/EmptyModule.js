@@ -5,6 +5,6 @@ export class EmptyModule extends Module {
         super(id, area);
     }
     view() {
-        return m("div.cell", {id: this.id, style: {"grid-area": this.area}});
+        return m(".empty", {id: this.id, style: this.style});
     }
 }

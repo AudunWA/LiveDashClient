@@ -26,6 +26,8 @@ export class DataProvider {
             let json=JSON.parse(event.data);
             if(json.canId) {
                 this.onData(json.canId, json.data);
+            } else if (json.channel) {
+                this.onData(json.channel, json.data);
             }
         };
 

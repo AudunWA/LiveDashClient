@@ -15,8 +15,8 @@ export class ChartModule extends Module {
                 limitFPS: 60,
                 tooltip:true,
                 grid: {
-                    fillStyle: '#30333a',
-                    strokeStyle: '#777777',
+                    fillStyle: "rgba(0,0,0,0)",
+                    strokeStyle: "#777777",
                     lineWidth: 1,
                     sharpLines: false,
                     millisPerLine: 0,
@@ -29,26 +29,25 @@ export class ChartModule extends Module {
             );
         this.chart.addTimeSeries(this.timeSeries,
             {
-                strokeStyle: '#2299f7',
-                fillStyle: 'rgba(0,0,0,0)',
+                strokeStyle: "#2299f7",
+                fillStyle: "rgba(0,0,0,0)",
                 lineWidth: 2
             }
             );
     }
 
     oncreate() {
-        this.chart.streamTo(document.getElementById(this.id), 100);
+        this.chart.streamTo(document.getElementById(this.getCanvasId()), 100);
     }
 
     view() {
-        let currentdate = new Date();
-        let time = currentdate.getHours() + ":"
-            + currentdate.getMinutes() + ":"
-            + currentdate.getSeconds();
-        return m("div.cell.fc", {style: {"grid-area": this.area}},
-            m(".module-title", time),
-            m("canvas.chart", { id: this.id}
+        return m(".cell.fc", { id: this.id, style: this.style},
+            m("canvas.chart", { id: this.getCanvasId()}
             ));
+    }
+
+    getCanvasId() {
+        return "chart-" + this.id;
     }
 
     onData(value) {

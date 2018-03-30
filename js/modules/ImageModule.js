@@ -5,6 +5,9 @@ export class ImageModule extends Module {
         this.imageSource = imageSource;
     }
     view() {
-        return m("img.image-module", { id: this.id, src: this.imageSource, style: { "grid-area": this.area}});
+        return m("img.image-module", { id: this.id, src: this.imageSource, style: this.style});
+    }
+    get src() {
+        return this.imageSource;
     }
 }

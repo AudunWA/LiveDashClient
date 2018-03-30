@@ -19,11 +19,3 @@ Math.lerp = function (value1, value2, amount) {
 Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
-
-export function getFirstIdFromParents(node) {
-    let currentNode = node;
-    while(currentNode.id.length === 0) {
-        currentNode = currentNode.parentNode;
-    }
-    return currentNode.id;
-}
