@@ -41,7 +41,7 @@ function initEmptyCells() {
 document.addEventListener("DOMContentLoaded", () => initEmptyCells());
 
 let currentEdges = null;
-interact('.cell')
+interact(".cell")
     .draggable({
         inertia: true,
         restrict: {
@@ -68,7 +68,7 @@ interact('.cell')
 
             // keep the edges inside the parent
             restrictEdges: {
-                outer: 'parent',
+                outer: "parent",
                 endOnly: true,
             },
 
@@ -78,7 +78,7 @@ interact('.cell')
             },
 
             inertia: true,
-    }).on('resizemove', function (event) {
+    }).on("resizemove", function (event) {
         const target = event.target;
         let x = parseFloat(target.dataX || 0) + event.dx;
         let y = parseFloat(target.dataY || 0) + event.dy;

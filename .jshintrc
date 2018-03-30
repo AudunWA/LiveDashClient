@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "m": true,
+    "interact": true,
+    "SmoothieChart": true,
+    "TimeSeries": true
+  }
+}

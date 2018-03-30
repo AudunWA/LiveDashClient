@@ -15,8 +15,8 @@ export class ChartModule extends Module {
                 limitFPS: 60,
                 tooltip:true,
                 grid: {
-                    fillStyle: 'rgba(0,0,0,0)',
-                    strokeStyle: '#777777',
+                    fillStyle: "rgba(0,0,0,0)",
+                    strokeStyle: "#777777",
                     lineWidth: 1,
                     sharpLines: false,
                     millisPerLine: 0,
@@ -29,8 +29,8 @@ export class ChartModule extends Module {
             );
         this.chart.addTimeSeries(this.timeSeries,
             {
-                strokeStyle: '#2299f7',
-                fillStyle: 'rgba(0,0,0,0)',
+                strokeStyle: "#2299f7",
+                fillStyle: "rgba(0,0,0,0)",
                 lineWidth: 2
             }
             );
