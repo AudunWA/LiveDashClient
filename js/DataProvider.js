@@ -64,15 +64,15 @@ export class DataProvider {
         this.dataChannelListeners.get(canId).push(callback);
     }
 
-    simulateData() {
-        const CAN_ID = 50;
-        let counter = 0;
-        let increment = 1;
-        setInterval(() => {
-            this.onData(CAN_ID, counter);
-            this.onData(1, MAX_SPEED - counter);
-            counter += increment;
-            if(counter > 120 || counter < 0) increment = -increment;
-        }, 1000/10);
-    }
+    // simulateData() {
+    //     const CAN_ID = 50;
+    //     let counter = 0;
+    //     let increment = 1;
+    //     setInterval(() => {
+    //         this.onData(CAN_ID, counter);
+    //         this.onData(1, MAX_SPEED - counter);
+    //         counter += increment;
+    //         if(counter > 120 || counter < 0) increment = -increment;
+    //     }, 1000/10);
+    // }
 }

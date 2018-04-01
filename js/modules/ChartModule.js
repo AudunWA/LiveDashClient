@@ -26,14 +26,14 @@ export class ChartModule extends Module {
                 minValue: 0,
                 maxValue: 120
             }
-            );
+        );
         this.chart.addTimeSeries(this.timeSeries,
             {
                 strokeStyle: "#2299f7",
                 fillStyle: "rgba(0,0,0,0)",
                 lineWidth: 2
             }
-            );
+        );
     }
 
     oncreate() {
