@@ -7,6 +7,7 @@ import Application from "./Application.js";
 import {ImageModule} from "./modules/ImageModule.js";
 import {ChartModule} from "./modules/ChartModule.js";
 import {LinearGauge} from "./modules/LinearGauge.js";
+import {EditButton} from "./modules/EditButton.js";
 
 const defaultLayout = {
     modules: [
@@ -81,12 +82,15 @@ export class Layout {
             modules.push(this.createModule(module));
         });
 
+        this.editMode = Config.editMode;
         if(Config.editMode) {
             modules.forEach((module) => {
                 module.style["border"] = "dashed";
                 module.style["background"] = "#232222";
-            })
+            });
         }
+
+        modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 1"));
         return [...modules, ...this.initEmptyCells()];
     }
 
@@ -157,5 +161,9 @@ export class Layout {
         // gridAreas = [...new Set(gridAreas)];
         // gridAreas.forEach((area) => emptyModules.push(new EmptyModule(this.idGen++, area)));
         return emptyModules;
+    }
+
+    toggleEditMode() {
+        this.editMode = !this.editMode;
     }
 }

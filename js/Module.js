@@ -2,6 +2,7 @@ export class Module {
     constructor(id, area) {
         this.id = id;
         this.style = { "grid-area": area };
+        this.classList = [];
     }
 
     get area() {
