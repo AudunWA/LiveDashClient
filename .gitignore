@@ -50,3 +50,6 @@ fabric.properties
 
 # NPM
 node_modules/
+
+# Rollup
+dist/
