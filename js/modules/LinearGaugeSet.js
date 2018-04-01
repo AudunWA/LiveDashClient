@@ -20,7 +20,7 @@ export class LinearGaugeSet extends Module {
     }
 
     view() {
-        return m(".cell.flex-column", { id: this.id, style: this.style },
+        return m(".flex-column", { id: this.id, class: this.classNames, style: this.style },
             this.gauges.map((gauge) => m(".linear-gauge",
                 m(".gauge-percentage", {style: {width: `${gauge.percentage}%`}})
             ))

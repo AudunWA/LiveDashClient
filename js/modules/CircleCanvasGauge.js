@@ -18,7 +18,7 @@ export class CircleCanvasGauge extends Module {
     }
 
     view() {
-        return m(".cell", {id: this.id, style: this.style},
+        return m(".", {id: this.id, class: this.classNames, style: this.style},
             m("canvas.canvas-gauge", {id: this.getId()})
         );
     }

@@ -83,12 +83,12 @@ export class Layout {
         });
 
         this.editMode = Config.editMode;
-        if(Config.editMode) {
-            modules.forEach((module) => {
-                module.style["border"] = "dashed";
-                module.style["background"] = "#232222";
-            });
-        }
+        // if(Config.editMode) {
+        //     modules.forEach((module) => {
+        //         module.style["border"] = "dashed";
+        //         module.style["background"] = "#232222";
+        //     });
+        // }
 
         modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 1"));
         return [...modules, ...this.initEmptyCells()];
@@ -121,9 +121,10 @@ export class Layout {
     }
 
     saveLayout() {
+        const ignore = ["EmptyModule", "EditButton"];
         let layout = {modules: []};
         Application.modules.forEach((module) => {
-            if(module.constructor.name === "EmptyModule") {
+            if(ignore.indexOf(module.constructor.name) !== -1) {
                 return;
             }
 

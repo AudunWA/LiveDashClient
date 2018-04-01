@@ -10,7 +10,7 @@ export class Speedometer extends Module {
     }
 
     view() {
-        return m(".cell", { id: this.id, style: this.style },
+        return m(".", { id: this.id, class: this.classNames, style: this.style },
             m(".speedometer",
                 m(".pin", {style: {transform: `rotate(${this.rotation}deg)`}})
             )

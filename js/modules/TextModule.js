@@ -6,7 +6,7 @@ export class TextModule extends Module {
         this.text = "";
     }
     view() {
-        return m(".cell", {id: this.id, style: this.style}, this.text);
+        return m(".", {id: this.id, class: this.classNames, style: this.style}, this.text);
     }
 
     onData(value) {

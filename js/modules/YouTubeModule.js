@@ -10,6 +10,7 @@ export class YouTubeModule extends Module {
     view() {
         return m("iframe[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
                 src: this.videoSource,
+                class: this.classNames,
                 style: this.style
             }
         );

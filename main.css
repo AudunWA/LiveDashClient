@@ -135,6 +135,28 @@ html,body {
     /*border: solid 1px blue;*/
 }
 
+.cell.edit {
+    border: dashed;
+    background: #232222;
+}
+
+.edit-empty {
+    border: dashed #2594eb;
+}
+
+.edit-empty:hover {
+    background: rgba(37, 148, 235, 0.5);
+}
+
+.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: honeydew;
+    font-size: 3em;
+    user-select: none;
+}
+
 .gauge-percentage {
     background: linear-gradient(to right, #317fc1 , #2594eb);
     transition: all 0.1s linear;

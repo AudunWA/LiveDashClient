@@ -41,7 +41,7 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m(".cell.fc", { id: this.id, style: this.style},
+        return m(".fc", { id: this.id, class: this.classNames, style: this.style},
             m("canvas.chart", { id: this.getCanvasId()}
             ));
     }

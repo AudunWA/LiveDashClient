@@ -19,7 +19,7 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m(".cell", {id: this.id, style: this.style},
+        return m(".", {id: this.id, class: this.classNames, style: this.style},
             m("canvas.canvas-gauge", {id: this.getId()})
         );
     }
@@ -80,6 +80,8 @@ export class CanvasGauge extends Module {
         this.context.font = factor * 0.1 + "px Arial";
         this.context.fillStyle = this.textStyle;
         this.context.fillText(this.value + " km/h", centerX - factor * 0.15, centerY * 0.85);
+
+        this.context.fillText("Velocity (X)", centerX - factor * 0.35, centerY * 1.1);
 
         if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
             requestAnimationFrame(() => this.animate());
