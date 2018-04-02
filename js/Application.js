@@ -3,6 +3,7 @@ import "./Util.js";
 import "./Interactions.js";
 import {Config} from "./config/config.js";
 import {Layout} from "./Layout.js";
+import {AddModal} from "./AddModal.js";
 
 /**
  * The main singleton class of the application.
@@ -23,14 +24,19 @@ class Application {
         class Container {
             constructor(modules) {
                 this.modules = modules;
+                this.addModal = new AddModal();
             }
             view() {
-                return m("div#grid", this.modules.map((module) => m(module)))
+                return m("#content",
+                    m("div#grid", this.modules.map((module) => m(module))),
+                    m(this.addModal)
+                );
             }
         }
 
         // m.render(document.body, m(Container));
-        m.mount(document.body, new Container(this.modules));
+        this.container = new Container(this.modules);
+        m.mount(document.body, this.container);
     }
 
     /**
@@ -41,6 +47,11 @@ class Application {
     getModuleById(id) {
         // noinspection EqualityComparisonWithCoercionJS
         return this.modules.find((module) => module.id == id);
+    }
+
+    openAddModal(gridArea) {
+        this.container.addModal.gridArea = gridArea;
+        this.container.addModal.isOpen = true;
     }
 }
 

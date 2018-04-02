@@ -120,6 +120,16 @@ export class Layout {
         return module;
     }
 
+    addModule(moduleType, gridArea) {
+        const module = this.createModule({
+            type: moduleType,
+            gridArea: gridArea,
+            channel: 1 // TODO
+        });
+        Application.modules.push(module);
+        this.saveLayout();
+    }
+
     saveLayout() {
         const ignore = ["EmptyModule", "EditButton"];
         let layout = {modules: []};
@@ -146,7 +156,9 @@ export class Layout {
         const emptyModules = [];
         const rows = 7;
         const columns = 6;
-        for (let row = 1; row <= rows; row++) {
+
+        // Start on row 2, we don't want users to move modules to the header
+        for (let row = 2; row <= rows; row++) {
             for (let column = 1; column <= columns; column++) {
                 emptyModules.push(new EmptyModule(this.idGen++, row + "/" + column + "/" + row + "/" + column));
             }

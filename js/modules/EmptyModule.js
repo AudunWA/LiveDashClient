@@ -24,7 +24,7 @@ export class EmptyModule extends Module {
     }
 
     onClick(event) {
-        console.log("Open modal!");
+        Application.openAddModal(this.area);
     }
 
     onMouseEnter(event) {
