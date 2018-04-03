@@ -280,3 +280,8 @@ div.smoothie-chart-tooltip {
 .selected {
     border: 10px dashed black;
 }
+
+.tooltip {
+    position: absolute;
+    float: left;
+}

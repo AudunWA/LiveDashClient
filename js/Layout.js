@@ -130,6 +130,12 @@ export class Layout {
         this.saveLayout();
     }
 
+    deleteModule(id) {
+        const module = Application.getModuleById(id);
+        Application.modules.splice(Application.modules.indexOf(module), 1);
+        this.saveLayout();
+    }
+
     saveLayout() {
         const ignore = ["EmptyModule", "EditButton"];
         let layout = {modules: []};

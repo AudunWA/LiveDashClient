@@ -1,4 +1,5 @@
 import {Module} from "../Module.js";
+import Application from "../Application.js";
 
 const MIN_SPEED = 0;
 const MAX_SPEED = 120;
@@ -19,8 +20,14 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m(".", {id: this.id, class: this.classNames, style: this.style},
-            m("canvas.canvas-gauge", {id: this.getId()})
+        return m(".", {id: this.id, class: this.classNames, style: this.style, onmouseenter: e => this.hovering = true, onmouseleave: e => this.hovering = false},
+            m("canvas.canvas-gauge", {id: this.getId()}),
+            Application.layout.editMode && this.hovering ?
+                m(".tooltip",
+                    m("button", { onclick: e => this.openEditModal(e) } ,"Edit"),
+                    m("button", { onclick: e => this.deleteMe(e) } ,"Remove")
+                )
+                : null,
         );
     }
 
@@ -86,5 +93,13 @@ export class CanvasGauge extends Module {
         if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
             requestAnimationFrame(() => this.animate());
         }
+    }
+
+    deleteMe(e) {
+        Application.layout.deleteModule(this.id);
+    }
+
+    openEditModal(e) {
+        
     }
 }

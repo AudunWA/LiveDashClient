@@ -45,5 +45,6 @@ export class AddModal {
             return;
 
         Application.layout.addModule(selectedModule.type, this.__proto__.gridArea);
+        this.__proto__.isOpen = false;
     }
 }
