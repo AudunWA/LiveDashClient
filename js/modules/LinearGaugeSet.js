@@ -20,10 +20,11 @@ export class LinearGaugeSet extends Module {
     }
 
     view() {
-        return m(".flex-column", { id: this.id, class: this.classNames, style: this.style },
+        return m(".flex-column", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false },
             this.gauges.map((gauge) => m(".linear-gauge",
                 m(".gauge-percentage", {style: {width: `${gauge.percentage}%`}})
-            ))
+            )),
+            this.editControls()
         );
     }
 

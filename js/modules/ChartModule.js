@@ -41,9 +41,10 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m(".fc", { id: this.id, class: this.classNames, style: this.style},
-            m("canvas.chart", { id: this.getCanvasId()}
-            ));
+        return m(".fc", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false},
+            m("canvas.chart", { id: this.getCanvasId() }),
+            this.editControls()
+        );
     }
 
     getCanvasId() {
