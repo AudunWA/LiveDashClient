@@ -4,6 +4,7 @@ import "./Interactions.js";
 import {Config} from "./config/config.js";
 import {Layout} from "./Layout.js";
 import {AddModal} from "./AddModal.js";
+import {UnpackerUtil} from "./UnpackerUtil.js";
 
 /**
  * The main singleton class of the application.
@@ -13,12 +14,14 @@ class Application {
     constructor() {
         this.idGen = 0;
         this.layout = new Layout();
+        this.unpackerUtil = new UnpackerUtil();
         this.modules = this.layout.load();
         this.dataProvider = new DataProvider();
         this.dataProvider.connectWebSocket(Config.webSocketUri);
     }
 
-    initModules() {
+    async initModules() {
+        await this.unpackerUtil.loadUnpacker();
         this.modules.forEach((module) =>
             this.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data)));
         class Container {
