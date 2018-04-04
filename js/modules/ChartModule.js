@@ -26,14 +26,14 @@ export class ChartModule extends Module {
                 minValue: 0,
                 maxValue: 120
             }
-            );
+        );
         this.chart.addTimeSeries(this.timeSeries,
             {
                 strokeStyle: "#2299f7",
                 fillStyle: "rgba(0,0,0,0)",
                 lineWidth: 2
             }
-            );
+        );
     }
 
     oncreate() {
@@ -41,9 +41,10 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m(".cell.fc", { id: this.id, style: this.style},
-            m("canvas.chart", { id: this.getCanvasId()}
-            ));
+        return m(".fc", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false},
+            m("canvas.chart", { id: this.getCanvasId() }),
+            this.editControls()
+        );
     }
 
     getCanvasId() {

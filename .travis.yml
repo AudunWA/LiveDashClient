@@ -7,6 +7,10 @@ node_js:
 before_install:
   - mv -f js/config/config.s3.js js/config/config.js
 
+script:
+  - npm run-script build
+  - npm test
+
 deploy:
   provider: s3
   region: eu-central-1
@@ -21,3 +25,7 @@ deploy:
     
 notifications:
   email: false
+
+cache:
+  directories:
+    - "node_modules"

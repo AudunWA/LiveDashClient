@@ -139,7 +139,7 @@ function calculateGridArea(oldArea, newArea, edges) {
 }
 
 
-interact(".cell")
+interact(".edit")
     .draggable({
         inertia: true,
         restrict: {

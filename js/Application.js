@@ -1,18 +1,10 @@
 import {DataProvider} from "./DataProvider.js";
 import "./Util.js";
 import "./Interactions.js";
-import {Speedometer} from "./modules/Speedometer.js";
-import {ImageModule} from "./modules/ImageModule.js";
-import {YouTubeModule} from "./modules/YouTubeModule.js";
-import {LinearGauge} from "./modules/LinearGauge.js";
-import {ChartModule} from "./modules/ChartModule.js";
-import {LinearGaugeSet, Gauge} from "./modules/LinearGaugeSet.js";
-import {EmptyModule} from "./modules/EmptyModule.js";
-import {TextModule} from "./modules/TextModule.js";
-import {CanvasGauge} from "./modules/CanvasGauge.js";
-import {CircleCanvasGauge} from "./modules/CircleCanvasGauge.js";
 import {Config} from "./config/config.js";
 import {Layout} from "./Layout.js";
+import {AddModal} from "./AddModal.js";
+import {UnpackerUtil} from "./UnpackerUtil.js";
 
 /**
  * The main singleton class of the application.
@@ -22,36 +14,32 @@ class Application {
     constructor() {
         this.idGen = 0;
         this.layout = new Layout();
+        this.unpackerUtil = new UnpackerUtil();
         this.modules = this.layout.load();
         this.dataProvider = new DataProvider();
         this.dataProvider.connectWebSocket(Config.webSocketUri);
     }
 
-    initModules() {
+    async initModules() {
+        await this.unpackerUtil.loadUnpacker();
         this.modules.forEach((module) =>
             this.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data)));
         class Container {
             constructor(modules) {
                 this.modules = modules;
+                this.addModal = new AddModal();
             }
             view() {
-                return m("div#grid", this.modules.map((module) => m(module)))
+                return m("#content",
+                    m("div#grid", this.modules.map((module) => m(module))),
+                    m(this.addModal)
+                );
             }
         }
 
         // m.render(document.body, m(Container));
-        m.mount(document.body, new Container(this.modules));
-
-        // this.dataProvider.subscribeToChannel(50, (data) => speed4.onData(data));
-        // this.dataProvider.subscribeToChannel(1, (data) => speed1.onData(data));
-        // this.dataProvider.subscribeToChannel(50, (data) => speed2.onData(data));
-        // this.dataProvider.subscribeToChannel(50, (data) => speed3.onData(data));
-        // this.dataProvider.subscribeToChannel(50, (data) => linear.onData(data));
-        // linear2.subscribe(this.dataProvider);
-        // linear3.subscribe(this.dataProvider);
-        // this.dataProvider.subscribeToChannel(1, (data) => chart.onData(data));
-        // this.dataProvider.subscribeToChannel(2, (data) => chart2.onData(data));
-        // this.dataProvider.subscribeToChannel(32, (data) => text.onData(data));
+        this.container = new Container(this.modules);
+        m.mount(document.body, this.container);
     }
 
     /**
@@ -62,6 +50,11 @@ class Application {
     getModuleById(id) {
         // noinspection EqualityComparisonWithCoercionJS
         return this.modules.find((module) => module.id == id);
+    }
+
+    openAddModal(gridArea) {
+        this.container.addModal.gridArea = gridArea;
+        this.container.addModal.isOpen = true;
     }
 }
 

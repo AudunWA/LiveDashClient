@@ -10,10 +10,11 @@ export class LinearGauge extends Module {
     }
 
     view() {
-        return m(".cell", { id: this.id, style: this.style },
+        return m(".", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false },
             m(".linear-gauge",
                 m(".gauge-percentage", {style: {width: `${this.percentage}%`}})
-            )
+            ),
+            this.editControls()
         );
     }
 

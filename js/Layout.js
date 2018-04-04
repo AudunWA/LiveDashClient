@@ -7,6 +7,7 @@ import Application from "./Application.js";
 import {ImageModule} from "./modules/ImageModule.js";
 import {ChartModule} from "./modules/ChartModule.js";
 import {LinearGauge} from "./modules/LinearGauge.js";
+import {EditButton} from "./modules/EditButton.js";
 
 const defaultLayout = {
     modules: [
@@ -66,6 +67,7 @@ const defaultLayout = {
 export class Layout {
     constructor() {
         this.idGen = 0;
+        this.editMode = Config.editMode;
     }
     load() {
         let layout = JSON.parse(localStorage.getItem("layout"));
@@ -74,6 +76,7 @@ export class Layout {
             this.saveDefaultLayout();
         }
 
+
         const modules = [];
 
         // TODO: Load default layout if the current layout is invalid
@@ -81,12 +84,9 @@ export class Layout {
             modules.push(this.createModule(module));
         });
 
-        if(Config.editMode) {
-            modules.forEach((module) => {
-                module.style["border"] = "dashed";
-                module.style["background"] = "#232222";
-            })
-        }
+        // Add the edit button as a static module
+        modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 1"));
+
         return [...modules, ...this.initEmptyCells()];
     }
 
@@ -116,10 +116,28 @@ export class Layout {
         return module;
     }
 
+    addModule(moduleType, gridArea) {
+        const module = this.createModule({
+            type: moduleType,
+            gridArea: gridArea,
+            channel: 1 // TODO
+        });
+        Application.modules.push(module);
+        Application.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data));
+        this.saveLayout();
+    }
+
+    deleteModule(id) {
+        const module = Application.getModuleById(id);
+        Application.modules.splice(Application.modules.indexOf(module), 1);
+        this.saveLayout();
+    }
+
     saveLayout() {
+        const ignore = ["EmptyModule", "EditButton"];
         let layout = {modules: []};
         Application.modules.forEach((module) => {
-            if(module.constructor.name === "EmptyModule") {
+            if(ignore.indexOf(module.constructor.name) !== -1) {
                 return;
             }
 
@@ -141,21 +159,24 @@ export class Layout {
         const emptyModules = [];
         const rows = 7;
         const columns = 6;
-        for (let row = 1; row <= rows; row++) {
+
+        // Start on row 2, we don't want users to move modules to the header
+        for (let row = 2; row <= rows; row++) {
             for (let column = 1; column <= columns; column++) {
                 emptyModules.push(new EmptyModule(this.idGen++, row + "/" + column + "/" + row + "/" + column));
             }
         }
-        // const gridTemplateAreas = "header header "
-        //         +"w1 video w3 "
-        //         +"w2 video video w4 "
-        //         +"video video w4 "
-        //         +"w5 w6 w7 w8 "
-        //         +"w9 w10 w11 w12";
-        // const gridTemplateAreas = document.getElementById("grid").style.gridTemplateAreas;
-        // let gridAreas = gridTemplateAreas.split(" ");
-        // gridAreas = [...new Set(gridAreas)];
-        // gridAreas.forEach((area) => emptyModules.push(new EmptyModule(this.idGen++, area)));
+
         return emptyModules;
+    }
+
+    toggleEditMode() {
+        this.editMode = !this.editMode;
+    }
+
+    reset() {
+        this.saveDefaultLayout();
+        Application.modules.length = 0;
+        Application.modules.push(...this.load());
     }
 }
