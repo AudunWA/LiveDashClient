@@ -67,6 +67,7 @@ const defaultLayout = {
 export class Layout {
     constructor() {
         this.idGen = 0;
+        this.editMode = Config.editMode;
     }
     load() {
         let layout = JSON.parse(localStorage.getItem("layout"));
@@ -75,6 +76,7 @@ export class Layout {
             this.saveDefaultLayout();
         }
 
+
         const modules = [];
 
         // TODO: Load default layout if the current layout is invalid
@@ -82,15 +84,9 @@ export class Layout {
             modules.push(this.createModule(module));
         });
 
-        this.editMode = Config.editMode;
-        // if(Config.editMode) {
-        //     modules.forEach((module) => {
-        //         module.style["border"] = "dashed";
-        //         module.style["background"] = "#232222";
-        //     });
-        // }
-
+        // Add the edit button as a static module
         modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 1"));
+
         return [...modules, ...this.initEmptyCells()];
     }
 
@@ -127,6 +123,7 @@ export class Layout {
             channel: 1 // TODO
         });
         Application.modules.push(module);
+        Application.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data));
         this.saveLayout();
     }
 
@@ -169,20 +166,17 @@ export class Layout {
                 emptyModules.push(new EmptyModule(this.idGen++, row + "/" + column + "/" + row + "/" + column));
             }
         }
-        // const gridTemplateAreas = "header header "
-        //         +"w1 video w3 "
-        //         +"w2 video video w4 "
-        //         +"video video w4 "
-        //         +"w5 w6 w7 w8 "
-        //         +"w9 w10 w11 w12";
-        // const gridTemplateAreas = document.getElementById("grid").style.gridTemplateAreas;
-        // let gridAreas = gridTemplateAreas.split(" ");
-        // gridAreas = [...new Set(gridAreas)];
-        // gridAreas.forEach((area) => emptyModules.push(new EmptyModule(this.idGen++, area)));
+
         return emptyModules;
     }
 
     toggleEditMode() {
         this.editMode = !this.editMode;
+    }
+
+    reset() {
+        this.saveDefaultLayout();
+        Application.modules.length = 0;
+        Application.modules.push(...this.load());
     }
 }
