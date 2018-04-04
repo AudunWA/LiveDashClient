@@ -24,7 +24,9 @@ export class EmptyModule extends Module {
     }
 
     onClick(event) {
-        Application.openAddModal(this.area);
+        if (Application.layout.editMode) {
+            Application.openAddModal(this.area);
+        }
     }
 
     onMouseEnter(event) {
