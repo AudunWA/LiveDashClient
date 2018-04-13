@@ -10,15 +10,27 @@ export class LinearGauge extends Module {
     }
 
     view() {
-        return m(".", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false },
-            m(".linear-gauge",
-                m(".gauge-percentage", {style: {width: `${this.percentage}%`}})
-            ),
-            this.editControls()
+        return m(".", Object.assign({
+            id: this.id,
+            class: this.classNames,
+            style: this.style,
+            onmouseenter: () => this.hovering = true,
+            onmouseleave: () => this.hovering = false
+        }, this.domAttributes),
+        m(".linear-gauge",
+            m(".gauge-percentage", {style: {width: `${this.percentage}%`}})
+        ),
+        this.editControls()
         );
     }
 
     onData(value) {
         this.percentage = value / (MAX_SPEED - MIN_SPEED) * 100;
+    }
+
+    onClick(event) {
+        super.onClick(event);
+        this.percentage = Math.random() * 100;
+        m.redraw();
     }
 }

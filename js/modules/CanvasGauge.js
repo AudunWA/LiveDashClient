@@ -1,5 +1,4 @@
 import {Module} from "../Module.js";
-import Application from "../Application.js";
 
 const MIN_SPEED = 0;
 const MAX_SPEED = 120;
@@ -20,7 +19,7 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m(".", {id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false},
+        return m(".", Object.assign({id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false}, this.domAttributes),
             m("canvas.canvas-gauge", {id: this.getId()}),
             this.editControls()
         );
@@ -38,7 +37,10 @@ export class CanvasGauge extends Module {
     }
 
     onData(value) {
-        this.goalPercentage = (value / (MAX_SPEED - MIN_SPEED)).clamp(MIN_SPEED, MAX_SPEED);
+        if(this.value === value)
+            return;
+
+        this.goalPercentage = (value / (MAX_SPEED - MIN_SPEED)).clamp(0, 1);
         this.value = value;
         this.animate();
     }
@@ -59,8 +61,8 @@ export class CanvasGauge extends Module {
 
         this.percentage = Math.lerp(this.percentage, this.goalPercentage, 0.1);
 
-        let centerX = this.canvas.width / 2;
-        let centerY = 4 * this.canvas.height / 5;
+        let centerX = 1/2 * this.canvas.width;
+        let centerY = 4/5 *  this.canvas.height;
         let factor = Math.min(this.canvas.offsetHeight, this.canvas.offsetWidth);
         let radius = factor * 0.6;
         let endAngle = (Math.PI - this.arcSize * 2) * this.percentage - (Math.PI - this.arcSize);
@@ -79,14 +81,21 @@ export class CanvasGauge extends Module {
         this.context.fillStyle = this.fillStyle;
         this.context.fill();
 
+        this.context.textAlign="center";
         this.context.font = factor * 0.1 + "px Arial";
         this.context.fillStyle = this.textStyle;
-        this.context.fillText(this.value + " km/h", centerX - factor * 0.15, centerY * 0.85);
+        this.context.fillText(this.value + " km/h", centerX, centerY * 0.85);
 
-        this.context.fillText("Velocity (X)", centerX - factor * 0.35, centerY * 1.1);
+        this.context.fillText(this.channel, centerX, centerY * 1.1);
 
         if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
             requestAnimationFrame(() => this.animate());
         }
+    }
+
+    onClick(event) {
+        super.onClick(event);
+        this.goalPercentage = Math.random();
+        this.animate();
     }
 }

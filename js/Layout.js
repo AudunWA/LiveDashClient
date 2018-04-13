@@ -112,15 +112,17 @@ export class Layout {
                 module = new LinearGauge(this.idGen++, moduleConfig.gridArea);
                 break;
         }
+        // const channelNames = Array.from(Application.unpackerUtil.dataChannels.keys()).filter((name) => !name.includes("BMS"));
+        // module.channel =  channelNames[Math.floor(Math.random() * channelNames.length)];
         module.channel = moduleConfig.channel;
         return module;
     }
 
-    addModule(moduleType, gridArea) {
+    addModule(moduleType, gridArea, channel) {
         const module = this.createModule({
             type: moduleType,
             gridArea: gridArea,
-            channel: 1 // TODO
+            channel: channel
         });
         Application.modules.push(module);
         Application.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data));

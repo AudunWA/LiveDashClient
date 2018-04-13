@@ -10,11 +10,16 @@ export class Speedometer extends Module {
     }
 
     view() {
-        return m(".", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false },
-            m(".speedometer",
-                m(".pin", {style: {transform: `rotate(${this.rotation}deg)`}})
-            ),
-            this.editControls()
+        return m(".", Object.assign({
+            id: this.id,
+            class: this.classNames,
+            style: this.style,
+            onmouseenter: () => this.hovering = true,
+            onmouseleave: () => this.hovering = false }, this.domAttributes),
+        m(".speedometer",
+            m(".pin", {style: {transform: `rotate(${this.rotation}deg)`}})
+        ),
+        this.editControls()
         );
     }
 

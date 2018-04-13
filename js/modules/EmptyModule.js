@@ -8,14 +8,13 @@ export class EmptyModule extends Module {
         this.hovering = false;
     }
     view() {
-        return m(".empty", {
+        return m(".empty", Object.assign({
             id: this.id,
             class: this.classNames,
             style: this.style,
             onmouseenter: (event) => this.onMouseEnter(event),
             onmouseleave: (event) => this.onMouseLeave(event),
-            onclick: (event) => this.onClick(event)
-        },
+        }, this.domAttributes),
         this.hovering && Application.layout.editMode ? m("a", "+") : null);
     }
 
@@ -24,6 +23,7 @@ export class EmptyModule extends Module {
     }
 
     onClick(event) {
+        super.onClick(event);
         if (Application.layout.editMode) {
             Application.openAddModal(this.area);
         }
