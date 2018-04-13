@@ -1,0 +1,313 @@
+body {
+    background-color: #30333a;
+    /* margin: 0; */
+    /* height: calc(100% - 130px); */
+}
+
+html,body {
+    height: 100%;
+    overflow: hidden; /* TODO: This is a hack, and breaks scrolling */
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 5% 20% repeat(3, 1fr);
+    grid-template-areas:
+            "header header"
+            "video video"
+            "video video"
+            "w1 w2"
+            "w3 w4"
+            "w5 w6"
+            "w7 w8"
+            "w9 w10";
+    justify-items: stretch;
+    align-items: stretch;
+    /*grid-gap: 3vmin;*/
+    height: 100%;
+
+    grid-auto-rows: 1fr;
+    grid-auto-columns: 1fr;
+}
+
+@media only screen and (min-width: 600px) {
+    #grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: 7.5% repeat(6, 1fr);
+        grid-template-areas:
+                ". . header header . ."
+                "w1 video video video video w3"
+                "w2 video video video video w4"
+                ". video video video video w4"
+                "w5 w6 w7 w8 . ."
+                ". . . . . ."
+                "w9 w10 w11 w12 . .";
+        justify-items: stretch;
+        align-items: stretch;
+        /*grid-gap: 3vmin;*/
+        height: calc(100% - 16px);
+        grid-auto-rows: 1fr;
+        grid-auto-columns: 1fr;
+    }
+}
+
+.w1 {
+    grid-area: w1;
+}
+
+.w2 {
+    grid-area: w2;
+}
+
+.w3 {
+    grid-area: w3;
+}
+
+
+.cell {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    padding: 1vh 1vw 1vh 1vw;
+    margin: 0.5vh 0.5vw 0.5vh 0.5vw;
+    z-index: 1;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);    background: #2d2f32;
+}
+
+.cell.flex-column {
+    flex-direction: column;
+}
+
+.fc {
+    flex-direction: column;
+}
+
+.module-preview {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    background: #6b6b6b;
+    overflow:  hidden;
+}
+
+.speedometer {
+    /* width: 200px; */
+    /* height: 100px; */
+    width: 100%;
+    max-width: 50%;
+    max-height: 10%;
+    margin: 0 auto 0 auto;
+    border-radius: 200px 200px 0 0;
+    background: #9e978e;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    justify-self: center;
+    align-self: center;
+}
+
+.pin {
+    /*width: 5%;*/
+    /*height: 80px;*/
+    width: 5%;
+    height: 100%;
+    background: black;
+    transform-origin: bottom center;
+    transition: all 0.1s linear;
+}
+
+.linear-gauge {
+    display: flex;
+    background: #484f57;
+    flex-grow: 1;
+}
+
+
+.linear-gauge:only-child {
+    margin-top: 0 !important;
+}
+
+.linear-gauge:last-child {
+    margin-top: 10px;
+}
+
+.module-title {
+    font-family: 'Open Sans', serif;
+    color: white;
+}
+
+.canvas-gauge {
+    width: 100%;
+    height: 100%;
+    /*border: solid 1px blue;*/
+}
+
+.cell.edit {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);    /*border: dashed;*/
+    /*background: #232222;*/
+}
+
+.edit-empty {
+    border: 1px dashed #464646;
+}
+
+.edit-empty:hover {
+    background: rgba(37, 148, 235, 0.5);
+}
+
+.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: honeydew;
+    font-size: 3em;
+    user-select: none;
+}
+
+.gauge-percentage {
+    background: linear-gradient(to right, #317fc1 , #2594eb);
+    transition: all 0.1s linear;
+    /*margin: 5px;*/
+}
+
+div.smoothie-chart-tooltip {
+    background: #444;
+    padding: 1em;
+    margin-top: 20px;
+    font-family: consolas;
+    color: white;
+    font-size: 10px;
+    pointer-events: none;
+}
+
+.image-module {
+    /*align-self: center;*/
+    justify-self: center;
+    height: 80%;
+}
+
+.chart {
+    flex-grow:  1;
+    /* height: 100%; */
+    /* width: 100%; */
+}
+
+.drag-bar {
+    width: 100%;
+    height: 10px;
+    background-color: white;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 2px 16px;
+    background-color: #464646;
+    color: white;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 2px 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /*grid-template-rows: repeat(8, 100px);*/
+
+    justify-items: stretch;
+    align-items: stretch;
+    /*grid-gap: 3vmin;*/
+    height: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+    grid-auto-rows: 100px;
+    grid-auto-columns: 1fr;
+    grid-row-gap: 1vmin;
+    grid-column-gap: 1vmin;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #464646;
+    color: white;
+    /* height: 10%; */
+}
+
+/* Modal Content */
+.modal-content {
+    font-family: Arial,serif;
+    position: relative;
+    background-color: #fefefe;
+    /*margin: 15% auto; !* 15% from the top and centered *!*/
+    padding: 0;
+    /* border: 1px solid #888; */
+    width: 60%;
+    height: 50vh;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    display: flex;
+    flex-direction: column;
+    /*animation-name: animatetop;*/
+    /*animation-duration: 0.4s*/
+}
+
+/* Add Animation */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.selected {
+    outline: 3px dashed black;
+}
+
+.tooltip {
+    position: absolute;
+    float: left;
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+}
+
+.video-drag {
+    position:  absolute;
+    /* align-items: stretch; */
+    /* align-self:  stretch; */
+    /* flex: 1; */
+    /* height: 100%; */
+    /* width:  100%; */
+}
