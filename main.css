@@ -151,7 +151,7 @@ html,body {
 }
 
 .edit-empty {
-    border: 1px dashed #464646;
+    border: 1px dashed #bebebe;
 }
 
 .edit-empty:hover {
