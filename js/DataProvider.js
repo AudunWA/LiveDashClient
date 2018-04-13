@@ -5,38 +5,56 @@ export class DataProvider {
         this.messagesReceived = 0;
     }
 
+    // Partly from https://stackoverflow.com/questions/42304996/javascript-using-promises-on-websocket
     connectWebSocket(uri) {
-        this.ws = new WebSocket(uri);
-        this.ws.binaryType = "arraybuffer";
+        const connectPromise = new Promise(function (resolve, reject) {
+            const ws = new WebSocket(uri);
+            ws.binaryType = "arraybuffer";
+            ws.addEventListener("open", () => resolve(ws));
+            ws.addEventListener("error", (error) => reject(error));
+        });
 
-        this.ws.onerror = (error) => {
-            console.log(error);
-        };
-
-        this.ws.onopen = () => {
+        connectPromise.then((webSocket) => {
             console.log("WebSocket connected!");
+            this.ws = webSocket;
+            this.ws.addEventListener("message", (message) => this.onMessage(message));
+            this.ws.addEventListener("close", (event) => this.onClose(event));
             this.startTime = new Date();
-        };
+        });
 
-        this.ws.onmessage = (event) => {
-            //let dataView = new DataView(event.data);
-            //let canId = dataView.getInt16(0, true);
-            //let data = dataView.getInt16(2, true);
-            //this.onData(canId, data);
-            let json=JSON.parse(event.data);
-            if(json.canId) {
-                this.onData(json.canId, json.data);
-            } else if (json.channel) {
-                this.onData(json.channel, json.data);
-            }
-        };
+        connectPromise.catch((error) => {
+            console.log(error);
+        });
 
-        this.ws.onclose = function(message) {
-            console.log("WebSocket disconnected");
-        };
+        return connectPromise;
+    }
+
+    onMessage(event) {
+    //let dataView = new DataView(event.data);
+    //let canId = dataView.getInt16(0, true);
+    //let data = dataView.getInt16(2, true);
+    //this.onData(canId, data);
+        let json = JSON.parse(event.data);
+        if (json.canId) {
+            this.onData(json.canId, json.data);
+        } else if (json.channel) {
+            this.onData(json.channel, json.data);
+        }
+    }
+
+    onClose(message) {
+        console.log("WebSocket disconnected");
+        console.dir(message);
     }
 
     onData(canId, data) {
+        this.messagesReceived++;
+        let secondsSinceStart = (new Date().getTime() - this.startTime.getTime()) / 1000;
+        const WINDOW_TITLE_UPDATE_PERIOD = 10;
+        if(this.messagesReceived % WINDOW_TITLE_UPDATE_PERIOD === 0) {
+            document.title = "MPS: " + this.messagesReceived / secondsSinceStart;
+        }
+
         // Delay
         if(canId === 31) {
             this.delay = parseInt(data);
@@ -45,14 +63,9 @@ export class DataProvider {
         if(!this.dataChannelListeners.has(canId)) {
             return;
         }
+        this.dataChannelListeners.get(canId).forEach((callback) => callback(data));
+        //setTimeout(() => this.dataChannelListeners.get(canId).forEach((callback) => callback(data)), this.delay);
 
-        setTimeout(() => this.dataChannelListeners.get(canId).forEach((callback) => callback(data)), this.delay);
-
-        this.messagesReceived++;
-        let secondsSinceStart = (new Date().getTime() - this.startTime.getTime()) / 1000;
-        if(secondsSinceStart % 5) {
-            document.title = "MPS: " + this.messagesReceived / secondsSinceStart;
-        }
         // TODO: Should be decoupled from this class
         m.redraw();
     }
@@ -61,7 +74,12 @@ export class DataProvider {
         if(!this.dataChannelListeners.has(canId))
             this.dataChannelListeners.set(canId, []);
 
+        this.sendSubscribeMessage(canId);
         this.dataChannelListeners.get(canId).push(callback);
+    }
+
+    sendSubscribeMessage(channelName) {
+        this.ws.send(channelName);
     }
 
     // simulateData() {

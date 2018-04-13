@@ -15,13 +15,15 @@ class Application {
         this.idGen = 0;
         this.layout = new Layout();
         this.unpackerUtil = new UnpackerUtil();
-        this.modules = this.layout.load();
         this.dataProvider = new DataProvider();
-        this.dataProvider.connectWebSocket(Config.webSocketUri);
     }
 
     async initModules() {
-        await this.unpackerUtil.loadUnpacker();
+        const connectPromise = this.dataProvider.connectWebSocket(Config.webSocketUri);
+        const unpackerLoadPromise = this.unpackerUtil.loadUnpacker();
+        await Promise.all([connectPromise, unpackerLoadPromise]);
+
+        this.modules = this.layout.load();
         this.modules.forEach((module) =>
             this.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data)));
         class Container {
