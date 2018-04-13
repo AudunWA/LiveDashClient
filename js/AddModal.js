@@ -1,4 +1,3 @@
-import classnames from "classnames";
 import Application from "./Application.js";
 import {CanvasGauge} from "./modules/CanvasGauge.js";
 import {CircleCanvasGauge} from "./modules/CircleCanvasGauge.js";

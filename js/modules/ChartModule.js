@@ -1,4 +1,5 @@
 import {Module} from "../Module.js";
+import {SmoothieChart, TimeSeries} from "../libraries/smoothie.js";
 
 const MIN_SPEED = 0;
 const MAX_SPEED = 120;

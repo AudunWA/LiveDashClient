@@ -1,6 +1,6 @@
 import {Module} from "../Module.js";
 import Application from "../Application.js";
-import classnames from "classnames";
+import classNames from "../libraries/classnames.js";
 
 export class EmptyModule extends Module {
     constructor(id, area) {
@@ -20,7 +20,7 @@ export class EmptyModule extends Module {
     }
 
     get classNames() {
-        return classnames({"edit-empty": Application.layout.editMode});
+        return classNames({"edit-empty": Application.layout.editMode});
     }
 
     onClick(event) {

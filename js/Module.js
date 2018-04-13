@@ -1,4 +1,4 @@
-import classnames from "classnames";
+import classNames from "./libraries/classnames.js";
 import Application from "./Application.js";
 
 export class Module {
@@ -9,8 +9,7 @@ export class Module {
     }
 
     get classNames() {
-        return classnames(
-            "cell",
+        return classNames(
             {
                 edit: Application.layout.editMode && !this.preview
             }
