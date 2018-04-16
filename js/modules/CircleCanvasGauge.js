@@ -1,4 +1,5 @@
 import {Module} from "../Module.js";
+import {getRootCssProperty} from "../Util.js";
 
 const MIN_SPEED = 0;
 const MAX_SPEED = 120;
@@ -12,9 +13,9 @@ export class CircleCanvasGauge extends Module {
         this.thickness = thickness;
         this.canvas = null;
         this.context = null;
-        this.backgroundStyle = "#484f57";
-        this.fillStyle = "#2594eb";
-        this.textStyle = "#f7f6f4";
+        this.backgroundStyle = getRootCssProperty("--module-secondary-color");
+        this.fillStyle = getRootCssProperty("--module-primary-color");
+        this.textStyle = getRootCssProperty("--module-text-color");
     }
 
     view() {

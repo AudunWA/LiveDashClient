@@ -1,5 +1,14 @@
+:root {
+    --background-color: #212121;
+    --module-primary-color: #FF9800;
+    --module-secondary-color: #58472f;
+    --module-text-color: #f7f6f4;
+    /*--background-color: #212121;*/
+    /*--module-primary-color: #2299f7;*/
+    /*--module-secondary-color: #484f57;*/
+    /*--module-text-color: #f7f6f4;*/
+}
 body {
-    background-color: #30333a;
 }
 
 html,body {
@@ -73,7 +82,7 @@ html,body {
     margin: 0.5vh 0.5vw 0.5vh 0.5vw;
     z-index: 1;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    background: #2d2f32;
+    background: #2a3330;
 }
 
 .cell.flex-column {
@@ -81,6 +90,7 @@ html,body {
 }
 
 .fc {
+    display: flex;
     flex-direction: column;
 }
 
@@ -121,8 +131,13 @@ html,body {
 
 .linear-gauge {
     display: flex;
-    background: #484f57;
     flex-grow: 1;
+    background: var(--module-secondary-color);
+.gauge-percentage {
+    background: var(--module-primary-color);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* margin: 1px; */
+
 }
 
 
@@ -132,11 +147,6 @@ html,body {
 
 .linear-gauge:last-child {
     margin-top: 10px;
-}
-
-.module-title {
-    font-family: 'Open Sans', serif;
-    color: white;
 }
 
 .canvas-gauge {
@@ -167,17 +177,11 @@ html,body {
     user-select: none;
 }
 
-.gauge-percentage {
-    background: linear-gradient(to right, #317fc1 , #2594eb);
-    transition: all 0.1s linear;
-    /*margin: 5px;*/
-}
-
 div.smoothie-chart-tooltip {
     background: #444;
     padding: 1em;
     margin-top: 20px;
-    font-family: consolas;
+    font-family: var(--module-font-family);
     color: white;
     font-size: 10px;
     pointer-events: none;
@@ -194,12 +198,6 @@ div.smoothie-chart-tooltip {
     flex-grow:  1;
     /* height: 100%; */
     /* width: 100%; */
-}
-
-.drag-bar {
-    width: 100%;
-    height: 10px;
-    background-color: white;
 }
 
 /* The Modal (background) */
@@ -254,7 +252,7 @@ div.smoothie-chart-tooltip {
 
 /* Modal Content */
 .modal-content {
-    font-family: Arial,serif;
+    font-family: var(--module-font-family);
     position: relative;
     background-color: #fefefe;
     /*margin: 15% auto; !* 15% from the top and centered *!*/
