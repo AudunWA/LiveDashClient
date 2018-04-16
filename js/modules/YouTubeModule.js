@@ -10,12 +10,18 @@ export class YouTubeModule extends Module {
     }
 
     view() {
-        return m("div", {id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false},
-            m("div.video-drag", { style: { width: this.dragWidth, height: this.dragHeight }}),
-            m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
-                src: this.videoSource,
-            }),
-            this.editControls()
+        return m("div", Object.assign({
+            id: this.id,
+            class: this.classNames,
+            style: this.style,
+            onmouseenter: () => this.hovering = true,
+            onmouseleave: () => this.hovering = false
+        }, this.domAttributes),
+        m("div.video-drag", { style: { width: this.dragWidth, height: this.dragHeight }}),
+        m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
+            src: this.videoSource,
+        }),
+        this.editControls()
         );
     }
 

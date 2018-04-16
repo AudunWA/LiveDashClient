@@ -19,3 +19,17 @@ Math.lerp = function (value1, value2, amount) {
 Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
 };
+
+/**
+ * Finds a CSS property value from the :root element in CSS
+ * @param propertyName The name of the property
+ * @returns {string|null} The value of the property, or null if the property wasn't found
+ */
+export function getRootCssProperty(propertyName) {
+    const style = getComputedStyle(document.body);
+    if(style != null) {
+        return getComputedStyle(document.body).getPropertyValue(propertyName);
+    } else {
+        return null;
+    }
+}

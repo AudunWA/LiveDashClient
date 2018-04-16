@@ -6,9 +6,7 @@
     "build": "rollup -c --environment BUILD:production",
     "watch": "rollup -c -w"
   },
-  "dependencies": {
-    "classnames": "^2.2.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^4.19.1",
     "rollup": "^0.57.1",

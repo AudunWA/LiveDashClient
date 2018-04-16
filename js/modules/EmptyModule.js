@@ -1,6 +1,6 @@
 import {Module} from "../Module.js";
 import Application from "../Application.js";
-import classnames from "classnames";
+import classNames from "../libraries/classnames.js";
 
 export class EmptyModule extends Module {
     constructor(id, area) {
@@ -8,22 +8,22 @@ export class EmptyModule extends Module {
         this.hovering = false;
     }
     view() {
-        return m(".empty", {
+        return m(".empty", Object.assign({
             id: this.id,
             class: this.classNames,
             style: this.style,
             onmouseenter: (event) => this.onMouseEnter(event),
             onmouseleave: (event) => this.onMouseLeave(event),
-            onclick: (event) => this.onClick(event)
-        },
+        }, this.domAttributes),
         this.hovering && Application.layout.editMode ? m("a", "+") : null);
     }
 
     get classNames() {
-        return classnames({"edit-empty": Application.layout.editMode});
+        return classNames({"edit-empty": Application.layout.editMode});
     }
 
     onClick(event) {
+        super.onClick(event);
         if (Application.layout.editMode) {
             Application.openAddModal(this.area);
         }

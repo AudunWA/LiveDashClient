@@ -1,4 +1,6 @@
 import {Module} from "../Module.js";
+import {SmoothieChart, TimeSeries} from "../libraries/smoothie.js";
+import {getRootCssProperty} from "../Util.js";
 
 const MIN_SPEED = 0;
 const MAX_SPEED = 120;
@@ -10,6 +12,7 @@ export class ChartModule extends Module {
         this.timeSeries = new TimeSeries();
         this.chart = new SmoothieChart(
             {
+                dataChannelLabel: "",
                 responsive: true,
                 enableDpiScaling: false,
                 limitFPS: 60,
@@ -23,14 +26,14 @@ export class ChartModule extends Module {
                     verticalSections: 3,
                     borderVisible: false
                 },
-                minValue: 0,
-                maxValue: 120
+                minValue: -200,
+                maxValue: 200
             }
         );
         this.chart.addTimeSeries(this.timeSeries,
             {
-                strokeStyle: "#2299f7",
-                fillStyle: "rgba(0,0,0,0)",
+                strokeStyle: getRootCssProperty("--module-primary-color"),
+                fillStyle: getRootCssProperty("--module-secondary-color"),
                 lineWidth: 2
             }
         );
@@ -41,8 +44,14 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m(".fc", { id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false},
-            m("canvas.chart", { id: this.getCanvasId() }),
+        return m(".fc", Object.assign({
+                id: this.id,
+                class: this.classNames,
+                style: this.style,
+                onmouseenter: () => this.hovering = true,
+                onmouseleave: () => this.hovering = false
+            }, this.domAttributes),
+            m("canvas.chart", {id: this.getCanvasId()}),
             this.editControls()
         );
     }
@@ -52,6 +61,7 @@ export class ChartModule extends Module {
     }
 
     onData(value) {
+        this.chart.options.dataChannelLabel = this.channel;
         this.timeSeries.append(new Date().getTime(), value);
     }
 }
