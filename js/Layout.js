@@ -8,71 +8,34 @@ import {ImageModule} from "./modules/ImageModule.js";
 import {ChartModule} from "./modules/ChartModule.js";
 import {LinearGauge} from "./modules/LinearGauge.js";
 import {EditButton} from "./modules/EditButton.js";
-
-const defaultLayout = {
-    modules: [
-        {
-            type: "CanvasGauge",
-            gridArea: "5 / 3 / 6 / 4",
-            channel: 1
-        },
-        {
-            type: "CanvasGauge",
-            gridArea: "6 / 3 / 6 / 3",
-            channel: 1
-        },
-        {
-            type: "CanvasGauge",
-            gridArea: "4 / 6 / 4 / 6",
-            channel: 1
-        },
-        {
-            type: "CanvasGauge",
-            gridArea: "2 / 1 / 3 / 2",
-            channel: 1
-        },
-        {
-            type: "CircleCanvasGauge",
-            gridArea: "5 / 2 / 7 / 3",
-            channel: 1
-        },
-        {
-            type: "YouTubeModule",
-            gridArea: "video",
-            src: "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0"
-        },
-        {
-            type: "ImageModule",
-            gridArea: "header",
-            src: "res/revolve_logo1.png"
-        },
-        {
-            type: "ChartModule",
-            gridArea: "3 / 1 / 5 / 2",
-            channel: 2
-        },
-        {
-            type: "ChartModule",
-            gridArea: "5 / 4 / 7 / 7",
-            channel: 1
-        },
-        {
-            type: "LinearGauge",
-            gridArea: "5 / 4 / 5 / 4",
-            channel: 1
-        }
-    ]
-};
+import { defaultLayout as defaultLayoutDesktop } from "./config/DefaultLayout.desktop.js";
+import { defaultLayout as defaultLayoutMobile } from "./config/DefaultLayout.mobile.js";
 
 export class Layout {
     constructor() {
         this.idGen = 0;
         this.editMode = Config.editMode;
+        this.rows = 6;
+        this.columns = 2;
+        this.isMobile = true;
+        this.mediaQueryInitialized = false;
     }
+
+    getCorrectDefaultLayout() {
+        if(this.isMobile) {
+            return defaultLayoutMobile;
+        }
+        return defaultLayoutDesktop;
+    }
+
     load() {
-        let layout = JSON.parse(localStorage.getItem("layout"));
+        this.initMediaQueryWatch();
+
+        const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
+
+        let layout = JSON.parse(localStorage.getItem(layoutKey));
         if(layout === null || Config.alwaysUseDefaultLayout) {
-            layout = defaultLayout;
+            layout = this.getCorrectDefaultLayout();
             this.saveDefaultLayout();
         }
 
@@ -87,7 +50,49 @@ export class Layout {
         // Add the edit button as a static module
         modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 1"));
 
+        // Redraw on resize
+        // window.addEventListener("resize", () => {
+        //     console.log("Resize");
+        //     return m.redraw();
+        // });
+
         return [...modules, ...this.initEmptyCells()];
+    }
+
+    cleanUpSmoothieChartsTooltips() {
+        // https://stackoverflow.com/questions/10842471/remove-all-elements-of-a-certain-class-with-javascript
+        [].forEach.call(document.querySelectorAll(".smoothie-chart-tooltip"), (e) => {
+            e.parentNode.removeChild(e);
+        });
+    }
+
+    initMediaQueryWatch() {
+        if(this.mediaQueryInitialized) {
+            return;
+        }
+        this.mediaQueryInitialized = true;
+        const mediaQuery = window.matchMedia("(min-width: 600px)");
+        mediaQuery.addListener((mq) => this.onMediaQueryChange(mq));
+        this.onMediaQueryChange(mediaQuery);
+    }
+
+    onMediaQueryChange(mediaQuery) {
+        const oldIsMobile = this.isMobile;
+        if(mediaQuery.matches) {
+            // Desktop
+            this.isMobile = false;
+            this.rows = 8;
+            this.columns = 6;
+        } else {
+            // Mobile
+            this.isMobile = true;
+            this.rows = 8;
+            this.columns = 2;
+        }
+
+        if(Application.modules && oldIsMobile !== this.isMobile) {
+            this.reload();
+        }
     }
 
     createModule(moduleConfig) {
@@ -136,6 +141,8 @@ export class Layout {
     }
 
     saveLayout() {
+        const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
+
         const ignore = ["EmptyModule", "EditButton"];
         let layout = {modules: []};
         Application.modules.forEach((module) => {
@@ -150,21 +157,20 @@ export class Layout {
                 src: module.src
             });
         });
-        localStorage.setItem("layout", JSON.stringify(layout));
+        localStorage.setItem(layoutKey, JSON.stringify(layout));
     }
 
     saveDefaultLayout() {
-        localStorage.setItem("layout", JSON.stringify(defaultLayout));
+        const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
+        localStorage.setItem(layoutKey, JSON.stringify(this.getCorrectDefaultLayout()));
     }
 
     initEmptyCells() {
         const emptyModules = [];
-        const rows = 7;
-        const columns = 6;
 
         // Start on row 2, we don't want users to move modules to the header
-        for (let row = 2; row <= rows; row++) {
-            for (let column = 1; column <= columns; column++) {
+        for (let row = 2; row <= this.rows; row++) {
+            for (let column = 1; column <= this.columns; column++) {
                 emptyModules.push(new EmptyModule(this.idGen++, row + "/" + column + "/" + row + "/" + column));
             }
         }
@@ -178,7 +184,22 @@ export class Layout {
 
     reset() {
         this.saveDefaultLayout();
+        this.reload();
+    }
+
+    reload() {
+        Application.dataProvider.reset();
+
+        this.idGen = 0;
+        this.cleanUpSmoothieChartsTooltips();
         Application.modules.length = 0;
-        Application.modules.push(...this.load());
+
+        const modules = this.load();
+
+        modules.forEach((module) =>
+            Application.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data)));
+
+        Application.modules.push(...modules);
+        m.redraw();
     }
 }

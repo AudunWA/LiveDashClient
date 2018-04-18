@@ -82,6 +82,11 @@ export class DataProvider {
         this.ws.send(channelName);
     }
 
+    reset() {
+        this.dataChannelListeners.clear();
+        this.messagesReceived = 0;
+    }
+
     // simulateData() {
     //     const CAN_ID = 50;
     //     let counter = 0;
