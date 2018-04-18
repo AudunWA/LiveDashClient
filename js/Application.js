@@ -5,6 +5,7 @@ import {Config} from "./config/config.js";
 import {Layout} from "./Layout.js";
 import {AddModal} from "./AddModal.js";
 import {UnpackerUtil} from "./UnpackerUtil.js";
+import {EditModal} from "./EditModal.js";
 
 /**
  * The main singleton class of the application.
@@ -30,11 +31,13 @@ class Application {
             constructor(modules) {
                 this.modules = modules;
                 this.addModal = new AddModal();
+                this.editModal = new EditModal();
             }
             view() {
                 return m("#content",
                     m("div#grid", this.modules.map((module) => m(module))),
-                    m(this.addModal)
+                    m(this.addModal),
+                    m(this.editModal)
                 );
             }
         }
@@ -57,6 +60,11 @@ class Application {
     openAddModal(gridArea) {
         this.container.addModal.gridArea = gridArea;
         this.container.addModal.isOpen = true;
+    }
+
+    openEditModal(module) {
+        this.container.editModal.module = module;
+        this.container.editModal.isOpen = true;
     }
 }
 

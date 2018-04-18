@@ -40,7 +40,7 @@ export class Module {
     editControls() {
         return !this.preview && Application.layout.editMode && this.hovering ?
             m(".tooltip",
-                // m("button", { onclick: e => this.openEditModal(e) } ,"Edit"),
+                m("button", { onclick: e => this.openEditModal(e) } ,"Edit"),
                 m("button", { onclick: e => this.deleteMe(e) } ,"Remove")
             )
             : null;
@@ -51,7 +51,7 @@ export class Module {
     }
 
     openEditModal(e) {
-
+        Application.openEditModal(this);
     }
 
     view(node) {
