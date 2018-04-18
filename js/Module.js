@@ -19,9 +19,10 @@ export class Module {
 
     get classNames() {
         return classNames(
+            "cell",
             {
-                "module-preview": this.preview,
-                cell: !this.preview,
+                //"module-preview": this.preview,
+                //cell: !this.preview,
                 edit: Application.layout.editMode && !this.preview,
                 selected: this.selected
             }

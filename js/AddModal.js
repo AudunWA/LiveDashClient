@@ -6,6 +6,8 @@ import {ChartModule} from "./modules/ChartModule.js";
 
 export class AddModal {
     constructor() {
+        this.dataChannelNames = Array.from(Application.unpackerUtil.dataChannels.keys());
+        this.selectedValue = this.dataChannelNames[0];
         this.availableModules = [
             new CanvasGauge("add-1", "", 0.2, 0.4),
             new CircleCanvasGauge("add-2", "", 0.2, 0.4),
@@ -13,10 +15,18 @@ export class AddModal {
             new ChartModule("add-4", "", 0.2, 0.4),
         ];
 
-        this.availableModules.forEach(module => module.preview = true);
+        this.availableModules.forEach(module => {
+            Application.dataProvider.subscribeToChannel(this.selectedValue, (data) => {
+                if(!this.isOpen) {
+                    return;
+                }
+                module.onData(data);
+            });
+            module.channel = this.selectedValue;
+            module.preview = true;
+        });
         this.isOpen = false;
         this.gridArea = null;
-        this.dataChannelNames = Array.from(Application.unpackerUtil.dataChannels.keys());
     }
 
     view() {
@@ -33,11 +43,15 @@ export class AddModal {
                 this.availableModules.map(module => m(module))
                 // this.availableModules.map(module => m(".module-preview", { id: module.id, class: classnames({"selected": module.selected}), style: { background: module.color }, onclick: e => this.selectModule(e) }, m(module.view)))
             ),
-            m(".modal-footer",
-                m("span", "Data channel: "),
-                m("select#channel-select", this.dataChannelNames.map(key => m("option", {value: key}, key))),
-                m("button", {onclick: e => this.addSelectedModule(e)}, "Add"),
-                m("button", {onclick: e => this.closeModal(e, false)}, "Cancel")
+            m(".modal-footer.top-buttons",
+                m("div",
+                    m("span.label", "Data channel: "),
+                    m("select#channel-select", {onchange: (e) => this.onSelectChange(e)}, this.dataChannelNames.map(key => m("option", {value: key}, key)))
+                ),
+                m(".top-buttons",
+                    m("button", {onclick: e => this.addSelectedModule(e)}, "Add"),
+                    m("button", {onclick: e => this.closeModal(e, false)}, "Cancel")
+                )
             )
         )
         ) : null;
@@ -57,24 +71,23 @@ export class AddModal {
 
         this.selectedModule = module;
         this.selectedModule.selected = true;
-        this.selectedModule.channel = this.getSelectedChannel();
     }
 
     addSelectedModule(event) {
         const selectedModule = this.__proto__.selectedModule;
         if (!selectedModule)
             return;
-        const selectedValue = this.getSelectedChannel();
 
-        Application.layout.addModule(selectedModule.constructor.name, this.__proto__.gridArea, selectedValue);
+        Application.layout.addModule(selectedModule.constructor.name, this.__proto__.gridArea, this.selectedValue);
         this.__proto__.isOpen = false;
         selectedModule.selected = false;
         this.__proto__.selectedModule = null;
     }
 
-    getSelectedChannel() {
-        // TODO: Use binding/onchange event instead?
-        const selectElement = document.getElementById("channel-select");
-        return selectElement.options[selectElement.selectedIndex].value;
+    onSelectChange(event) {
+        this.selectedValue = event.target.options[event.target.selectedIndex].value;
+        this.availableModules.forEach(module => {
+            module.channel = this.selectedValue;
+        });
     }
 }
