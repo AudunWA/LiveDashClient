@@ -44,7 +44,7 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m(".fc", Object.assign({
+        return m("div", Object.assign({
                 id: this.id,
                 class: this.classNames,
                 style: this.style,
