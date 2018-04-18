@@ -7,7 +7,7 @@ export class EditButton extends Module {
         this.text = "Edit layout";
     }
     view() {
-        return m("", {id: this.id, style: this.style},
+        return m(".top-buttons", {id: this.id, style: this.style},
             m("button", { onclick: (event) => this.onClick(event)}, this.text),
             m("button", { onclick: (event) => this.resetLayout(event)}, "Reset layout")
         );

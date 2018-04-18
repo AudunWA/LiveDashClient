@@ -48,7 +48,7 @@ export class Layout {
         });
 
         // Add the edit button as a static module
-        modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 1"));
+        modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 3"));
 
         // Redraw on resize
         // window.addEventListener("resize", () => {
