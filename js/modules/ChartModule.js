@@ -33,7 +33,8 @@ export class ChartModule extends Module {
         this.chart.addTimeSeries(this.timeSeries,
             {
                 strokeStyle: getRootCssProperty("--module-primary-color"),
-                fillStyle: getRootCssProperty("--module-secondary-color"),
+                // fillStyle: getRootCssProperty("--module-secondary-color"),
+                fillStyle: "rgba(0,0,0,0)",
                 lineWidth: 2
             }
         );

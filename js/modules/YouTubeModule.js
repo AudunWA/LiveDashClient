@@ -17,7 +17,7 @@ export class YouTubeModule extends Module {
             onmouseenter: () => this.hovering = true,
             onmouseleave: () => this.hovering = false
         }, this.domAttributes),
-        m("div.video-drag", { style: { width: this.dragWidth, height: this.dragHeight }}),
+        m("div.video-drag", { style: { width: this.dragWidth, height: this.dragHeight, "z-index": Application.layout.editMode ? 1 : -1 }}),
         m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
             src: this.videoSource,
         }),

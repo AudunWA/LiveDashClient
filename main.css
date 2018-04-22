@@ -354,6 +354,7 @@ div.smoothie-chart-tooltip {
 .tooltip {
     position: absolute;
     float: left;
+    z-index: 2;
 }
 
 .video {
