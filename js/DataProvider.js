@@ -1,6 +1,7 @@
 export class DataProvider {
     constructor() {
         this.dataChannelListeners = new Map();
+        this.subscribeMessages = [];
         //this.simulateData();
         this.messagesReceived = 0;
     }
@@ -20,6 +21,7 @@ export class DataProvider {
             this.ws.addEventListener("message", (message) => this.onMessage(message));
             this.ws.addEventListener("close", (event) => this.onClose(event));
             this.startTime = new Date();
+            this.subscribeMessages.forEach(message => this.sendSubscribeMessage(message));
         });
 
         connectPromise.catch((error) => {
@@ -79,7 +81,11 @@ export class DataProvider {
     }
 
     sendSubscribeMessage(channelName) {
-        this.ws.send(channelName);
+        if(this.ws) {
+            this.ws.send(channelName);
+        } else {
+            this.subscribeMessages.push(channelName);
+        }
     }
 
     reset() {
