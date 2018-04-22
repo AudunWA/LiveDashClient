@@ -197,8 +197,11 @@ export class Layout {
 
         const modules = this.load();
 
-        modules.forEach((module) =>
-            Application.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data)));
+        modules.forEach((module) => {
+            if(module.channel) {
+                Application.dataProvider.subscribeToChannel(module.channel.name, (data) => module.onData(data));
+            }
+        });
 
         Application.modules.push(...modules);
         m.redraw();
