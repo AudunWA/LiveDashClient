@@ -1,7 +1,7 @@
 import {Module} from "../Module.js";
 export class ImageModule extends Module {
     constructor(id, area, imageSource) {
-        super(id, area);
+        super(id, null, area);
         this.imageSource = imageSource;
     }
     view() {

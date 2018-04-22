@@ -6,8 +6,8 @@ const MIN_SPEED = 0;
 const MAX_SPEED = 120;
 
 export class ChartModule extends Module {
-    constructor(id, area) {
-        super(id, area);
+    constructor(id, channel, area) {
+        super(id, channel, area);
 
         this.timeSeries = new TimeSeries();
         this.chart = new SmoothieChart(
@@ -26,8 +26,8 @@ export class ChartModule extends Module {
                     verticalSections: 3,
                     borderVisible: false
                 },
-                minValue: -200,
-                maxValue: 200
+                minValue: this.minValue,
+                maxValue: this.maxValue
             }
         );
         this.chart.addTimeSeries(this.timeSeries,
@@ -62,7 +62,11 @@ export class ChartModule extends Module {
     }
 
     onData(value) {
-        this.chart.options.dataChannelLabel = this.channel;
+        super.onData(value);
+
+        this.chart.options.dataChannelLabel = this.channelDisplayName;
+        this.chart.options.minValue = this.minValue;
+        this.chart.options.maxValue = this.maxValue;
         this.timeSeries.append(new Date().getTime(), value);
     }
 }

@@ -4,7 +4,7 @@ import classNames from "../libraries/classnames.js";
 
 export class EmptyModule extends Module {
     constructor(id, area) {
-        super(id, area);
+        super(id, null, area);
         this.hovering = false;
     }
     view() {

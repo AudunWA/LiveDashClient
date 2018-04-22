@@ -1,12 +1,9 @@
 import {Module} from "../Module.js";
 import {getRootCssProperty} from "../Util.js";
 
-const MIN_SPEED = 0;
-const MAX_SPEED = 120;
-
 export class CanvasGauge extends Module {
-    constructor(id, area, arcSize, thickness) {
-        super(id, area);
+    constructor(id, channel, area, arcSize, thickness) {
+        super(id, channel, area);
         this.value = 0;
         this.percentage = 0;
         this.goalPercentage = 0;
@@ -38,10 +35,12 @@ export class CanvasGauge extends Module {
     }
 
     onData(value) {
+        super.onData(value);
+
         if(this.value === value)
             return;
 
-        this.goalPercentage = (value / (MAX_SPEED - MIN_SPEED)).clamp(0, 1);
+        this.goalPercentage = (value / (this.maxValue - this.minValue)).clamp(0, 1);
         this.value = value;
         this.animate();
     }
@@ -85,9 +84,9 @@ export class CanvasGauge extends Module {
         this.context.textAlign="center";
         this.context.font = factor * 0.1 + "px Arial";
         this.context.fillStyle = this.textStyle;
-        this.context.fillText(this.value + " km/h", centerX, centerY * 0.85);
+        this.context.fillText(this.value + " " + this.channel.unit, centerX, centerY * 0.85);
 
-        this.context.fillText(this.channel, centerX, centerY * 1.1);
+        this.context.fillText(this.channelDisplayName, centerX, centerY * 1.1);
 
         if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
             requestAnimationFrame(() => this.animate());

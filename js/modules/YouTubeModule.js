@@ -3,7 +3,7 @@ import Application from "../Application.js";
 
 export class YouTubeModule extends Module {
     constructor(id, area, videoSource) {
-        super(id, area);
+        super(id, null, area);
         this.videoSource = videoSource;
         this.style["align-self"] = "stretch";
         this.style["justify-self"] = "stretch";

@@ -2,13 +2,19 @@ import classNames from "./libraries/classnames.js";
 import Application from "./Application.js";
 
 export class Module {
-    constructor(id, area) {
+    constructor(id, channel, area) {
         this.id = id;
+        this.channel = channel;
         this.style = { "grid-area": area };
         this.preview = false;
         this.domAttributes = {
             onclick: event => this.onClick(event)
         };
+
+        if(this.channel != null) {
+            this.minValue = this.channel.expectedmin;
+            this.maxValue = this.channel.expectedmax;
+        }
     }
 
     onClick(event) {
@@ -59,6 +65,22 @@ export class Module {
     }
 
     onData(value) {
+        if(value < this.minValue) {
+            this.minValue = value;
+        } else if(value > this.maxValue) {
+            this.maxValue = value;
+        }
+    }
 
+    /**
+     * Returns the channel name to display.
+     * If no display name has been set, it falls back to the internal name
+     * @returns {string}
+     */
+    get channelDisplayName() {
+        if(this.channel.displayname.length === 0) {
+            return this.channel.name;
+        }
+        return this.channel.displayname;
     }
 }

@@ -97,12 +97,13 @@ export class Layout {
 
     createModule(moduleConfig) {
         let module;
+        const channel = Application.unpackerUtil.dataChannels.get(moduleConfig.channel);
         switch (moduleConfig.type) {
             case "CanvasGauge":
-                module = new CanvasGauge(this.idGen++, moduleConfig.gridArea, 0.2, 0.4);
+                module = new CanvasGauge(this.idGen++, channel, moduleConfig.gridArea, 0.2, 0.4);
                 break;
             case "CircleCanvasGauge":
-                module = new CircleCanvasGauge(this.idGen++, moduleConfig.gridArea, 0.4);
+                module = new CircleCanvasGauge(this.idGen++, channel, moduleConfig.gridArea, 0.4);
                 break;
             case "YouTubeModule":
                 module = new YouTubeModule(this.idGen++, moduleConfig.gridArea, moduleConfig.src);
@@ -111,15 +112,15 @@ export class Layout {
                 module = new ImageModule(this.idGen++, moduleConfig.gridArea, moduleConfig.src);
                 break;
             case "ChartModule":
-                module = new ChartModule(this.idGen++, moduleConfig.gridArea);
+                module = new ChartModule(this.idGen++, channel, moduleConfig.gridArea);
                 break;
             case "LinearGauge":
-                module = new LinearGauge(this.idGen++, moduleConfig.gridArea);
+                module = new LinearGauge(this.idGen++, channel, moduleConfig.gridArea);
                 break;
         }
         // const channelNames = Array.from(Application.unpackerUtil.dataChannels.keys()).filter((name) => !name.includes("BMS"));
         // module.channel =  channelNames[Math.floor(Math.random() * channelNames.length)];
-        module.channel = moduleConfig.channel;
+
         return module;
     }
 
@@ -130,7 +131,7 @@ export class Layout {
             channel: channel
         });
         Application.modules.push(module);
-        Application.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data));
+        Application.dataProvider.subscribeToChannel(module.channel.name, (data) => module.onData(data));
         this.saveLayout();
     }
 
@@ -153,7 +154,7 @@ export class Layout {
             layout.modules.push({
                 type: module.constructor.name,
                 gridArea: module.area,
-                channel: module.channel,
+                channel: module.channel ? module.channel.name : null,
                 src: module.src
             });
         });

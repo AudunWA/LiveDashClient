@@ -9,6 +9,8 @@ export class Gauge {
     }
 
     onData(value) {
+        super.onData(value);
+
         this.percentage = value / (this.maxValue - this.minValue) * 100;
     }
 }
