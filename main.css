@@ -310,6 +310,18 @@ div.smoothie-chart-tooltip {
     padding: 3vmin;
 }
 
+.edit-modal-footer {
+    padding: 2px 16px;
+    background-color: #464646;
+    color: white;
+    /* height: 10%; */
+    height: 10%;
+    display:  flex;
+    align-items: center;
+    justify-content:  space-between;
+    padding: 3vmin;
+}
+
 /* Modal Content */
 .modal-content {
     font-family: var(--module-font-family);
@@ -325,6 +337,18 @@ div.smoothie-chart-tooltip {
     flex-direction: column;
     /*animation-name: animatetop;*/
     /*animation-duration: 0.4s*/
+}
+
+.edit-modal-content {
+    height: 20vh;
+}
+
+.edit-modal-body {
+    display: flex;
+    padding: 2px 16px;
+    height: 100%;
+    max-height: 100%;
+    align-items: center;
 }
 
 .welcome-body {

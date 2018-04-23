@@ -78,8 +78,7 @@ class Application {
     }
 
     openEditModal(module) {
-        this.container.editModal.module = module;
-        this.container.editModal.isOpen = true;
+        this.container.editModal.open(module);
     }
 
     openWelcomeModal() {
