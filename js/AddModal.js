@@ -40,7 +40,7 @@ export class AddModal {
             m(".modal-footer.top-buttons",
                 m("div",
                     m("span.label", "Data channel: "),
-                    m("select#channel-select", {onchange: (e) => this.onSelectChange(e)},
+                    m("select", {onchange: (e) => this.onSelectChange(e)},
                         Array.from(this.dataChannels.values(), channel => m("option", {value: channel.name}, channel.displayname || channel.name))
                     )
                 ),

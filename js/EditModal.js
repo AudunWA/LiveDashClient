@@ -24,7 +24,7 @@ export class EditModal {
             ),
             m(".edit-modal-body",
                 m("span.label", "Data channel: "),
-                m("select#channel-select", {onchange: (e) => this.onSelectChange(e)},
+                m("select", {onchange: (e) => this.onSelectChange(e)},
                     Array.from(this.dataChannels.values(), channel =>
                         m("option",
                             {

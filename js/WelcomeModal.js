@@ -9,12 +9,6 @@ export class WelcomeModal {
     constructor() {
         this.selectedPreset = null;
         this.isOpen = false;
-        // this.presets = [
-        //     {id: "preset-race", name: "Race", description: "This preset is perfect if you just want to see the coolest values from the car."},
-        //     {id: "preset-empty", name: "Empty", description: "This preset gives you an empty grid, perfect if you know exactly what you want to look at."},
-        //     {id: "preset-battery", name: "Battery overview", description: "This presets gives you an good overview of the battery and power of the car."},
-        //     {id: "preset-torque", name: "Torque vectoring", description: "This preset gives you an overview of the current torque vectoring status."}
-        // ];
         this.presets = Application.layout.layoutPresets;
     }
 
