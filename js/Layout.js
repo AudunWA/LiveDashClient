@@ -139,7 +139,7 @@ export class Layout {
             channel: channel
         });
         Application.modules.push(module);
-        Application.dataProvider.subscribeToChannel(module.channel.name, (data) => module.onData(data));
+        // Application.dataProvider.subscribeToChannel(module, module.channel.name);
         this.saveLayout();
     }
 
@@ -216,11 +216,11 @@ export class Layout {
 
         const modules = this.load();
 
-        modules.forEach((module) => {
-            if(module.channel) {
-                Application.dataProvider.subscribeToChannel(module.channel.name, (data) => module.onData(data));
-            }
-        });
+        // modules.forEach((module) => {
+        //     if(module.channel) {
+        //         Application.dataProvider.subscribeToChannel(module, module.channel.name);
+        //     }
+        // });
 
         Application.modules.push(...modules);
         m.redraw();

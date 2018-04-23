@@ -55,6 +55,10 @@ export class CanvasGauge extends Module {
     }
 
     animate() {
+        if(!this.canvas) {
+            return;
+        }
+
         this.resize();
 
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);

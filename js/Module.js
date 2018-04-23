@@ -3,6 +3,8 @@ import Application from "./Application.js";
 
 export class Module {
     constructor(id, channel, area) {
+        this.onDataFunction = (value) => this.onData(value);
+
         this.id = id;
         this.channel = channel;
         this.style = { "grid-area": area };
@@ -41,6 +43,19 @@ export class Module {
 
     set area(newArea) {
         this.style["grid-area"] = newArea;
+    }
+
+    get channel() {
+        return this._channel;
+    }
+
+    set channel(value) {
+        Application.dataProvider.unsubscribeModule(this);
+        this._channel = value;
+
+        if(this._channel != null) {
+            Application.dataProvider.subscribeToChannel(this, this._channel.name);
+        }
     }
 
     editControls() {

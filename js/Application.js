@@ -27,11 +27,11 @@ class Application {
         //await Promise.all([connectPromise, unpackerLoadPromise]);
 
         this.modules = this.layout.load();
-        this.modules.forEach((module) => {
-            if(!module.channel)
-                return;
-            return this.dataProvider.subscribeToChannel(module.channel.name || module.channel, (data) => module.onData(data));
-        });
+        // this.modules.forEach((module) => {
+        //     if(!module.channel)
+        //         return;
+        //     this.dataProvider.subscribeToChannel(module, module.channel.name);
+        // });
         class Container {
             constructor(modules) {
                 this.modules = modules;

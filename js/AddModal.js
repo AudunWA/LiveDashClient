@@ -16,12 +16,7 @@ export class AddModal {
         ];
 
         this.availableModules.forEach(module => {
-            Application.dataProvider.subscribeToChannel(this.selectedValue.name, (data) => {
-                if(!this.isOpen) {
-                    return;
-                }
-                module.onData(data);
-            });
+            // Application.dataProvider.subscribeToChannel(module, this.selectedValue.name);
             module.preview = true;
         });
         this.isOpen = false;

@@ -37,8 +37,8 @@ export class LinearGaugeSet extends Module {
     }
 
     subscribe(dataProvider) {
-        this.gauges.forEach((gauge) => {
-            dataProvider.subscribeToChannel(gauge.canId, (value) => gauge.onData(value));
-        });
+        // this.gauges.forEach((gauge) => {
+        //     dataProvider.subscribeToChannel(gauge, gauge.canId);
+        // });
     }
 }

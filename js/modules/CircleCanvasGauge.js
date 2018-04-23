@@ -53,6 +53,10 @@ export class CircleCanvasGauge extends Module {
     }
 
     animate() {
+        if(!this.canvas) {
+            return;
+        }
+
         this.resize();
 
         this.percentage = Math.lerp(this.percentage, this.goalPercentage, 0.1);

@@ -1,3 +1,5 @@
+import { Module } from "./Module.js";
+
 export class DataProvider {
     constructor() {
         this.dataChannelListeners = new Map();
@@ -72,12 +74,28 @@ export class DataProvider {
         m.redraw();
     }
 
-    subscribeToChannel(canId, callback) {
-        if(!this.dataChannelListeners.has(canId))
-            this.dataChannelListeners.set(canId, []);
+    /**
+     * Subscribes a module to a channel using its defined callback.
+     * @param {Module} module The module that should subscribe
+     * @param {Number} channelName The channel to subscribe to
+     */
+    subscribeToChannel(module, channelName) {
+        if(!this.dataChannelListeners.has(channelName))
+            this.dataChannelListeners.set(channelName, []);
 
-        this.sendSubscribeMessage(canId);
-        this.dataChannelListeners.get(canId).push(callback);
+        this.sendSubscribeMessage(channelName);
+        this.dataChannelListeners.get(channelName).push(module.onDataFunction);
+    }
+
+    unsubscribeModule(module) {
+        if(!module.channel)
+            return;
+
+        if(!this.dataChannelListeners.has(module.channel.name))
+            return;
+
+        const callbacks = this.dataChannelListeners.get(module.channel.name).filter(callback => callback !== module.onDataFunction);
+        this.dataChannelListeners.set(module.channel.name, callbacks);
     }
 
     sendSubscribeMessage(channelName) {
