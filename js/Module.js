@@ -14,9 +14,10 @@ export class Module {
         };
 
         if(this.channel != null) {
-            this.minValue = this.channel.expectedmin;
-            this.maxValue = this.channel.expectedmax;
+            this.minValue = this.channel.expectedmin || 0;
+            this.maxValue = this.channel.expectedmax || 0;
         }
+
     }
 
     onClick(event) {
@@ -93,7 +94,7 @@ export class Module {
      * @returns {string}
      */
     get channelDisplayName() {
-        if(this.channel.displayname.length === 0) {
+        if(!this.channel.displayname || this.channel.displayname.length === 0) {
             return this.channel.name;
         }
         return this.channel.displayname;
