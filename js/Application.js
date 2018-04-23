@@ -87,5 +87,6 @@ class Application {
     }
 }
 
-const application = new Application();
-export { application as default };
+// const application = new Application();
+// export { application as default };
+export default (new Application());
