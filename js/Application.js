@@ -6,6 +6,7 @@ import {Layout} from "./Layout.js";
 import {AddModal} from "./AddModal.js";
 import {UnpackerUtil} from "./UnpackerUtil.js";
 import {EditModal} from "./EditModal.js";
+import {WelcomeModal} from "./WelcomeModal.js";
 
 /**
  * The main singleton class of the application.
@@ -36,12 +37,14 @@ class Application {
                 this.modules = modules;
                 this.addModal = new AddModal();
                 this.editModal = new EditModal();
+                this.welcomeModal = new WelcomeModal();
             }
             view() {
                 return m("#content",
                     m("div#grid", this.modules.map((module) => m(module))),
                     m(this.addModal),
-                    m(this.editModal)
+                    m(this.editModal),
+                    m(this.welcomeModal)
                 );
             }
         }
@@ -49,6 +52,14 @@ class Application {
         // m.render(document.body, m(Container));
         this.container = new Container(this.modules);
         m.mount(document.body, this.container);
+
+        this.checkWelcomeModal();
+    }
+
+    checkWelcomeModal() {
+        if(!localStorage.getItem("hasBeenUsedBefore")) {
+            this.openWelcomeModal();
+        }
     }
 
     /**
@@ -69,6 +80,10 @@ class Application {
     openEditModal(module) {
         this.container.editModal.module = module;
         this.container.editModal.isOpen = true;
+    }
+
+    openWelcomeModal() {
+        this.container.welcomeModal.isOpen = true;
     }
 }
 

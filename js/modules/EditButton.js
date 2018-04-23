@@ -18,6 +18,6 @@ export class EditButton extends Module {
     }
 
     resetLayout(event) {
-        Application.layout.reset();
+        Application.openWelcomeModal();
     }
 }

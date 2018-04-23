@@ -8,8 +8,8 @@ import {ImageModule} from "./modules/ImageModule.js";
 import {ChartModule} from "./modules/ChartModule.js";
 import {LinearGauge} from "./modules/LinearGauge.js";
 import {EditButton} from "./modules/EditButton.js";
-import { defaultLayout as defaultLayoutDesktop } from "./config/DefaultLayout.desktop.js";
-import { defaultLayout as defaultLayoutMobile } from "./config/DefaultLayout.mobile.js";
+import { layout as emptyLayout } from "./config/layout_presets/EmptyLayout.js";
+import { layout as raceLayout } from "./config/layout_presets/RaceLayout.js";
 
 export class Layout {
     constructor() {
@@ -19,31 +19,40 @@ export class Layout {
         this.columns = 2;
         this.isMobile = true;
         this.mediaQueryInitialized = false;
+
+        this.layoutPresets = [ raceLayout, emptyLayout ];
+        //
+        // this.layoutPresets = [
+        //     { name: "Empty.desktop", layout: emptyLayoutDesktop },
+        //     { name: "Empty.mobile", layout: emptyLayoutMobile },
+        // ];
     }
 
     getCorrectDefaultLayout() {
-        if(this.isMobile) {
-            return defaultLayoutMobile;
-        }
-        return defaultLayoutDesktop;
+        return raceLayout;
+        // if(this.isMobile) {
+        //     return defaultLayoutMobile;
+        // }
+        // return defaultLayoutDesktop;
     }
 
     load() {
         this.initMediaQueryWatch();
 
-        const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
+        // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
 
-        let layout = JSON.parse(localStorage.getItem(layoutKey));
-        if(layout === null || Config.alwaysUseDefaultLayout) {
-            layout = this.getCorrectDefaultLayout();
+        this.layout = JSON.parse(localStorage.getItem("layout"));
+        if(this.layout === null || Config.alwaysUseDefaultLayout) {
+            this.layout = this.getCorrectDefaultLayout();
             this.saveDefaultLayout();
         }
 
 
         const modules = [];
 
+        const layoutModules = this.isMobile ? this.layout.mobileModules : this.layout.desktopModules;
         // TODO: Load default layout if the current layout is invalid
-        layout.modules.forEach((module) => {
+        layoutModules.forEach((module) => {
             modules.push(this.createModule(module));
         });
 
@@ -89,7 +98,6 @@ export class Layout {
             this.rows = 8;
             this.columns = 2;
         }
-
         if(Application.modules && oldIsMobile !== this.isMobile) {
             this.reload();
         }
@@ -142,28 +150,34 @@ export class Layout {
     }
 
     saveLayout() {
-        const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
+        // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
 
         const ignore = ["EmptyModule", "EditButton"];
-        let layout = {modules: []};
+        const modules = [];
         Application.modules.forEach((module) => {
             if(ignore.indexOf(module.constructor.name) !== -1) {
                 return;
             }
 
-            layout.modules.push({
+            modules.push({
                 type: module.constructor.name,
                 gridArea: module.area,
                 channel: module.channel ? module.channel.name : null,
                 src: module.src
             });
         });
-        localStorage.setItem(layoutKey, JSON.stringify(layout));
+
+        if(this.isMobile) {
+            this.layout.mobileModules = modules;
+        } else {
+            this.layout.desktopModules = modules;
+        }
+        localStorage.setItem("layout", JSON.stringify(this.layout));
     }
 
     saveDefaultLayout() {
-        const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
-        localStorage.setItem(layoutKey, JSON.stringify(this.getCorrectDefaultLayout()));
+        // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
+        localStorage.setItem("layout", JSON.stringify(this.getCorrectDefaultLayout()));
     }
 
     initEmptyCells() {
@@ -181,6 +195,11 @@ export class Layout {
 
     toggleEditMode() {
         this.editMode = !this.editMode;
+    }
+
+    applyLayout(layout) {
+        localStorage.setItem("layout", JSON.stringify(layout));
+        this.reload();
     }
 
     reset() {

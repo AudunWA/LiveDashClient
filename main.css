@@ -326,6 +326,12 @@ div.smoothie-chart-tooltip {
     /*animation-duration: 0.4s*/
 }
 
+.welcome-body {
+    grid-template-columns: 1fr;
+    grid-auto-rows: unset;
+    user-select: none;
+}
+
 /* Add Animation */
 @keyframes animatetop {
     from {top: -300px; opacity: 0}
@@ -371,6 +377,15 @@ div.smoothie-chart-tooltip {
     /* width:  100%; */
 }
 
+.preset {
+    border: 1px dotted black;
+    padding: 10px;
+    padding-bottom: 0;
+    padding-top: 0;
+    display:  flex;
+    flex-direction:  column;
+}
+
 @media only screen and (min-width: 600px) {
     #grid {
         display: grid;
@@ -412,5 +427,11 @@ div.smoothie-chart-tooltip {
         flex-direction: row;
         height: 100px;
         padding: 1vh 2vw 1vh 2vw;
+    }
+
+    .welcome-body {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: unset;
+        user-select: none;
     }
 }
