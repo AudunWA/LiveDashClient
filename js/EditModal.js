@@ -47,6 +47,7 @@ export class EditModal {
     saveConfiguration(event) {
         this.__proto__.module.__proto__.channel = this.selectedChannel;
         this.__proto__.isOpen = false;
+        Application.layout.saveLayout();
     }
 
     open(module) {
