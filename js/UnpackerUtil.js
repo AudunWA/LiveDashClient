@@ -22,6 +22,15 @@ export class UnpackerUtil {
             })
         );
 
+        // TODO: Move this to a loadable file
+        this.dataChannels.set("LiveDash_velocity",  {
+            name: "LiveDash_velocity",
+            displayname: "Velocity",
+            unit: "km/h",
+            expectedmin: 0.0,
+            expectedmax: 100.0
+        });
+
         // Sort alphabetically, from https://stackoverflow.com/questions/31158902/is-it-possible-to-sort-a-es6-map-object
         this.dataChannels = new Map([...this.dataChannels.entries()].sort(function(a,b){
             return (a[1].displayname || a[0]).localeCompare((b[1].displayname || b[0]));
