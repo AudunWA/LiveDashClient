@@ -101,6 +101,16 @@ button {
     z-index: 1;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     background: #2a3330;
+    position:  relative;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items:  center;
+    position: relative;
+    width:  100%;
+    /* height:  100%; */
 }
 
 .cell.flex-column {
@@ -196,6 +206,7 @@ button {
 .canvas-gauge {
     width: 100%;
     height: 100%;
+    position: absolute;
 }
 
 .cell.edit {
