@@ -1,8 +1,4 @@
 import Application from "./Application.js";
-import {CanvasGauge} from "./modules/CanvasGauge.js";
-import {CircleCanvasGauge} from "./modules/CircleCanvasGauge.js";
-import {LinearGauge} from "./modules/LinearGauge.js";
-import {ChartModule} from "./modules/ChartModule.js";
 
 export class EditModal {
     constructor() {
