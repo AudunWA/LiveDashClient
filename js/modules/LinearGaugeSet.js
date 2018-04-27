@@ -9,6 +9,8 @@ export class Gauge {
     }
 
     onData(value) {
+        super.onData(value);
+
         this.percentage = value / (this.maxValue - this.minValue) * 100;
     }
 }
@@ -23,10 +25,8 @@ export class LinearGaugeSet extends Module {
         return m(".flex-column", Object.assign({
             id: this.id,
             class: this.classNames,
-            style: this.style,
-            onmouseenter: () => this.hovering = true,
-            onmouseleave: () => this.hovering = false
-        }, this.domAttributes),
+            style: this.style
+        }, this.staticDomAttributes),
         this.gauges.map((gauge) => m(".linear-gauge",
             m(".gauge-percentage", {style: {width: `${gauge.percentage}%`}})
         )),
@@ -35,8 +35,8 @@ export class LinearGaugeSet extends Module {
     }
 
     subscribe(dataProvider) {
-        this.gauges.forEach((gauge) => {
-            dataProvider.subscribeToChannel(gauge.canId, (value) => gauge.onData(value));
-        });
+        // this.gauges.forEach((gauge) => {
+        //     dataProvider.subscribeToChannel(gauge, gauge.canId);
+        // });
     }
 }

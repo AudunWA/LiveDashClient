@@ -4,17 +4,15 @@ import classNames from "../libraries/classnames.js";
 
 export class EmptyModule extends Module {
     constructor(id, area) {
-        super(id, area);
+        super(id, null, area);
         this.hovering = false;
     }
     view() {
         return m(".empty", Object.assign({
             id: this.id,
             class: this.classNames,
-            style: this.style,
-            onmouseenter: (event) => this.onMouseEnter(event),
-            onmouseleave: (event) => this.onMouseLeave(event),
-        }, this.domAttributes),
+            style: this.style
+        }, this.staticDomAttributes),
         this.hovering && Application.layout.editMode ? m("a", "+") : null);
     }
 

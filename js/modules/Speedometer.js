@@ -1,11 +1,8 @@
 import {Module} from "../Module.js";
 
-const MIN_SPEED = 0;
-const MAX_SPEED = 120;
-
 export class Speedometer extends Module {
-    constructor(id, area) {
-        super(id, area);
+    constructor(id, channel, area) {
+        super(id, channel, area);
         this.rotation = 0;
     }
 
@@ -13,9 +10,7 @@ export class Speedometer extends Module {
         return m(".", Object.assign({
             id: this.id,
             class: this.classNames,
-            style: this.style,
-            onmouseenter: () => this.hovering = true,
-            onmouseleave: () => this.hovering = false }, this.domAttributes),
+            style: this.style}, this.staticDomAttributes),
         m(".speedometer",
             m(".pin", {style: {transform: `rotate(${this.rotation}deg)`}})
         ),
@@ -24,13 +19,15 @@ export class Speedometer extends Module {
     }
 
     calculateRotation(speed) {
-        let speedRange = MAX_SPEED - MIN_SPEED;
+        let speedRange = this.maxValue - this.minValue;
         let percentage = speed / speedRange;
         return percentage * 180 - 90;
     }
 
 
     onData(value) {
+        super.onData(value);
+
         this.rotation = this.calculateRotation(value);
     }
 }

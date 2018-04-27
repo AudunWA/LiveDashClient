@@ -5,6 +5,8 @@ import {Config} from "./config/config.js";
 import {Layout} from "./Layout.js";
 import {AddModal} from "./AddModal.js";
 import {UnpackerUtil} from "./UnpackerUtil.js";
+import {EditModal} from "./EditModal.js";
+import {WelcomeModal} from "./WelcomeModal.js";
 
 /**
  * The main singleton class of the application.
@@ -21,20 +23,28 @@ class Application {
     async initModules() {
         const connectPromise = this.dataProvider.connectWebSocket(Config.webSocketUri);
         const unpackerLoadPromise = this.unpackerUtil.loadUnpacker();
-        await Promise.all([connectPromise, unpackerLoadPromise]);
+        await unpackerLoadPromise;
+        //await Promise.all([connectPromise, unpackerLoadPromise]);
 
         this.modules = this.layout.load();
-        this.modules.forEach((module) =>
-            this.dataProvider.subscribeToChannel(module.channel, (data) => module.onData(data)));
+        // this.modules.forEach((module) => {
+        //     if(!module.channel)
+        //         return;
+        //     this.dataProvider.subscribeToChannel(module, module.channel.name);
+        // });
         class Container {
             constructor(modules) {
                 this.modules = modules;
                 this.addModal = new AddModal();
+                this.editModal = new EditModal();
+                this.welcomeModal = new WelcomeModal();
             }
             view() {
                 return m("#content",
                     m("div#grid", this.modules.map((module) => m(module))),
-                    m(this.addModal)
+                    m(this.addModal),
+                    m(this.editModal),
+                    m(this.welcomeModal)
                 );
             }
         }
@@ -42,6 +52,14 @@ class Application {
         // m.render(document.body, m(Container));
         this.container = new Container(this.modules);
         m.mount(document.body, this.container);
+
+        this.checkWelcomeModal();
+    }
+
+    checkWelcomeModal() {
+        if(!localStorage.getItem("hasBeenUsedBefore")) {
+            this.openWelcomeModal();
+        }
     }
 
     /**
@@ -58,7 +76,16 @@ class Application {
         this.container.addModal.gridArea = gridArea;
         this.container.addModal.isOpen = true;
     }
+
+    openEditModal(module) {
+        this.container.editModal.open(module);
+    }
+
+    openWelcomeModal() {
+        this.container.welcomeModal.isOpen = true;
+    }
 }
 
-const application = new Application();
-export { application as default };
+// const application = new Application();
+// export { application as default };
+export default (new Application());

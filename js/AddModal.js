@@ -6,23 +6,17 @@ import {ChartModule} from "./modules/ChartModule.js";
 
 export class AddModal {
     constructor() {
-        this.dataChannelNames = Array.from(Application.unpackerUtil.dataChannels.keys());
-        this.selectedValue = this.dataChannelNames[0];
+        this.dataChannels = Application.unpackerUtil.dataChannels;
+        this.selectedValue = this.dataChannels.values().next().value;
         this.availableModules = [
-            new CanvasGauge("add-1", "", 0.2, 0.4),
-            new CircleCanvasGauge("add-2", "", 0.2, 0.4),
-            new LinearGauge("add-3", "", 0.2, 0.4),
-            new ChartModule("add-4", "", 0.2, 0.4),
+            new CanvasGauge("add-1", this.selectedValue, "", 0.2, 0.4),
+            new CircleCanvasGauge("add-2", this.selectedValue, "", 0.2, 0.4),
+            new LinearGauge("add-3", this.selectedValue, "", 0.2, 0.4),
+            new ChartModule("add-4", this.selectedValue, "", 0.2, 0.4),
         ];
 
         this.availableModules.forEach(module => {
-            Application.dataProvider.subscribeToChannel(this.selectedValue, (data) => {
-                if(!this.isOpen) {
-                    return;
-                }
-                module.onData(data);
-            });
-            module.channel = this.selectedValue;
+            // Application.dataProvider.subscribeToChannel(module, this.selectedValue.name);
             module.preview = true;
         });
         this.isOpen = false;
@@ -46,7 +40,9 @@ export class AddModal {
             m(".modal-footer.top-buttons",
                 m("div",
                     m("span.label", "Data channel: "),
-                    m("select#channel-select", {onchange: (e) => this.onSelectChange(e)}, this.dataChannelNames.map(key => m("option", {value: key}, key)))
+                    m("select", {onchange: (e) => this.onSelectChange(e)},
+                        Array.from(this.dataChannels.values(), channel => m("option", {value: channel.name}, channel.displayname || channel.name))
+                    )
                 ),
                 m(".top-buttons",
                     m("button", {onclick: e => this.addSelectedModule(e)}, "Add"),
@@ -78,14 +74,15 @@ export class AddModal {
         if (!selectedModule)
             return;
 
-        Application.layout.addModule(selectedModule.constructor.name, this.__proto__.gridArea, this.selectedValue);
+        Application.layout.addModule(selectedModule.constructor.name, this.__proto__.gridArea, this.selectedValue.name);
         this.__proto__.isOpen = false;
         selectedModule.selected = false;
         this.__proto__.selectedModule = null;
     }
 
     onSelectChange(event) {
-        this.selectedValue = event.target.options[event.target.selectedIndex].value;
+        const value = event.target.options[event.target.selectedIndex].value;
+        this.selectedValue = this.dataChannels.get(value);
         this.availableModules.forEach(module => {
             module.channel = this.selectedValue;
         });

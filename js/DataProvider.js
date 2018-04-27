@@ -1,6 +1,9 @@
+import { Module } from "./Module.js";
+
 export class DataProvider {
     constructor() {
         this.dataChannelListeners = new Map();
+        this.subscribeMessages = [];
         //this.simulateData();
         this.messagesReceived = 0;
     }
@@ -20,6 +23,7 @@ export class DataProvider {
             this.ws.addEventListener("message", (message) => this.onMessage(message));
             this.ws.addEventListener("close", (event) => this.onClose(event));
             this.startTime = new Date();
+            this.subscribeMessages.forEach(message => this.sendSubscribeMessage(message));
         });
 
         connectPromise.catch((error) => {
@@ -70,16 +74,36 @@ export class DataProvider {
         m.redraw();
     }
 
-    subscribeToChannel(canId, callback) {
-        if(!this.dataChannelListeners.has(canId))
-            this.dataChannelListeners.set(canId, []);
+    /**
+     * Subscribes a module to a channel using its defined callback.
+     * @param {Module} module The module that should subscribe
+     * @param {Number} channelName The channel to subscribe to
+     */
+    subscribeToChannel(module, channelName) {
+        if(!this.dataChannelListeners.has(channelName))
+            this.dataChannelListeners.set(channelName, []);
 
-        this.sendSubscribeMessage(canId);
-        this.dataChannelListeners.get(canId).push(callback);
+        this.sendSubscribeMessage(channelName);
+        this.dataChannelListeners.get(channelName).push(module.onDataFunction);
+    }
+
+    unsubscribeModule(module) {
+        if(!module.channel)
+            return;
+
+        if(!this.dataChannelListeners.has(module.channel.name))
+            return;
+
+        const callbacks = this.dataChannelListeners.get(module.channel.name).filter(callback => callback !== module.onDataFunction);
+        this.dataChannelListeners.set(module.channel.name, callbacks);
     }
 
     sendSubscribeMessage(channelName) {
-        this.ws.send(channelName);
+        if(this.ws) {
+            this.ws.send(channelName);
+        } else {
+            this.subscribeMessages.push(channelName);
+        }
     }
 
     reset() {

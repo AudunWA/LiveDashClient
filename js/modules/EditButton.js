@@ -3,7 +3,7 @@ import Application from "../Application.js";
 
 export class EditButton extends Module {
     constructor(id, area) {
-        super(id, area);
+        super(id, null, area);
         this.text = "Edit layout";
     }
     view() {
@@ -14,10 +14,10 @@ export class EditButton extends Module {
     }
     onClick(event) {
         Application.layout.toggleEditMode();
-        this.text = Application.layout.editMode ? "Finish editing" : "Edit layout";
+        this.__proto__.text = Application.layout.editMode ? "Finish editing" : "Edit layout";
     }
 
     resetLayout(event) {
-        Application.layout.reset();
+        Application.openWelcomeModal();
     }
 }
