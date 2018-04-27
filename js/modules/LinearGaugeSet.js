@@ -25,10 +25,8 @@ export class LinearGaugeSet extends Module {
         return m(".flex-column", Object.assign({
             id: this.id,
             class: this.classNames,
-            style: this.style,
-            onmouseenter: () => this.hovering = true,
-            onmouseleave: () => this.hovering = false
-        }, this.domAttributes),
+            style: this.style
+        }, this.staticDomAttributes),
         this.gauges.map((gauge) => m(".linear-gauge",
             m(".gauge-percentage", {style: {width: `${gauge.percentage}%`}})
         )),

@@ -16,13 +16,13 @@ export class CircleCanvasGauge extends Module {
     }
 
     view() {
-        return m(".", Object.assign({
-                id: this.id,
-                class: this.classNames,
-                style: this.style,
-                onmouseenter: e => this.hovering = true,
-                onmouseleave: e => this.hovering = false
-            }, this.domAttributes),
+        return m(".",
+            Object.assign(
+                {
+                    id: this.id,
+                    class: this.classNames,
+                    style: this.style
+                }, this.staticDomAttributes),
             m(".flex-center",
                 m("canvas.canvas-gauge", {id: this.getId() + "-static"}),
                 m("canvas.canvas-gauge", {id: this.getId()})
@@ -53,7 +53,7 @@ export class CircleCanvasGauge extends Module {
     }
 
     resize() {
-        if(this.canvas.width === this.canvas.offsetWidth && this.canvas.height === this.canvas.clientHeight) {
+        if (this.canvas.width === this.canvas.offsetWidth && this.canvas.height === this.canvas.clientHeight) {
             // No resize needed
             return;
         }
@@ -65,7 +65,7 @@ export class CircleCanvasGauge extends Module {
     }
 
     animate() {
-        if(!this.canvas) {
+        if (!this.canvas) {
             return;
         }
 
@@ -74,10 +74,10 @@ export class CircleCanvasGauge extends Module {
         this.percentage = Math.lerp(this.percentage, this.goalPercentage, 0.1);
 
         let centerX = this.canvas.width / 2;
-        let centerY = 2/5 * this.canvas.height;
+        let centerY = 2 / 5 * this.canvas.height;
         let factor = Math.min(this.canvas.offsetHeight, this.canvas.offsetWidth);
         let radius = factor * 0.4;
-        let endAngle =  2*Math.PI * this.percentage - Math.PI/2;
+        let endAngle = 2 * Math.PI * this.percentage - Math.PI / 2;
 
         this.context.clearRect(0, 0, this.staticCanvas.width, this.staticCanvas.height);
 
@@ -88,7 +88,7 @@ export class CircleCanvasGauge extends Module {
         this.context.fillStyle = this.fillStyle;
         this.context.fill();
 
-        this.context.textAlign="center";
+        this.context.textAlign = "center";
         this.context.font = factor * 0.1 + "px Arial";
         this.context.fillStyle = this.textStyle;
         this.context.fillText(this.value + " " + this.channel.unit, centerX, centerY * 1.1);
@@ -111,21 +111,21 @@ export class CircleCanvasGauge extends Module {
     set channel(value) {
         super.channel = value;
 
-        if(this.staticContext) {
+        if (this.staticContext) {
             this.drawStatic();
         }
     }
 
     drawStatic() {
         let centerX = this.staticCanvas.width / 2;
-        let centerY = 2/5 * this.staticCanvas.height;
+        let centerY = 2 / 5 * this.staticCanvas.height;
         let factor = Math.min(this.staticCanvas.offsetHeight, this.staticCanvas.offsetWidth);
         let radius = factor * 0.4;
 
         this.staticContext.clearRect(0, 0, this.staticCanvas.width, this.staticCanvas.height);
         this.staticContext.beginPath();
-        this.staticContext.arc(centerX, centerY, radius, -Math.PI / 2, 3/2 * Math.PI, false);
-        this.staticContext.arc(centerX, centerY, radius * (1 - this.thickness), 3/2 * Math.PI, -Math.PI / 2, true);
+        this.staticContext.arc(centerX, centerY, radius, -Math.PI / 2, 3 / 2 * Math.PI, false);
+        this.staticContext.arc(centerX, centerY, radius * (1 - this.thickness), 3 / 2 * Math.PI, -Math.PI / 2, true);
         this.staticContext.closePath();
         this.staticContext.fillStyle = this.backgroundStyle;
         this.staticContext.fill();

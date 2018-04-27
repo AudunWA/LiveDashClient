@@ -17,7 +17,7 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m("div", Object.assign({id: this.id, class: this.classNames, style: this.style, onmouseenter: () => this.hovering = true, onmouseleave: () => this.hovering = false}, this.domAttributes),
+        return m("div", Object.assign({id: this.id, class: this.classNames, style: this.style}, this.staticDomAttributes),
             m(".flex-center",
                 m("canvas.canvas-gauge", {id: this.getId() + "-static"}),
                 m("canvas.canvas-gauge", {id: this.getId()})

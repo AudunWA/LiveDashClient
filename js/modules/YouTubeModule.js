@@ -13,10 +13,8 @@ export class YouTubeModule extends Module {
         return m("div", Object.assign({
             id: this.id,
             class: this.classNames,
-            style: this.style,
-            onmouseenter: () => this.hovering = true,
-            onmouseleave: () => this.hovering = false
-        }, this.domAttributes),
+            style: this.style
+        }, this.staticDomAttributes),
         m("div.video-drag", { style: { width: this.dragWidth, height: this.dragHeight, "z-index": Application.layout.editMode ? 1 : -1 }}),
         m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
             src: this.videoSource,

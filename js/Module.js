@@ -9,8 +9,11 @@ export class Module {
         this.channel = channel;
         this.style = { "grid-area": area };
         this.preview = false;
-        this.domAttributes = {
-            onclick: event => this.onClick(event)
+        this.hovering = false;
+        this.staticDomAttributes = {
+            onclick: event => this.onClick(event),
+            onmouseenter: event => this.onMouseEnter(event),
+            onmouseleave: event => this.onMouseLeave(event)
         };
 
         if(this.channel != null) {
@@ -24,6 +27,14 @@ export class Module {
         if(this.preview) {
             Application.container.addModal.selectModule(this);
         }
+    }
+
+    onMouseEnter(event) {
+        this.hovering = true;
+    }
+
+    onMouseLeave(event) {
+        this.hovering = false;
     }
 
     get classNames() {

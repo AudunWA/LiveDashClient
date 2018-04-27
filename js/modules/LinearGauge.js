@@ -8,13 +8,12 @@ export class LinearGauge extends Module {
     }
 
     view() {
-        return m(".fc", Object.assign({
+        return m(".fc",
+            Object.assign({
                 id: this.id,
                 class: this.classNames,
-                style: this.style,
-                onmouseenter: () => this.hovering = true,
-                onmouseleave: () => this.hovering = false
-            }, this.domAttributes),
+                style: this.style
+            }, this.staticDomAttributes),
             m(".linear-gauge",
                 m(".gauge-percentage", {style: {width: `${this.percentage}%`}}),
                 m("span.gauge-text", this.value.toFixed(1) + " " + this.channel.unit)

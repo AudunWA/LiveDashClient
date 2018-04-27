@@ -48,10 +48,8 @@ export class ChartModule extends Module {
         return m("div", Object.assign({
                 id: this.id,
                 class: this.classNames,
-                style: this.style,
-                onmouseenter: () => this.hovering = true,
-                onmouseleave: () => this.hovering = false
-            }, this.domAttributes),
+                style: this.style
+            }, this.staticDomAttributes),
             m("canvas.chart", {id: this.getCanvasId()}),
             this.editControls()
         );
