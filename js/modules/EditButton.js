@@ -14,7 +14,7 @@ export class EditButton extends Module {
     }
     onClick(event) {
         Application.layout.toggleEditMode();
-        this.text = Application.layout.editMode ? "Finish editing" : "Edit layout";
+        this.__proto__.text = Application.layout.editMode ? "Finish editing" : "Edit layout";
     }
 
     resetLayout(event) {
