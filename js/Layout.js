@@ -41,29 +41,34 @@ export class Layout {
 
         // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
 
-        this.layout = JSON.parse(localStorage.getItem("layout"));
-        if(this.layout === null || Config.alwaysUseDefaultLayout) {
-            this.layout = this.getCorrectDefaultLayout();
-            this.saveDefaultLayout();
+        try {
+            this.layout = JSON.parse(localStorage.getItem("layout"));
+            if (this.layout === null || Config.alwaysUseDefaultLayout) {
+                this.layout = this.getCorrectDefaultLayout();
+                this.saveDefaultLayout();
+            }
+
+
+            const modules = [];
+
+            const layoutModules = this.isMobile ? this.layout.mobileModules : this.layout.desktopModules;
+            layoutModules.forEach((module) => {
+                modules.push(this.createModule(module));
+            });
+
+            // Add the edit button as a static module
+            modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 3"));
+
+            // Redraw on resize
+            // window.addEventListener("resize", () => {
+            //     console.log("Resize");
+            //     return m.redraw();
+            // });
+        } catch(error) {
+            console.dir(error);
+            localStorage.removeItem("layout");
+            return this.load();
         }
-
-
-        const modules = [];
-
-        const layoutModules = this.isMobile ? this.layout.mobileModules : this.layout.desktopModules;
-        // TODO: Load default layout if the current layout is invalid
-        layoutModules.forEach((module) => {
-            modules.push(this.createModule(module));
-        });
-
-        // Add the edit button as a static module
-        modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 3"));
-
-        // Redraw on resize
-        // window.addEventListener("resize", () => {
-        //     console.log("Resize");
-        //     return m.redraw();
-        // });
 
         return [...modules, ...this.initEmptyCells()];
     }
