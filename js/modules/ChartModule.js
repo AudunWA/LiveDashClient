@@ -2,9 +2,6 @@ import {Module} from "../Module.js";
 import {SmoothieChart, TimeSeries} from "../libraries/smoothie.js";
 import {getRootCssProperty} from "../Util.js";
 
-const MIN_SPEED = 0;
-const MAX_SPEED = 120;
-
 export class ChartModule extends Module {
     constructor(id, channel, area) {
         super(id, channel, area);
@@ -16,7 +13,7 @@ export class ChartModule extends Module {
                 responsive: true,
                 enableDpiScaling: false,
                 limitFPS: 60,
-                tooltip:true,
+                tooltip: true,
                 grid: {
                     fillStyle: "rgba(0,0,0,0)",
                     strokeStyle: "#777777",
@@ -45,7 +42,8 @@ export class ChartModule extends Module {
     }
 
     view() {
-        return m("div", Object.assign({
+        return m("div",
+            Object.assign({
                 id: this.id,
                 class: this.classNames,
                 style: this.style
