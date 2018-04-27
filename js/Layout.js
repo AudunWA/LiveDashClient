@@ -37,6 +37,7 @@ export class Layout {
     }
 
     load() {
+        const modules = [];
         this.initMediaQueryWatch();
 
         // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
@@ -49,7 +50,6 @@ export class Layout {
             }
 
 
-            const modules = [];
 
             const layoutModules = this.isMobile ? this.layout.mobileModules : this.layout.desktopModules;
             layoutModules.forEach((module) => {
