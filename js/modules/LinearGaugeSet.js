@@ -1,4 +1,4 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 
 export class Gauge {
     constructor(minValue, maxValue, canId) {

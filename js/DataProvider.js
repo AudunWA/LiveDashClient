@@ -1,4 +1,4 @@
-import { Module } from "./Module.js";
+import { Module } from "./modules/Module.js";
 
 export class DataProvider {
     constructor() {

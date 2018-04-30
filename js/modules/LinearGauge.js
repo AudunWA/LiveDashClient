@@ -1,4 +1,4 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 
 export class LinearGauge extends Module {
     constructor(id, channel, area) {

@@ -1,4 +1,4 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 
 export class TextModule extends Module {
     constructor(id, area) {

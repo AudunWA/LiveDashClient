@@ -1,4 +1,4 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 import {SmoothieChart, TimeSeries} from "../libraries/smoothie.js";
 import {getRootCssProperty} from "../Util.js";
 

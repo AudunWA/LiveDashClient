@@ -1,6 +1,9 @@
-import classNames from "./libraries/classnames.js";
-import Application from "./Application.js";
+import classNames from "../libraries/classnames.js";
+import Application from "../Application.js";
 
+/**
+ * The base class for all modules
+ */
 export class Module {
     constructor(id, channel, area) {
         this.onDataFunction = (value) => this.onData(value);

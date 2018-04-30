@@ -1,4 +1,4 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 import {getRootCssProperty} from "../Util.js";
 
 export class CircleCanvasGauge extends Module {

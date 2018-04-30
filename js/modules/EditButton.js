@@ -1,4 +1,4 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 import Application from "../Application.js";
 
 export class EditButton extends Module {
