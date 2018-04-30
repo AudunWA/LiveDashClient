@@ -119,7 +119,7 @@ export class Layout {
                 module = new CircleCanvasGauge(this.idGen++, channel, moduleConfig.gridArea, 0.4);
                 break;
             case "YouTubeModule":
-                module = new YouTubeModule(this.idGen++, moduleConfig.gridArea, moduleConfig.src);
+                module = new YouTubeModule(this.idGen++, moduleConfig.gridArea);
                 break;
             case "ImageModule":
                 module = new ImageModule(this.idGen++, moduleConfig.gridArea, moduleConfig.src);

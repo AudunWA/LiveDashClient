@@ -10,8 +10,7 @@ export const layout = {
         },
         {
             type: "YouTubeModule",
-            gridArea: "video",
-            src: "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0"
+            gridArea: "video"
         },
         {
             type: "CanvasGauge",
@@ -77,8 +76,7 @@ export const layout = {
         },
         {
             type: "YouTubeModule",
-            gridArea: "2 / 2 / 5 / 6",
-            src: "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0"
+            gridArea: "2 / 2 / 5 / 6"
         },
         {
             type: "ImageModule",

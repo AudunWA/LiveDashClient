@@ -1,25 +1,30 @@
 import {Module} from "../Module.js";
 import Application from "../Application.js";
+import {Config} from "../config/config.js";
 
 export class YouTubeModule extends Module {
-    constructor(id, area, videoSource) {
+    constructor(id, area) {
         super(id, null, area);
-        this.videoSource = videoSource;
-        this.style["align-self"] = "stretch";
-        this.style["justify-self"] = "stretch";
     }
 
     view() {
-        return m("div", Object.assign({
-            id: this.id,
-            class: this.classNames,
-            style: this.style
-        }, this.staticDomAttributes),
-        m("div.video-drag", { style: { width: this.dragWidth, height: this.dragHeight, "z-index": Application.layout.editMode ? 1 : -1 }}),
-        m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
-            src: this.videoSource,
-        }),
-        this.editControls()
+        return m("div",
+            Object.assign({
+                id: this.id,
+                class: this.classNames,
+                style: this.style
+            }, this.staticDomAttributes),
+            m("div.video-drag", {
+                style: {
+                    width: this.dragWidth,
+                    height: this.dragHeight,
+                    "z-index": Application.layout.editMode ? 1 : -1
+                }
+            }),
+            m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
+                src: Config.youtubeVideoUrl,
+            }),
+            this.editControls()
         );
     }
 
