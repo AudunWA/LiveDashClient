@@ -1,5 +1,5 @@
 import {Module} from "./Module.js";
-import {getRootCssProperty} from "../Util.js";
+import {getRootCssProperty, clamp, lerp} from "../Util.js";
 
 export class CanvasGauge extends Module {
     constructor(id, channel, area, arcSize, thickness) {
@@ -45,7 +45,7 @@ export class CanvasGauge extends Module {
         if(this.value === value)
             return;
 
-        this.goalPercentage = (value / (this.maxValue - this.minValue)).clamp(0, 1);
+        this.goalPercentage = clamp(value / (this.maxValue - this.minValue), 0, 1);
         this.value = value;
         this.animate();
     }
@@ -71,7 +71,7 @@ export class CanvasGauge extends Module {
 
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.percentage = Math.lerp(this.percentage, this.goalPercentage, 0.1);
+        this.percentage = lerp(this.percentage, this.goalPercentage, 0.1);
 
         let centerX = 1/2 * this.canvas.width;
         let centerY = 4/5 *  this.canvas.height;
