@@ -1,7 +1,7 @@
 import {DataProvider} from "./DataProvider.js";
 import "./Util.js";
 import "./Interactions.js";
-import {Config} from "./config/config.js";
+import {Config} from "./config/Config.js";
 import {Layout} from "./Layout.js";
 import {AddModal} from "./modals/AddModal.js";
 import {UnpackerUtil} from "./UnpackerUtil.js";

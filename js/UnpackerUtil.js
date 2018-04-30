@@ -1,4 +1,4 @@
-import {Config} from "./config/config.js";
+import {Config} from "./config/Config.js";
 import {customChannels} from "./config/CustomChannels.js";
 
 export class UnpackerUtil {

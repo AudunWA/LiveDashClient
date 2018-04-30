@@ -1,6 +1,6 @@
 import {Module} from "./Module.js";
 import Application from "../Application.js";
-import {Config} from "../config/config.js";
+import {Config} from "../config/Config.js";
 
 export class YouTubeModule extends Module {
     constructor(id, area) {

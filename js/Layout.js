@@ -1,5 +1,5 @@
 import {CanvasGauge} from "./modules/CanvasGauge.js";
-import {Config} from "./config/config.js";
+import {Config} from "./config/Config.js";
 import {CircleCanvasGauge} from "./modules/CircleCanvasGauge.js";
 import {EmptyModule} from "./modules/EmptyModule.js";
 import {YouTubeModule} from "./modules/YouTubeModule.js";
