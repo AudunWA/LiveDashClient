@@ -3,10 +3,10 @@ import "./Util.js";
 import "./Interactions.js";
 import {Config} from "./config/config.js";
 import {Layout} from "./Layout.js";
-import {AddModal} from "./AddModal.js";
+import {AddModal} from "./modals/AddModal.js";
 import {UnpackerUtil} from "./UnpackerUtil.js";
-import {EditModal} from "./EditModal.js";
-import {WelcomeModal} from "./WelcomeModal.js";
+import {EditModal} from "./modals/EditModal.js";
+import {WelcomeModal} from "./modals/WelcomeModal.js";
 
 /**
  * The main singleton class of the application.

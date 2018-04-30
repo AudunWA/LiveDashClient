@@ -1,5 +1,5 @@
-import Application from "./Application.js";
-import classNames from "./libraries/classnames.js";
+import Application from "../Application.js";
+import classNames from "../libraries/classnames.js";
 
 /**
  * An modal which opens the first time an user uses the application, or when it's requested manually.
