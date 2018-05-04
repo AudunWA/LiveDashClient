@@ -11,45 +11,80 @@ import {EditButton} from "./modules/EditButton.js";
 import { layout as emptyLayout } from "./config/layout_presets/EmptyLayout.js";
 import { layout as raceLayout } from "./config/layout_presets/RaceLayout.js";
 
+/**
+ * Manages the grid layout of the application. It handles loading and saving of the layout, among other things.
+ */
 export class Layout {
+    /**
+     * Creates a new layout instance
+     */
     constructor() {
+        /**
+         * Counter variable to create unique module IDs
+         * @type {number}
+         */
         this.idGen = 0;
+
+        /**
+         * Defines if the application is in edit mode or not
+         * @type {boolean}
+         */
         this.editMode = Config.editMode;
+
+        /**
+         * The amount of rows that the grid has. Used to generate empty cells
+         * @type {number}
+         */
         this.rows = 6;
+
+        /**
+         * The amount of columns that the grid has. Used to generate empty cells
+         * @type {number}
+         */
         this.columns = 2;
+
+        /**
+         * Defines if we're using the mobile version of the layout
+         * @type {boolean}
+         */
         this.isMobile = true;
+
+        /**
+         * Helper variable to prevent media query events being initialized multiple times
+         * @type {boolean}
+         */
         this.mediaQueryInitialized = false;
 
+        /**
+         * Defines the layout presets which are available
+         * @type {Module[]}
+         */
         this.layoutPresets = [ raceLayout, emptyLayout ];
-        //
-        // this.layoutPresets = [
-        //     { name: "Empty.desktop", layout: emptyLayoutDesktop },
-        //     { name: "Empty.mobile", layout: emptyLayoutMobile },
-        // ];
+
+        /**
+         * The default layout to load when no layout has been found
+         */
+        this.defaultLayout = emptyLayout;
+
+        /**
+         * The active layout
+         */
+        this.layout = null;
     }
 
-    getCorrectDefaultLayout() {
-        return raceLayout;
-        // if(this.isMobile) {
-        //     return defaultLayoutMobile;
-        // }
-        // return defaultLayoutDesktop;
-    }
-
+    /**
+     * Loads the layout from localStorage
+     * @returns {Module[]} An array containing all loaded modules and an empty module for each cell
+     */
     load() {
         const modules = [];
         this.initMediaQueryWatch();
 
-        // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
-
         try {
             this.layout = JSON.parse(localStorage.getItem("layout"));
             if (this.layout === null || Config.alwaysUseDefaultLayout) {
-                this.layout = this.getCorrectDefaultLayout();
-                this.saveDefaultLayout();
+                this.layout = this.defaultLayout;
             }
-
-
 
             const layoutModules = this.isMobile ? this.layout.mobileModules : this.layout.desktopModules;
             layoutModules.forEach((module) => {
@@ -58,12 +93,6 @@ export class Layout {
 
             // Add the edit button as a static module
             modules.push(new EditButton(this.idGen++, "1 / 1 / 1 / 3"));
-
-            // Redraw on resize
-            // window.addEventListener("resize", () => {
-            //     console.log("Resize");
-            //     return m.redraw();
-            // });
         } catch(error) {
             console.dir(error);
             localStorage.removeItem("layout");
@@ -73,13 +102,21 @@ export class Layout {
         return [...modules, ...this.initEmptyCells()];
     }
 
-    cleanUpSmoothieChartsTooltips() {
+    /**
+     * SmoothieChart creates tooltips in the DOM. This method removes all tooltips (useful when reloading)
+     * @private
+     */
+    static cleanUpSmoothieChartsTooltips() {
         // https://stackoverflow.com/questions/10842471/remove-all-elements-of-a-certain-class-with-javascript
         [].forEach.call(document.querySelectorAll(".smoothie-chart-tooltip"), (e) => {
             e.parentNode.removeChild(e);
         });
     }
 
+    /**
+     * Initializes an event listener listening on screen size changes
+     * @private
+     */
     initMediaQueryWatch() {
         if(this.mediaQueryInitialized) {
             return;
@@ -90,6 +127,12 @@ export class Layout {
         this.onMediaQueryChange(mediaQuery);
     }
 
+    /**
+     * Called when the screen has switched between mobile and desktop sizes.
+     * Reloads the application if the size has been changed
+     * @private
+     * @param mediaQuery The media query object
+     */
     onMediaQueryChange(mediaQuery) {
         const oldIsMobile = this.isMobile;
         if(mediaQuery.matches) {
@@ -108,6 +151,12 @@ export class Layout {
         }
     }
 
+    /**
+     * Initializes a module from a given configuration object
+     * @private
+     * @param moduleConfig An object containing the configuration for this module. Includes module type and data channel, among others
+     * @returns {Module} The initialized module
+     */
     createModule(moduleConfig) {
         let module;
         const channel = Application.unpackerUtil.dataChannels.get(moduleConfig.channel);
@@ -131,12 +180,17 @@ export class Layout {
                 module = new LinearGauge(this.idGen++, channel, moduleConfig.gridArea);
                 break;
         }
-        // const channelNames = Array.from(Application.unpackerUtil.dataChannels.keys()).filter((name) => !name.includes("BMS"));
-        // module.channel =  channelNames[Math.floor(Math.random() * channelNames.length)];
 
         return module;
     }
 
+    /**
+     * Adds a new module to a given cell in the grid.
+     * The layout gets saved after this operation
+     * @param moduleType The type of the module
+     * @param gridArea The CSS grid area of the cell
+     * @param channel The data channel that the module should use
+     */
     addModule(moduleType, gridArea, channel) {
         const module = this.createModule({
             type: moduleType,
@@ -148,12 +202,20 @@ export class Layout {
         this.saveLayout();
     }
 
+    /**
+     * Deletes a module from the grid.
+     * The layout gets saved after this operation
+     * @param id The DOM id of the module
+     */
     deleteModule(id) {
         const module = Application.getModuleById(id);
         Application.modules.splice(Application.modules.indexOf(module), 1);
         this.saveLayout();
     }
 
+    /**
+     * Saves the current layout to localStorage
+     */
     saveLayout() {
         // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
 
@@ -180,11 +242,12 @@ export class Layout {
         localStorage.setItem("layout", JSON.stringify(this.layout));
     }
 
-    saveDefaultLayout() {
-        // const layoutKey = this.isMobile ? "mobileLayout" : "desktopLayout";
-        localStorage.setItem("layout", JSON.stringify(this.getCorrectDefaultLayout()));
-    }
-
+    /**
+     * Adds an EmptyModule (invisible dummy module) instance to each cell in the grid.
+     * These are used by the interaction system to determine where an user has dragged a module
+     * @private
+     * @returns {Array<EmptyModule>} An array containing all the empty modules
+     */
     initEmptyCells() {
         const emptyModules = [];
 
@@ -198,35 +261,33 @@ export class Layout {
         return emptyModules;
     }
 
+    /**
+     * Toggles the edit mode of the layout
+     */
     toggleEditMode() {
         this.editMode = !this.editMode;
     }
 
+    /**
+     * Applies a specific layout, and saves it
+     * @param layout The layout object to apply
+     */
     applyLayout(layout) {
         localStorage.setItem("layout", JSON.stringify(layout));
         this.reload();
     }
 
-    reset() {
-        this.saveDefaultLayout();
-        this.reload();
-    }
-
+    /**
+     * Reloads the layout of the application
+     */
     reload() {
         Application.dataProvider.reset();
 
         this.idGen = 0;
-        this.cleanUpSmoothieChartsTooltips();
+        Layout.cleanUpSmoothieChartsTooltips();
         Application.modules.length = 0;
 
         const modules = this.load();
-
-        // modules.forEach((module) => {
-        //     if(module.channel) {
-        //         Application.dataProvider.subscribeToChannel(module, module.channel.name);
-        //     }
-        // });
-
         Application.modules.push(...modules);
         m.redraw();
     }
