@@ -89,7 +89,8 @@ export class CircleCanvasGauge extends Module {
         this.context.fill();
 
         this.context.textAlign = "center";
-        this.context.font = factor * 0.1 + "px Arial";
+        const fontSize = clamp(factor * 0.1, 10, 50);
+        this.context.font = fontSize + "px Arial";
         this.context.fillStyle = this.textStyle;
         this.context.fillText(this.value + " " + this.channel.unit, centerX, centerY * 1.1);
 
@@ -131,7 +132,8 @@ export class CircleCanvasGauge extends Module {
         this.staticContext.fill();
 
         this.staticContext.textAlign = "center";
-        this.staticContext.font = factor * 0.1 + "px Arial";
+        const fontSize = clamp(factor * 0.1, 10, 50);
+        this.staticContext.font = fontSize + "px Arial";
         this.staticContext.fillStyle = this.textStyle;
         this.staticContext.fillText(this.channelDisplayName, centerX, centerY * 2.3);
     }

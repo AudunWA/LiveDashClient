@@ -19,6 +19,7 @@ html,body {
     height: 100%;
     overflow: hidden; /* TODO: This is a hack, and breaks scrolling */
     touch-action: none;
+    user-select: none;
 }
 
 #grid {

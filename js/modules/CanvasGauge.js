@@ -17,7 +17,7 @@ export class CanvasGauge extends Module {
     }
 
     view() {
-        return m("div", Object.assign({id: this.id, class: this.classNames, style: this.style}, this.staticDomAttributes),
+        return m("div.no-pad", Object.assign({id: this.id, class: this.classNames, style: this.style}, this.staticDomAttributes),
             m(".flex-center",
                 m("canvas.canvas-gauge", {id: this.getId() + "-static"}),
                 m("canvas.canvas-gauge", {id: this.getId()})
@@ -73,10 +73,11 @@ export class CanvasGauge extends Module {
 
         this.percentage = lerp(this.percentage, this.goalPercentage, 0.1);
 
+        let radiusFactor = Math.min(this.canvas.height * 0.8, (this.canvas.width / 2) * 0.9);
+        let radius = radiusFactor;
         let centerX = 1/2 * this.canvas.width;
-        let centerY = 4/5 *  this.canvas.height;
-        let factor = Math.min(this.canvas.offsetHeight, this.canvas.offsetWidth);
-        let radius = factor * 0.6;
+        let centerY = 0.5 *  this.canvas.height + radius / 2;
+        let factor = Math.min(this.canvas.height, this.canvas.width);
         let endAngle = (Math.PI - this.arcSize * 2) * this.percentage - (Math.PI - this.arcSize);
 
         this.context.beginPath();
@@ -87,11 +88,12 @@ export class CanvasGauge extends Module {
         this.context.fill();
 
         this.context.textAlign="center";
-        this.context.font = factor * 0.1 + "px Arial";
+        const fontSize = clamp(factor * 0.1, 12, 50);
+        this.context.font = fontSize + "px Arial";
         this.context.fillStyle = this.textStyle;
-        this.context.fillText(this.value + " " + this.channel.unit, centerX, centerY * 0.85);
+        this.context.fillText(this.value + " " + this.channel.unit, centerX, centerY - radius * 0.25);
 
-        if (Math.abs(this.percentage - this.goalPercentage) > 0.001) {
+        if (Math.abs(this.percentage - this.goalPercentage) > 0.005) {
             requestAnimationFrame(() => this.animate());
         }
     }
@@ -115,10 +117,11 @@ export class CanvasGauge extends Module {
     }
 
     drawStatic() {
-        let centerX = 1 / 2 * this.staticCanvas.width;
-        let centerY = 4 / 5 * this.staticCanvas.height;
-        let factor = Math.min(this.staticCanvas.offsetHeight, this.staticCanvas.offsetWidth);
-        let radius = factor * 0.6;
+        let radiusFactor = Math.min(this.canvas.height * 0.8, (this.canvas.width / 2) * 0.9);
+        let radius = radiusFactor;
+        let centerX = 1/2 * this.canvas.width;
+        let centerY = 0.5 *  this.canvas.height + radius / 2;
+        let factor = Math.min(this.canvas.height, this.canvas.width);
 
         this.staticContext.clearRect(0, 0, this.staticCanvas.width, this.staticCanvas.height);
         this.staticContext.beginPath();
@@ -129,8 +132,9 @@ export class CanvasGauge extends Module {
         this.staticContext.fill();
 
         this.staticContext.textAlign = "center";
-        this.staticContext.font = factor * 0.1 + "px Arial";
+        const fontSize = clamp(factor * 0.1, 10, 20);
+        this.staticContext.font = fontSize + "px Arial";
         this.staticContext.fillStyle = this.textStyle;
-        this.staticContext.fillText(this.channelDisplayName, centerX, centerY * 1.1);
+        this.staticContext.fillText(this.channelDisplayName, centerX, centerY * 1.05);
     }
 }
