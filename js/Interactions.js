@@ -1,7 +1,7 @@
 import Application from "./Application.js";
 
 let currentEdges = null;
-
+let currentDragOffset = null;
 
 function calculateTransformOrigin(edges) {
     let origin = "";
@@ -51,19 +51,9 @@ function dragMoveListener (event) {
 function calculateGridArea(oldArea, newArea, edges) {
     const onlyVertical = ((edges.top || edges.bottom) && !(edges.left || edges.right));
     const onlyHorizontal = ((edges.left || edges.right) && !(edges.top || edges.bottom));
-    let oldAreaSplit = oldArea.split(" / ");
-    let newAreaSplit = newArea.split(" / ");
 
-    let start = {
-        row: parseInt(oldAreaSplit[0]),
-        column: parseInt(oldAreaSplit[1]),
-        endRow: parseInt(oldAreaSplit[2]),
-        endColumn: parseInt(oldAreaSplit[3])
-    };
-    let target = {
-        row: parseInt(newAreaSplit[0]),
-        column: parseInt(newAreaSplit[1]),
-    };
+    let start = objectifyGridArea(oldArea);
+    let target = objectifyGridArea(newArea);
     let result = {
         startRow: start.row,
         endRow: start.endRow,
@@ -138,6 +128,44 @@ function calculateGridArea(oldArea, newArea, edges) {
     return `${result.startRow} / ${result.startColumn} / ${result.endRow} / ${result.endColumn}`;
 }
 
+function getWidthAndHeight(gridArea) {
+    const area = objectifyGridArea(gridArea);
+    return {
+        width: Math.max(1, area.endColumn - area.column),
+        height: Math.max(1, area.endRow - area.row)
+    };
+}
+
+
+function applyDimensionsAtPosition(dimensions, gridArea) {
+    const area = objectifyGridArea(gridArea);
+    return `${area.row} / ${area.column} / ${area.row + dimensions.height} / ${area.column + dimensions.width}`;
+}
+
+function objectifyGridArea(gridArea) {
+    const gridAreaSplit = gridArea.split(" / ");
+
+    return {
+        row: parseInt(gridAreaSplit[0]),
+        column: parseInt(gridAreaSplit[1]),
+        endRow: parseInt(gridAreaSplit[2]),
+        endColumn: parseInt(gridAreaSplit[3])
+    };
+}
+
+function deobjectifyArea(area) {
+    return `${area.row} / ${area.column} / ${area.endRow} / ${area.endColumn}`;
+}
+
+function calculateDragOffset(moduleGridArea, dragGridArea) {
+    const moduleArea = objectifyGridArea(moduleGridArea);
+    const dragArea = objectifyGridArea(dragGridArea);
+
+    return {
+        x: dragArea.column - moduleArea.column,
+        y: dragArea.row - moduleArea.row
+    };
+}
 
 interact(".edit")
     .draggable({
@@ -147,14 +175,28 @@ interact(".edit")
             endOnly: true,
             elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
         },
+        onstart(event) {
+            const emptyCellElement = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
+            const module = Application.getModuleById(event.target.id);
 
+            const gridArea = emptyCellElement.style.gridArea;
+            const moduleGridArea = module.area;
+            currentDragOffset = calculateDragOffset(moduleGridArea, gridArea);
+
+        },
         onmove: dragMoveListener,
         onend(event) {
             const emptyCellElement = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
             const module = Application.getModuleById(event.target.id);
 
+            const dimensions = getWidthAndHeight(module.area);
+            let emptyCelLGridAreaAdjusted = objectifyGridArea(emptyCellElement.style.gridArea);
+            emptyCelLGridAreaAdjusted.column -= currentDragOffset.x;
+            emptyCelLGridAreaAdjusted.endColumn -= currentDragOffset.x;
+            emptyCelLGridAreaAdjusted.row -= currentDragOffset.y;
+            emptyCelLGridAreaAdjusted.endRow -= currentDragOffset.y;
             // Fix the position
-            module.area = emptyCellElement.style.gridArea;
+            module.area = applyDimensionsAtPosition(dimensions, deobjectifyArea(emptyCelLGridAreaAdjusted));
             module.style["transform"] = "";
             event.target.dataX = 0;
             event.target.dataY = 0;
@@ -162,43 +204,45 @@ interact(".edit")
             Application.layout.saveLayout();
         }
     }).resizable({
-    // resize from all edges and corners
-    edges: {left: true, right: true, bottom: true, top: true},
+        // margin: 5,
 
-    // keep the edges inside the parent
-    restrictEdges: {
-        outer: "parent",
-        endOnly: true,
-    },
+        // resize from all edges and corners
+        edges: {left: true, right: true, bottom: true, top: true},
 
-    // minimum size
-    restrictSize: {
-        min: {width: 100, height: 50},
-    },
+        // keep the edges inside the parent
+        restrictEdges: {
+            outer: "parent",
+            endOnly: true,
+        },
 
-    inertia: true,
-}).on("resizemove", function (event) {
-    const module = Application.getModuleById(event.target.id);
-    const target = event.target;
-    let x = parseFloat(target.dataX || 0) + event.dx;
-    let y = parseFloat(target.dataY || 0) + event.dy;
-    currentEdges = event.edges;
+        // minimum size
+        restrictSize: {
+            min: {width: 100, height: 50},
+        },
 
-    // update the element's style
-    target.style.transformOrigin = calculateTransformOrigin(event.edges);
-    module.style.transformOrigin = calculateTransformOrigin(event.edges);
-    target.style.transform =
+        inertia: true,
+    }).on("resizemove", function (event) {
+        const module = Application.getModuleById(event.target.id);
+        const target = event.target;
+        let x = parseFloat(target.dataX || 0) + event.dx;
+        let y = parseFloat(target.dataY || 0) + event.dy;
+        currentEdges = event.edges;
+
+        // update the element's style
+        target.style.transformOrigin = calculateTransformOrigin(event.edges);
+        module.style.transformOrigin = calculateTransformOrigin(event.edges);
+        target.style.transform =
         "scale(" + event.rect.width / event.target.clientWidth
         + "," +  event.rect.height / event.target.clientHeight;
 
-    module.style.transform =
+        module.style.transform =
         "scale(" + event.rect.width / event.target.clientWidth
         + "," +  event.rect.height / event.target.clientHeight;
-}).on("resizeend", (event) => {
-    let element = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
-    const module = Application.getModuleById(event.target.id);
+    }).on("resizeend", (event) => {
+        let element = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
+        const module = Application.getModuleById(event.target.id);
 
-    module.area = calculateGridArea(event.target.style.gridArea, element.style.gridArea, currentEdges);
-    module.style["transform"] = "";
-    Application.layout.saveLayout();
-});
+        module.area = calculateGridArea(event.target.style.gridArea, element.style.gridArea, currentEdges);
+        module.style["transform"] = "";
+        Application.layout.saveLayout();
+    });
