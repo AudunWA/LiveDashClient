@@ -22,7 +22,7 @@ class Application {
 
     async initModules() {
         const connectPromise = this.dataProvider.connectWebSocket(Config.webSocketUri);
-        const unpackerLoadPromise = this.unpackerUtil.loadUnpacker();
+        const unpackerLoadPromise = this.unpackerUtil.loadUnpacker(Config.unpackerUrl);
         await unpackerLoadPromise;
         //await Promise.all([connectPromise, unpackerLoadPromise]);
 
