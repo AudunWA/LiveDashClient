@@ -4,10 +4,42 @@ import {CircleCanvasGauge} from "../modules/CircleCanvasGauge.js";
 import {LinearGauge} from "../modules/LinearGauge.js";
 import {ChartModule} from "../modules/ChartModule.js";
 
+/**
+ * An modal used to configure and add a module to a cell
+ */
 export class AddModal {
+    /**
+     * @constructor
+     */
     constructor() {
+        /**
+         * A map of all data channels
+         * @type {Map<string, any>}
+         */
         this.dataChannels = Application.unpackerUtil.dataChannels;
+
+        /**
+         * The selected data channel
+         * @type {any}
+         */
         this.selectedValue = this.dataChannels.values().next().value;
+
+        /**
+         * Indicates if this modal is open or not
+         * @type {boolean}
+         */
+        this.isOpen = false;
+
+        /**
+         * The grid area to put the newly created module in
+         * @type {null}
+         */
+        this.gridArea = null;
+
+        /**
+         * An array of the module presets that can be used when creating a new module
+         * @type {Module[]}
+         */
         this.availableModules = [
             new CanvasGauge("add-1", this.selectedValue, "", 0.2, 0.4),
             new CircleCanvasGauge("add-2", this.selectedValue, "", 0.2, 0.4),
@@ -16,13 +48,15 @@ export class AddModal {
         ];
 
         this.availableModules.forEach(module => {
-            // Application.dataProvider.subscribeToChannel(module, this.selectedValue.name);
             module.preview = true;
         });
-        this.isOpen = false;
-        this.gridArea = null;
     }
 
+    /**
+     * The view lifecycle method, which is responsible for defining what to have in the DOM.
+     * Called every time m.redraw() gets called
+     * @returns A mithril VNode for this component
+     */
     view() {
         return this.isOpen ? m(".modal#add-modal", {
             style: {display: this.isOpen ? "flex" : "none"},
