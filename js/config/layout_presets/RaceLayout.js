@@ -1,4 +1,7 @@
-export const layout = {
+/**
+ * A layout preset
+ */
+export const raceLayout = {
     id: "preset-race",
     name: "Race",
     description: "This preset is perfect if you just want to see the coolest values from the car.",
