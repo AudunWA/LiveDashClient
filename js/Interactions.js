@@ -1,8 +1,20 @@
 import Application from "./Application.js";
 
+/**
+ * Specifies which corners that are selected in a resize operation
+ */
 let currentEdges = null;
+
+/**
+ * Specifies the offset (cell count in x and y) between the upper-left cell and the cell that the pointer is dragging a module with
+ */
 let currentDragOffset = null;
 
+/**
+ * Returns the correct transform-origin CSS property for a resize operation
+ * @param edges An object which defines the edges which are being dragged
+ * @returns {string} The correct transform origin
+ */
 function calculateTransformOrigin(edges) {
     let origin = "";
     let topOrBottom = false;
@@ -33,21 +45,13 @@ function calculateTransformOrigin(edges) {
     return origin;
 }
 
-function dragMoveListener (event) {
-    const module = Application.getModuleById(event.target.id);
-
-    const x = parseFloat(event.target.dataX || 0) + event.dx;
-    const y = parseFloat(event.target.dataY || 0) + event.dy;
-
-
-    // Translate the element
-    event.target.style.transform = "translate(" + x + "px, " + y + "px)";
-    module.style.transform = "translate(" + x + "px, " + y + "px)";
-
-    // Update the posiion attributes
-    event.target.dataX = x;
-    event.target.dataY = y;
-}
+/**
+ * Calculate which grid area a module should cover after a resize operation
+ * @param oldArea The initial/old area of the module
+ * @param newArea The area which the pointer was inside when ending the resize operation
+ * @param edges The edges which was dragged
+ * @returns {string} The new grid area for the module
+ */
 function calculateGridArea(oldArea, newArea, edges) {
     const onlyVertical = ((edges.top || edges.bottom) && !(edges.left || edges.right));
     const onlyHorizontal = ((edges.left || edges.right) && !(edges.top || edges.bottom));
@@ -128,6 +132,11 @@ function calculateGridArea(oldArea, newArea, edges) {
     return `${result.startRow} / ${result.startColumn} / ${result.endRow} / ${result.endColumn}`;
 }
 
+/**
+ * Gets the amount of cells a given grid area covers (in both x and y direction)
+ * @param gridArea The grid area to check
+ * @returns {{width: number, height: number}} An object specifying the width and height of the cell
+ */
 function getWidthAndHeight(gridArea) {
     const area = objectifyGridArea(gridArea);
     return {
@@ -136,12 +145,22 @@ function getWidthAndHeight(gridArea) {
     };
 }
 
-
+/**
+ * Calculates a grid area for a module, from the top-left grid area and the width and height
+ * @param dimensions The width and height
+ * @param gridArea The grid area of the top-left cell of the module
+ * @returns {string} The new grid area for the module
+ */
 function applyDimensionsAtPosition(dimensions, gridArea) {
     const area = objectifyGridArea(gridArea);
     return `${area.row} / ${area.column} / ${area.row + dimensions.height} / ${area.column + dimensions.width}`;
 }
 
+/**
+ * Converts a grid area to an object containing the same information
+ * @param gridArea The grid area
+ * @returns {{row: number, column: number, endRow: number, endColumn: number}} The grid area in object form
+ */
 function objectifyGridArea(gridArea) {
     const gridAreaSplit = gridArea.split(" / ");
 
@@ -153,10 +172,21 @@ function objectifyGridArea(gridArea) {
     };
 }
 
+/**
+ * Converts an object representation of a grid area back to a CSS property value
+ * @param area The grid area object
+ * @returns {string} A grid-area CSS property value
+ */
 function deobjectifyArea(area) {
     return `${area.row} / ${area.column} / ${area.endRow} / ${area.endColumn}`;
 }
 
+/**
+ * Calculates the offset (cell count in x and y) between the upper-left cell and the cell that the pointer is dragging a module with
+ * @param moduleGridArea The upper-elft cell grid area
+ * @param dragGridArea The grid area of the cell that the pointer is above
+ * @returns {{x: number, y: number}} The offset as cell count in x and y direction
+ */
 function calculateDragOffset(moduleGridArea, dragGridArea) {
     const moduleArea = objectifyGridArea(moduleGridArea);
     const dragArea = objectifyGridArea(dragGridArea);
@@ -166,6 +196,8 @@ function calculateDragOffset(moduleGridArea, dragGridArea) {
         y: dragArea.row - moduleArea.row
     };
 }
+
+// interact.margin(5);
 
 interact(".edit")
     .draggable({
@@ -184,7 +216,21 @@ interact(".edit")
             currentDragOffset = calculateDragOffset(moduleGridArea, gridArea);
 
         },
-        onmove: dragMoveListener,
+        onmove(event) {
+            const module = Application.getModuleById(event.target.id);
+
+            const x = parseFloat(event.target.dataX || 0) + event.dx;
+            const y = parseFloat(event.target.dataY || 0) + event.dy;
+
+
+            // Translate the element
+            event.target.style.transform = "translate(" + x + "px, " + y + "px)";
+            module.style.transform = "translate(" + x + "px, " + y + "px)";
+
+            // Update the posiion attributes
+            event.target.dataX = x;
+            event.target.dataY = y;
+        },
         onend(event) {
             const emptyCellElement = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
             const module = Application.getModuleById(event.target.id);

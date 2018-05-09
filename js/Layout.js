@@ -8,8 +8,8 @@ import {ImageModule} from "./modules/ImageModule.js";
 import {ChartModule} from "./modules/ChartModule.js";
 import {LinearGauge} from "./modules/LinearGauge.js";
 import {EditButton} from "./modules/EditButton.js";
-import { layout as emptyLayout } from "./config/layout_presets/EmptyLayout.js";
-import { layout as raceLayout } from "./config/layout_presets/RaceLayout.js";
+import { emptyLayout } from "./config/layout_presets/EmptyLayout.js";
+import { raceLayout } from "./config/layout_presets/RaceLayout.js";
 
 /**
  * Manages the grid layout of the application. It handles loading and saving of the layout, among other things.
@@ -29,7 +29,7 @@ export class Layout {
          * Defines if the application is in edit mode or not
          * @type {boolean}
          */
-        this.editMode = Config.editMode;
+        this.editMode = false;
 
         /**
          * The amount of rows that the grid has. Used to generate empty cells
@@ -154,7 +154,7 @@ export class Layout {
     /**
      * Initializes a module from a given configuration object
      * @private
-     * @param moduleConfig An object containing the configuration for this module. Includes module type and data channel, among others
+     * @param {object} moduleConfig An object containing the configuration for this module. Includes module type and data channel, among others
      * @returns {Module} The initialized module
      */
     createModule(moduleConfig) {
