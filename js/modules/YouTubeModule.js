@@ -2,7 +2,15 @@ import {Module} from "./Module.js";
 import Application from "../Application.js";
 import {Config} from "../config/Config.js";
 
+/**
+ * A module used to display an YouTube iframe with a video
+ */
 export class YouTubeModule extends Module {
+    /**
+     * Initializes a new YouTube module
+     * @param {string} id The DOM ID of the module
+     * @param {string} area The CSS grid-area which the module should reside in
+     */
     constructor(id, area) {
         super(id, null, area);
     }
@@ -22,12 +30,15 @@ export class YouTubeModule extends Module {
                 }
             }),
             m("iframe.video[frameborder='0'][allow='encrypted-media'][allowfullscreen='']", {
-                src: Config.youtubeVideoUrl,
+                src: this.src,
             }),
             this.editControls()
         );
     }
 
+    /**
+     * Mithril lifecycle method. Called after view has finished
+     */
     onupdate() {
         if(!Application.layout.editMode) {
             return;
@@ -38,7 +49,10 @@ export class YouTubeModule extends Module {
         this.dragHeight = document.getElementById(this.id).clientHeight;
     }
 
+    /**
+     * The source (src) attribute of the video
+     */
     get src() {
-        return this.videoSource;
+        return Config.youtubeVideoUrl;
     }
 }

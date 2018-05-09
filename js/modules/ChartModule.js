@@ -2,7 +2,13 @@ import {Module} from "./Module.js";
 import {SmoothieChart, TimeSeries} from "../libraries/smoothie.js";
 import {getRootCssProperty} from "../Util.js";
 
+/**
+ * A module containing a SmoothieCharts graph
+ */
 export class ChartModule extends Module {
+    /**
+     * @inheritDoc
+     */
     constructor(id, channel, area) {
         super(id, channel, area);
 
@@ -37,10 +43,16 @@ export class ChartModule extends Module {
         );
     }
 
+    /**
+     * A Mithril lifecycle method which is called after the view has been rendered
+     */
     oncreate() {
         this.chart.streamTo(document.getElementById(this.getCanvasId()), 100);
     }
 
+    /**
+     * @inheritDoc
+     */
     view() {
         return m("div",
             Object.assign({
@@ -53,10 +65,18 @@ export class ChartModule extends Module {
         );
     }
 
+    /**
+     * The DOM ID of the canvas element used for the graph
+     * @private
+     * @returns {string}
+     */
     getCanvasId() {
         return "chart-" + this.id;
     }
 
+    /**
+     * @inheritDoc
+     */
     onData(value) {
         super.onData(value);
 

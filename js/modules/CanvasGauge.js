@@ -1,7 +1,18 @@
 import {Module} from "./Module.js";
 import {getRootCssProperty, clamp, lerp} from "../Util.js";
 
+/**
+ * A canvas-based gauge module
+ */
 export class CanvasGauge extends Module {
+    /**
+     * Initializes a new gauge
+     * @param {string} id The DOM ID of the module
+     * @param {object} channel The data channel which the module should subscribe to
+     * @param {string} area The CSS grid-area which the module should reside in
+     * @param {number} arcSize The arc size, in radians, that the gauge should cover. Should be in the range <0,2pi]
+     * @param {number} thickness The thickness of the gauge. Should be in the range [0, 1]
+     */
     constructor(id, channel, area, arcSize, thickness) {
         super(id, channel, area);
         this.value = 0;
@@ -16,6 +27,9 @@ export class CanvasGauge extends Module {
         this.textStyle = getRootCssProperty("--module-text-color");
     }
 
+    /**
+     * @inheritDoc
+     */
     view() {
         return m("div.no-pad", Object.assign({id: this.id, class: this.classNames, style: this.style}, this.staticDomAttributes),
             m(".flex-center",
@@ -26,6 +40,9 @@ export class CanvasGauge extends Module {
         );
     }
 
+    /**
+     * A Mithril lifecycle method which is called after the view has been rendered
+     */
     oncreate() {
         // We have to use this.__proto__ to access the class instance, as this === vnode.state in lifecycle methods
         this.__proto__.canvas = document.getElementById(this.getId());

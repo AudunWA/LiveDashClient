@@ -1,11 +1,21 @@
 import {Module} from "./Module.js";
 
+/**
+ * Speedometer module used in early prototypes
+ * @deprecated
+ */
 export class Speedometer extends Module {
+    /**
+     * @inheritDoc
+     */
     constructor(id, channel, area) {
         super(id, channel, area);
         this.rotation = 0;
     }
 
+    /**
+     * @inheritDoc
+     */
     view() {
         return m(".", Object.assign({
             id: this.id,
@@ -18,6 +28,12 @@ export class Speedometer extends Module {
         );
     }
 
+    /**
+     * Calculates the rotation of the speedometer pin
+     * @private
+     * @param {number} speed The current speed (data value)
+     * @returns {number} The rotation the pin should have, in degrees
+     */
     calculateRotation(speed) {
         let speedRange = this.maxValue - this.minValue;
         let percentage = speed / speedRange;

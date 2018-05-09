@@ -1,5 +1,8 @@
 import {Module} from "./Module.js";
 
+/**
+ * Test module which displays text in a cell
+ */
 export class TextModule extends Module {
     constructor(id, area) {
         super(id, null, area);

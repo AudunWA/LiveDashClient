@@ -15,6 +15,9 @@ export class Gauge {
     }
 }
 
+/**
+ * An unused module which groups together 2 bar gauges
+ */
 export class LinearGaugeSet extends Module {
     constructor(id, area, gauges) {
         super(id, area);

@@ -1,6 +1,9 @@
 import {Module} from "./Module.js";
 import {getRootCssProperty, clamp, lerp} from "../Util.js";
 
+/**
+ * A canvas-based circular gauge module
+ */
 export class CircleCanvasGauge extends Module {
     constructor(id, channel, area, thickness) {
         super(id, channel, area);
@@ -31,6 +34,9 @@ export class CircleCanvasGauge extends Module {
         );
     }
 
+    /**
+     * A Mithril lifecycle method which is called after the view has been rendered
+     */
     oncreate() {
         // We have to use this.__proto__ to access the class instance, as this === vnode.state in lifecycle methods
         this.__proto__.canvas = document.getElementById(this.getId());
