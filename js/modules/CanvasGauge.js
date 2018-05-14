@@ -33,8 +33,8 @@ export class CanvasGauge extends Module {
     view() {
         return m("div.no-pad", Object.assign({id: this.id, class: this.classNames, style: this.style}, this.staticDomAttributes),
             m(".flex-center",
-                m("canvas.canvas-gauge", {id: this.getId() + "-static"}),
-                m("canvas.canvas-gauge", {id: this.getId()})
+                m("canvas.canvas-gauge", {id: this.canvasId + "-static"}),
+                m("canvas.canvas-gauge", {id: this.canvasId})
             ),
             this.editControls()
         );
@@ -45,14 +45,17 @@ export class CanvasGauge extends Module {
      */
     oncreate() {
         // We have to use this.__proto__ to access the class instance, as this === vnode.state in lifecycle methods
-        this.__proto__.canvas = document.getElementById(this.getId());
+        this.__proto__.canvas = document.getElementById(this.canvasId);
         this.__proto__.context = this.canvas.getContext("2d");
-        this.__proto__.staticCanvas = document.getElementById(this.getId() + "-static");
+        this.__proto__.staticCanvas = document.getElementById(this.canvasId + "-static");
         this.__proto__.staticContext = this.staticCanvas.getContext("2d");
         this.animate();
     }
 
-    getId() {
+    /**
+     * The DOM ID of the main canvas
+     */
+    get canvasId() {
         return "canvas-gauge-" + this.id;
     }
 
@@ -67,6 +70,9 @@ export class CanvasGauge extends Module {
         this.animate();
     }
 
+    /**
+     * Ensures that the canvas is scaled correctly
+     */
     resize() {
         if(this.canvas.width === this.canvas.offsetWidth && this.canvas.height === this.canvas.clientHeight) {
             // No resize needed
@@ -79,6 +85,9 @@ export class CanvasGauge extends Module {
         this.drawStatic();
     }
 
+    /**
+     * Draws the current percentage of the gauge, and queues another draw if needed for smooth animation
+     */
     animate() {
         if(!this.canvas) {
             return;
@@ -127,6 +136,10 @@ export class CanvasGauge extends Module {
         }
     }
 
+    /**
+     * Draws the static background on the background canvas.
+     * Should only be called when necessary, to maintain good performance
+     */
     drawStatic() {
         let radiusFactor = Math.min(this.canvas.height * 0.8, (this.canvas.width / 2) * 0.9);
         let radius = radiusFactor;

@@ -27,8 +27,8 @@ export class CircleCanvasGauge extends Module {
                     style: this.style
                 }, this.staticDomAttributes),
             m(".flex-center",
-                m("canvas.canvas-gauge", {id: this.getId() + "-static"}),
-                m("canvas.canvas-gauge", {id: this.getId()})
+                m("canvas.canvas-gauge", {id: this.canvasId + "-static"}),
+                m("canvas.canvas-gauge", {id: this.canvasId})
             ),
             this.editControls()
         );
@@ -39,14 +39,17 @@ export class CircleCanvasGauge extends Module {
      */
     oncreate() {
         // We have to use this.__proto__ to access the class instance, as this === vnode.state in lifecycle methods
-        this.__proto__.canvas = document.getElementById(this.getId());
+        this.__proto__.canvas = document.getElementById(this.canvasId);
         this.__proto__.context = this.canvas.getContext("2d");
-        this.__proto__.staticCanvas = document.getElementById(this.getId() + "-static");
+        this.__proto__.staticCanvas = document.getElementById(this.canvasId + "-static");
         this.__proto__.staticContext = this.staticCanvas.getContext("2d");
         this.animate();
     }
 
-    getId() {
+    /**
+     * The DOM ID of the main canvas
+     */
+    get canvasId() {
         return "canvas-gauge-" + this.id;
     }
 
@@ -58,6 +61,9 @@ export class CircleCanvasGauge extends Module {
         this.animate();
     }
 
+    /**
+     * Ensures that the canvas is scaled correctly
+     */
     resize() {
         if (this.canvas.width === this.canvas.offsetWidth && this.canvas.height === this.canvas.clientHeight) {
             // No resize needed
@@ -70,6 +76,9 @@ export class CircleCanvasGauge extends Module {
         this.drawStatic();
     }
 
+    /**
+     * Draws the current percentage of the gauge, and queues another draw if needed for smooth animation
+     */
     animate() {
         if (!this.canvas) {
             return;
@@ -117,6 +126,10 @@ export class CircleCanvasGauge extends Module {
         }
     }
 
+    /**
+     * Draws the static background on the background canvas.
+     * Should only be called when necessary, to maintain good performance
+     */
     drawStatic() {
         let centerX = this.staticCanvas.width / 2;
         let centerY = 2 / 5 * this.staticCanvas.height;
