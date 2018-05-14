@@ -100,8 +100,9 @@ export class DataProvider {
      * @param message The disconnect message
      */
     onClose(message) {
-        console.log("WebSocket disconnected");
+        console.log("WebSocket disconnected, reconnecting");
         console.dir(message);
+        this.connectWebSocket(this.ws.url);
     }
 
     /**
