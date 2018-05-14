@@ -105,12 +105,6 @@ export class CircleCanvasGauge extends Module {
         }
     }
 
-    onClick(event) {
-        super.onClick(event);
-        this.goalPercentage = Math.random();
-        this.animate();
-    }
-
     get channel() {
         return super.channel;
     }

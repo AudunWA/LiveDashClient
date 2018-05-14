@@ -41,13 +41,4 @@ export class LinearGauge extends Module {
         this.percentage = value / (this.maxValue - this.minValue) * 100;
         this.value = value;
     }
-
-    /**
-     * @inheritDoc
-     */
-    onClick(event) {
-        super.onClick(event);
-        this.percentage = Math.random() * 100;
-        m.redraw();
-    }
 }

@@ -127,12 +127,6 @@ export class CanvasGauge extends Module {
         }
     }
 
-    onClick(event) {
-        super.onClick(event);
-        this.goalPercentage = Math.random();
-        this.animate();
-    }
-
     drawStatic() {
         let radiusFactor = Math.min(this.canvas.height * 0.8, (this.canvas.width / 2) * 0.9);
         let radius = radiusFactor;
