@@ -21,6 +21,10 @@ body {
 }
 
 html,body {
+    /*--background-color: #212121;*/
+    /*--module-primary-color: #FF9800;*/
+    /*--module-secondary-color: #58472f;*/
+    /*--module-text-color: #f7f6f4;*/
     height: 100%;
     overflow: hidden; /* TODO: This is a hack, and breaks scrolling */
     touch-action: none;
@@ -108,6 +112,11 @@ button {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     background: #2a3330;
     position:  relative;
+}
+
+.cell.no-pad {
+    padding: 0;
+    /* margin: 0; */
 }
 
 .flex-center {
@@ -216,6 +225,7 @@ button {
 }
 
 .cell.edit {
+    background: #525a58;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
