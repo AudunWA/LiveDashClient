@@ -11,7 +11,7 @@ script:
 
 # Overwrite default config with deploy config, remove node_modules
 before_deploy:
-  - mv -f js/config/config.s3.js js/config/config.js
+  - mv -f js/config/Config.s3.js js/config/Config.js
   - rm -rf node_modules
 
 deploy:
