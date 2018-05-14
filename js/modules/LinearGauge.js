@@ -1,12 +1,21 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 
+/**
+ * A linear gauge/percentage bar module
+ */
 export class LinearGauge extends Module {
+    /**
+     * @inheritDoc
+     */
     constructor(id, channel, area) {
         super(id, channel, area);
         this.percentage = 0;
         this.value = 0;
     }
 
+    /**
+     * @inheritDoc
+     */
     view() {
         return m(".fc",
             Object.assign({
@@ -23,16 +32,13 @@ export class LinearGauge extends Module {
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     onData(value) {
         super.onData(value);
 
         this.percentage = value / (this.maxValue - this.minValue) * 100;
         this.value = value;
-    }
-
-    onClick(event) {
-        super.onClick(event);
-        this.percentage = Math.random() * 100;
-        m.redraw();
     }
 }

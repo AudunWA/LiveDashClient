@@ -1,4 +1,7 @@
-export const layout = {
+/**
+ * A layout preset
+ */
+export const emptyLayout = {
     id: "preset-empty",
     name: "Empty",
     description: "This preset gives you an empty grid, perfect if you know exactly what you want to look at.",
@@ -10,8 +13,7 @@ export const layout = {
         },
         {
             type: "YouTubeModule",
-            gridArea: "video",
-            src: "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0"
+            gridArea: "video"
         }
     ],
     desktopModules: [
@@ -22,8 +24,7 @@ export const layout = {
         },
         {
             type: "YouTubeModule",
-            gridArea: "2 / 2 / 5 / 6",
-            src: "https://www.youtube-nocookie.com/embed/1GGnX-p9jFg?autoplay=0"
+            gridArea: "2 / 2 / 5 / 6"
         }
     ]
 };

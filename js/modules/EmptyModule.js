@@ -1,7 +1,11 @@
-import {Module} from "../Module.js";
+import {Module} from "./Module.js";
 import Application from "../Application.js";
 import classNames from "../libraries/classnames.js";
 
+/**
+ * A dummy/placeholder module which is placed in the back of each cell.
+ * These are needed for the interaction system
+ */
 export class EmptyModule extends Module {
     constructor(id, area) {
         super(id, null, area);
