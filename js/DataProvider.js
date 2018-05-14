@@ -1,3 +1,5 @@
+import { Config } from "./config/Config.js";
+
 /**
  * Controls the network logic. It handles incoming and outgoing data over WebSocket, and lets modules subscribe to data channels
  */
@@ -115,7 +117,7 @@ export class DataProvider {
         this.messagesReceived++;
         let secondsSinceStart = (new Date().getTime() - this.startTime.getTime()) / 1000;
         const WINDOW_TITLE_UPDATE_PERIOD = 10;
-        if(this.messagesReceived % WINDOW_TITLE_UPDATE_PERIOD === 0) {
+        if(Config.displayMessagesPerSecond && this.messagesReceived % WINDOW_TITLE_UPDATE_PERIOD === 0) {
             document.title = "MPS: " + this.messagesReceived / secondsSinceStart;
         }
 

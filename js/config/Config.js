@@ -11,5 +11,6 @@ export const Config = {
     alwaysUseDefaultLayout: false,
     // unpackerUrl: "https://raw.githubusercontent.com/RevolveNTNU/R18_TelemetryUnpackingRules/master/parserules.json",
     unpackerUrl: "https://raw.githubusercontent.com/RevolveNTNU/R18_TelemetryUnpackingRules/ELD/parserules.json",
-    youtubeVideoUrl: "https://www.youtube.com/embed/live_stream?channel=UCGi73egyxd6a8K6eVnncCEA&autoplay=1"
+    youtubeVideoUrl: "https://www.youtube.com/embed/live_stream?channel=UCGi73egyxd6a8K6eVnncCEA&autoplay=1",
+    displayMessagesPerSecond: false
 };
