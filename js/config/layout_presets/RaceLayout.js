@@ -13,7 +13,7 @@ export const raceLayout = {
         },
         {
             type: "YouTubeModule",
-            gridArea: "video"
+            gridArea: "2 / 1 / 4 / 3"
         },
         {
             type: "CanvasGauge",

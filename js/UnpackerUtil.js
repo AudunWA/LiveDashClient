@@ -1,4 +1,3 @@
-import {Config} from "./config/Config.js";
 import {customChannels} from "./config/CustomChannels.js";
 
 /**

@@ -269,6 +269,7 @@ div.smoothie-chart-tooltip {
     width: 100%;
 }
 
+/* Modals are based off https://www.w3schools.com/howto/howto_css_modals.asp */
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
