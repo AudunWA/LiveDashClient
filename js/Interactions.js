@@ -199,6 +199,34 @@ function calculateDragOffset(moduleGridArea, dragGridArea) {
 
 // interact.margin(5);
 
+/**
+ * Ensures that a module is inside the defined grid.
+ * @param {string} newArea The area to clamp
+ * @param {number} rows The amount of rows in the grid
+ * @param {number} columns The amount of columns in the grid
+ * @returns {string} The clamped grid area
+ */
+function clampGridArea(newArea, rows, columns) {
+    const area = objectifyGridArea(newArea);
+    const dimension = getWidthAndHeight(newArea);
+    if(area.endRow > rows + 1) {
+        area.row = rows - dimension.height + 1;
+        area.endRow = rows;
+    } else if (area.row <= 1) {
+        area.row = 1;
+        area.endRow = dimension.height;
+    }
+
+    if(area.endColumn > columns + 1) {
+        area.column = columns - dimension.width + 1;
+        area.endColumn = columns;
+    } else if (area.column < 1) {
+        area.column = 1;
+        area.endColumn = dimension.width;
+    }
+    return deobjectifyArea(area);
+}
+
 interact(".edit")
     .draggable({
         inertia: true,
@@ -242,7 +270,9 @@ interact(".edit")
             emptyCelLGridAreaAdjusted.row -= currentDragOffset.y;
             emptyCelLGridAreaAdjusted.endRow -= currentDragOffset.y;
             // Fix the position
-            module.area = applyDimensionsAtPosition(dimensions, deobjectifyArea(emptyCelLGridAreaAdjusted));
+            let newArea = applyDimensionsAtPosition(dimensions, deobjectifyArea(emptyCelLGridAreaAdjusted));
+            newArea = clampGridArea(newArea, Application.layout.rows, Application.layout.columns);
+            module.area = newArea;
             module.style["transform"] = "";
             event.target.dataX = 0;
             event.target.dataY = 0;
@@ -288,6 +318,10 @@ interact(".edit")
         let element = document.elementsFromPoint(event.clientX, event.clientY).find((element) => element.classList.contains("empty"));
         const module = Application.getModuleById(event.target.id);
 
+        if(element == null) {
+            module.style["transform"] = "";
+            return;
+        }
         module.area = calculateGridArea(event.target.style.gridArea, element.style.gridArea, currentEdges);
         module.style["transform"] = "";
         Application.layout.saveLayout();
