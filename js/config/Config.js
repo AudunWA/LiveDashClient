@@ -6,8 +6,8 @@
  * @property {string} youtubeVideoUrl The URL of the YouTube video which should be displayed in the YouTubeModule
  */
 export const Config = {
-    // webSocketUri: "ws://localhost:8080",
-    webSocketUri: "ws://ec2-54-152-31-98.compute-1.amazonaws.com:8080",
+    webSocketUri: "ws://localhost:8080",
+    //webSocketUri: "ws://ec2-54-152-31-98.compute-1.amazonaws.com:8080",
     alwaysUseDefaultLayout: false,
     // unpackerUrl: "https://raw.githubusercontent.com/RevolveNTNU/R18_TelemetryUnpackingRules/master/parserules.json",
     unpackerUrl: "https://raw.githubusercontent.com/RevolveNTNU/R18_TelemetryUnpackingRules/ELD/parserules.json",
