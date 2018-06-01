@@ -158,11 +158,12 @@ function applyDimensionsAtPosition(dimensions, gridArea) {
 
 /**
  * Converts a grid area to an object containing the same information
- * @param gridArea The grid area
+ * @param {string} gridArea The grid area
  * @returns {{row: number, column: number, endRow: number, endColumn: number}} The grid area in object form
  */
 function objectifyGridArea(gridArea) {
-    const gridAreaSplit = gridArea.split(" / ");
+    gridArea = gridArea.replace(" ", "");
+    const gridAreaSplit = gridArea.split("/");
 
     return {
         row: parseInt(gridAreaSplit[0]),

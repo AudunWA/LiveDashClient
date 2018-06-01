@@ -10,6 +10,7 @@ import {LinearGauge} from "./modules/LinearGauge.js";
 import {EditButton} from "./modules/EditButton.js";
 import { emptyLayout } from "./config/layout_presets/EmptyLayout.js";
 import { raceLayout } from "./config/layout_presets/RaceLayout.js";
+import { demoLayout } from "./config/layout_presets/DemoLayout.js";
 
 /**
  * Manages the grid layout of the application. It handles loading and saving of the layout, among other things.
@@ -59,7 +60,7 @@ export class Layout {
          * Defines the layout presets which are available
          * @type {Module[]}
          */
-        this.layoutPresets = [ raceLayout, emptyLayout ];
+        this.layoutPresets = [ raceLayout, emptyLayout, demoLayout ];
 
         /**
          * The default layout to load when no layout has been found
