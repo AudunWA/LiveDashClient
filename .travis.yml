@@ -3,15 +3,13 @@ language: node_js
 node_js:
   - node
 
-before_install:
-
 script:
-  - npm run-script build
   - npm test
 
 # Overwrite default config with deploy config, remove node_modules
 before_deploy:
   - mv -f js/config/Config.s3.js js/config/Config.js
+  - npm run-script build
   - rm -rf node_modules
 
 deploy:
