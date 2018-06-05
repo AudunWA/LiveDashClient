@@ -12,31 +12,31 @@ export const demoLayout = {
     }, {
         "type": "CanvasGauge",
         "gridArea": "4 / 1 / 4 / 1",
-        "channel": "BMS_State_of_Charge"
+        "channel": "INS_Ax"
     }, {
         "type": "CanvasGauge",
         "gridArea": "4 / 2 / 4 / 2",
-        "channel": "BMS_State_of_Charge"
+        "channel": "SBS_F1_APPS2_Sensor"
     }, {
         "type": "ChartModule",
         "gridArea": "5 / 1 / 7 / 3",
-        "channel": "BMS_State_of_Charge"
+        "channel": "SBS_F1_APPS1_Sensor"
     }, {
         "type": "LinearGauge",
         "gridArea": "7 / 1 / 7 / 1",
-        "channel": "BMS_State_of_Charge"
+        "channel": "INS_Ay"
     }, {
         "type": "LinearGauge",
         "gridArea": "7 / 2 / 7 / 2",
-        "channel": "BMS_State_of_Charge"
+        "channel": "INS_Az"
     }, {
         "type": "CircleCanvasGauge",
         "gridArea": "8 / 1 / 8 / 1",
-        "channel": "BMS_State_of_Charge"
+        "channel": "VCU_FZ_damp_FL"
     }, {
         "type": "CircleCanvasGauge",
         "gridArea": "8 / 2 / 8 / 2",
-        "channel": "BMS_State_of_Charge"
+        "channel": "INS_altitude"
     }],
     "desktopModules": [{
         "type": "CanvasGauge",
