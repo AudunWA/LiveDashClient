@@ -10,6 +10,6 @@ export const Config = {
     webSocketUri: "ws://vault.revolve.no:8080",
     alwaysUseDefaultLayout: false,
     unpackerUrl: "https://raw.githubusercontent.com/RevolveNTNU/R18_TelemetryUnpackingRules/ELD/parserules.json",
-    youtubeVideoUrl: "https://www.youtube.com/embed/live_stream?channel=UCGi73egyxd6a8K6eVnncCEA&autoplay=1",
+    youtubeVideoUrl: "https://www.youtube.com/embed/live_stream?channel=UCGi73egyxd6a8K6eVnncCEA&autoplay=1&mute=1",
     displayMessagesPerSecond: false
 };
