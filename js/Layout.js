@@ -135,6 +135,12 @@ export class Layout {
      * @param mediaQuery The media query object
      */
     onMediaQueryChange(mediaQuery) {
+        // YouTube fullscreen acts as landscape mode on mobile, and in that case we don't want to reload
+        const youtubeIframe = document.querySelector("iframe");
+        if(youtubeIframe && this.isMobile && youtubeIframe.clientWidth === document.body.clientWidth) {
+            return;
+        }
+
         const oldIsMobile = this.isMobile;
         if(mediaQuery.matches) {
             // Desktop
