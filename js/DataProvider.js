@@ -32,7 +32,7 @@ export class DataProvider {
         /**
          * Specifies how big of a delay (in ms) there should be between when messages gets received and displayed
          */
-        this.delay = 0;
+        this.delay = 4000;
 
         /**
          * The WebSocket connection used to send commands and receive telemetry data
@@ -129,8 +129,8 @@ export class DataProvider {
         if(!this.dataChannelListeners.has(channelName)) {
             return;
         }
-        this.dataChannelListeners.get(channelName).forEach((callback) => callback(data));
-        //setTimeout(() => this.dataChannelListeners.get(channelName).forEach((callback) => callback(data)), this.delay);
+        // this.dataChannelListeners.get(channelName).forEach((callback) => callback(data));
+        setTimeout(() => this.dataChannelListeners.get(channelName).forEach((callback) => callback(data)), this.delay);
 
         // TODO: Should be decoupled from this class
         m.redraw();
